@@ -1,0 +1,20 @@
+<div>
+  <p>first algorithm</p>
+  Select Algorithm
+  <select>
+    <ng-container *ngIf="availableAlgorithmsResponse">
+      <option disabled>Select algorithm</option>
+      <option *ngFor="let element of availableAlgorithmsResponse.availableAlgorithms">{{element}}</option>
+    </ng-container>
+  </select>
+</div>
+<div>
+  <p>second algorithm</p>
+</div>
+
+
+
+    <button color="primary" style="margin-right:3px"
+            (click)="getAvailableAlgorithms()">Blocking
+    </button>
+
