@@ -1,20 +1,44 @@
 <div>
-  <p>first algorithm</p>
-  Select Algorithm
-  <select>
-    <ng-container *ngIf="availableAlgorithmsResponse">
-      <option disabled>Select algorithm</option>
-      <option *ngFor="let element of availableAlgorithmsResponse.availableAlgorithms">{{element}}</option>
-    </ng-container>
-  </select>
-</div>
-<div>
-  <p>second algorithm</p>
-</div>
-
-
-
-    <button color="primary" style="margin-right:3px"
-            (click)="getAvailableAlgorithms()">Blocking
+  <form [formGroup]="algorithmForm">
+    <div id="firstArrayDiv">
+      <select *ngIf="this.utilData.algorithms" id="algorithmType1" formControlName="algorithmType1">
+        <option value="" disabled selected>Select algorithm</option>
+        <option value="{{element}}" *ngFor="let element of this.utilData.algorithms">
+          {{element}}
+        </option>
+      </select>
+      <button color="primary" style="margin-left:5px" (click)="generateArray()">Generate array</button>
+      <input id="arrayLength" type="text" formControlName="arrayLength" placeholder="insert size between 10 and 50">
+      <ng-container *ngIf="this.utilData.array">
+        <br>array: {{this.utilData.array}}
+      </ng-container>
+      <p>
+        <button *ngIf="!utilData.isFirstArrayCompleted" id="submitArray1" class="button" type="submit"
+                (click)="onSubmit('prepareArray1')">Prepare execution
+        </button>
+        <button *ngIf="utilData.isFirstArrayCompleted" id="addSecondArray" class="button" (click)="activateSecondArraySlot()">Add
+          second array
+        </button>
+      </p>
+    </div>
+    <div *ngIf="utilData.isSecondArrayActive" id="secondArrayDiv">
+      <select *ngIf="this.utilData.algorithms" id="algorithmType2" formControlName="algorithmType2">
+        <option value="" disabled selected>Select algorithm</option>
+        <option value="{{element}}" *ngFor="let element of this.utilData.algorithms">
+          {{element}}
+        </option>
+      </select>
+      <ng-container *ngIf="this.utilData.array">
+        <br>array: {{this.utilData.array}}
+      </ng-container>
+      <p>
+        <button *ngIf="!utilData.isSecondArrayCompleted" id="submitArray2" class="button" type="submit"
+                (click)="onSubmit('prepareArray2')">Prepare execution
+        </button>
+      </p>
+    </div>
+    <button *ngIf="(utilData.isFirstArrayCompleted && !utilData.isSecondArrayActive) || (utilData.isFirstArrayCompleted && utilData.isSecondArrayCompleted)"
+            id="submitRun" class="button" type="submit" (click)="onSubmit('run')">Run
     </button>
-
+  </form>
+</div>

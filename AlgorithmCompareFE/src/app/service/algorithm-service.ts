@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { tap, map, catchError, retry } from 'rxjs/operators';
 import { AlgorithmAvailable } from '../model/algorithm-available';
+import { GenerateArray } from '../model/generate-array';
+import { ExecuteAlgorithm } from '../model/execute-algorithm';
+import { MaxExecutionTime } from '../model/max-execution-time';
+import {EventSourcePolyfill} from 'ng-event-source';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +14,10 @@ import { AlgorithmAvailable } from '../model/algorithm-available';
 export class AlgorithmService {
   private BASE_URL = 'http://localhost:8080';
   private AVAILABLE_ALGORITHM_URL = this.BASE_URL + '/blocking/getAlgorithms';
+  private GENERATE_ARRAY_URL = this.BASE_URL + '/blocking/generateArray';
+  private EXECUTE_ALGORITHM_URL = this.BASE_URL + '/reactive/executeAlgorithm';
+  private MAX_EXECUTION_DATA_URL = this.BASE_URL + '/reactive/getMaxExecutionTime';
+  public getExecutionDataEventSource: EventSourcePolyfill;
 
   constructor(private http: HttpClient) {
   }
@@ -17,29 +25,30 @@ export class AlgorithmService {
   public getAvailableAlgorithms(): Observable<AlgorithmAvailable> {
     console.log('Call to available algorithm rest api');
     return this.http.get<AlgorithmAvailable>(this.AVAILABLE_ALGORITHM_URL);
-                      //.subscribe((data: AlgorithmAvailable) => this.availableAlgorithmsResponse = { ...data });
-//     this.http.get<AlgorithmAvailable>(this.AVAILABLE_ALGORITHM_URL)
-//       .subscribe((data: AlgorithmAvailable) => this.availableAlgorithmsResponse = {
-//         availableAlgorithms: data.availableAlgorithms as string[],
-//         resultCode:  data.resultCode as number,
-//         resultDescription: data.resultDescription as string,
-//       });
   }
 
-private handleError(error: HttpErrorResponse) {
-  if (error.error instanceof ErrorEvent) {
-    // A client-side or network error occurred. Handle it accordingly.
-    console.error('An error occurred:', error.error.message);
-  } else {
-    // The backend returned an unsuccessful response code.
-    // The response body may contain clues as to what went wrong.
-    console.error(
-      `Backend returned code ${error.status}, ` +
-      `body was: ${error.error}`);
+  public generateArray(length: number): Observable<GenerateArray> {
+    console.log('Call to generate array rest api');
+    var param = { params: new HttpParams({fromString: "length="+length}) };
+    return this.http.get<GenerateArray>(this.GENERATE_ARRAY_URL, param);
   }
-  // Return an observable with a user-facing error message.
-  return throwError(
-    'Something bad happened; please try again later.');
-}
+
+  public executeAlgorithm(algorithmRequest: string, arrayRequest: number[]): Observable<ExecuteAlgorithm> {
+    console.log('Call to execute algorithm rest api');
+    var body = {algorithm: algorithmRequest, array: arrayRequest};
+    return this.http.post<ExecuteAlgorithm>(this.EXECUTE_ALGORITHM_URL, body);
+  }
+
+  public getMaxExecutionTime(idRequester: string): Observable<MaxExecutionTime> {
+    console.log('Call to max execution time rest api');
+    var param = { params: new HttpParams({fromString: "idRequester="+idRequester}) };
+    return this.http.get<MaxExecutionTime>(this.MAX_EXECUTION_DATA_URL, param);
+  }
+
+  closeConnection() {
+    if(this.getExecutionDataEventSource != null) {
+      this.getExecutionDataEventSource.close();
+    }
+  }
 
 }

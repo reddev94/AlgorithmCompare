@@ -1,6 +1,5 @@
-export interface AlgorithmExecutionData {
+export interface GenerateArray {
   array: number[];
-  moveExecutionTime: number;
   resultCode: number;
   resultDescription: string;
 }
