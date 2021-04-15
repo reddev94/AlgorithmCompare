@@ -7,6 +7,6 @@ import reactor.core.publisher.Flux;
 
 @Repository
 public interface AlgorithmRepository extends ReactiveMongoRepository<AlgorithmDocument, String> {
-    public Flux<AlgorithmDocument> deleteByIdRequester(long idRequester);
-    public Flux<AlgorithmDocument> findByIdRequester(long idRequester);
+    public Flux<AlgorithmDocument> deleteByIdRequester(String idRequester);
+    public Flux<AlgorithmDocument> findByIdRequester(String idRequester);
 }

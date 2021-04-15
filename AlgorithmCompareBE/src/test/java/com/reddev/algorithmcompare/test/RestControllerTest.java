@@ -67,8 +67,8 @@ public class RestControllerTest extends AlgorithmCompareTest {
             assertThat(executeAlgorithmResponse).isNotNull();
             assertThat(executeAlgorithmResponse.getResultCode()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_OK);
             assertThat(executeAlgorithmResponse.getResultDescription()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
-            assertThat(executeAlgorithmResponse.getIdRequester()).isGreaterThan(0);
-            long idRequester = executeAlgorithmResponse.getIdRequester();
+            assertThat(executeAlgorithmResponse.getIdRequester()).isNotEmpty();
+            String idRequester = executeAlgorithmResponse.getIdRequester();
             //get max execution time by previous algorithm generated idRequester, to generate new user-friendly move execution time
             GetMaxExecutionTimeResponse getMaxExecutionTimeResponse = webTestClient.get()
                     .uri(uriBuilder ->

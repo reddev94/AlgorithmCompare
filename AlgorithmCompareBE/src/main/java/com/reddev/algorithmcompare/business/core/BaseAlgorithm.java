@@ -17,7 +17,7 @@ public class BaseAlgorithm {
         return AlgorithmCompareUtil.getTimestamp();
     }
 
-    protected int saveRecord(long idRequester, int[] array, long moveOrder, long moveExecutionTime) {
+    protected int saveRecord(String idRequester, int[] array, long moveOrder, long moveExecutionTime) {
         try {
             AlgorithmDocument document = new AlgorithmDocument();
             document.setIdRequester(idRequester);

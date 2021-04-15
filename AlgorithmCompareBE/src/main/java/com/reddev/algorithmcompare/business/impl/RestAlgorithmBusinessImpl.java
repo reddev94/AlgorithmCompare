@@ -41,7 +41,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
                         .map(element -> {
                             ExecuteAlgorithmResponse res = new ExecuteAlgorithmResponse();
                             try {
-                                long idRequester = AlgorithmCompareUtil.getTimestamp();
+                                String idRequester = String.valueOf(AlgorithmCompareUtil.getTimestamp());
                                 logger.info("idRequester created = " + idRequester);
                                 int result = element.execute(inputArray, idRequester);
                                 logger.info("Algorithm execution result = " + result);
@@ -64,7 +64,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     }
 
     @Override
-    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(long idRequester) {
+    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(String idRequester) {
         DeleteExecuteAlgorithmDataResponse response = new DeleteExecuteAlgorithmDataResponse();
         return algorithmRepository.deleteByIdRequester(idRequester)
                 .subscribeOn(AlgorithmCompareUtil.SCHEDULER)
@@ -80,7 +80,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     public GenerateArrayResponse generateArray(int length) {
         GenerateArrayResponse response = new GenerateArrayResponse();
         if (length < AlgorithmCompareUtil.ARRAY_MIN_SIZE || length > AlgorithmCompareUtil.ARRAY_MAX_SIZE) {
-            logger.info("Invalid array length, should be between 10 and 100");
+            logger.info("Invalid array length, should be between " + AlgorithmCompareUtil.ARRAY_MIN_SIZE + " and " + AlgorithmCompareUtil.ARRAY_MAX_SIZE);
             response.setResultCode(AlgorithmCompareUtil.RESULT_CODE_KO_ARRAY_LENGTH_ERROR);
             response.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_ARRAY_LENGTH_ERROR);
         } else {
@@ -115,7 +115,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     }
 
     @Override
-    public Flux<GetExecutionDataResponse> getExecutionData(long idRequester) {
+    public Flux<GetExecutionDataResponse> getExecutionData(String idRequester) {
         try {
             return algorithmRepository.findByIdRequester(idRequester)
                     .subscribeOn(AlgorithmCompareUtil.SCHEDULER)
@@ -133,7 +133,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     }
 
     @Override
-    public Mono<GetMaxExecutionTimeResponse> getMaxExecutionTime(long idRequester) {
+    public Mono<GetMaxExecutionTimeResponse> getMaxExecutionTime(String idRequester) {
         try {
             return Mono
                     .from((MathFlux

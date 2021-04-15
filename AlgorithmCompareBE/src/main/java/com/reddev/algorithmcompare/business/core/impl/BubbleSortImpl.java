@@ -15,7 +15,7 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
     }
 
     @Override
-    public int execute(int[] input, long idRequester) throws AlgorithmException {
+    public int execute(int[] input, String idRequester) throws AlgorithmException {
         int moveOrder = 0;
         int firstInsertResult = saveRecord(idRequester, input, moveOrder, 0);
         if (firstInsertResult != AlgorithmCompareUtil.RESULT_CODE_OK) {
@@ -26,7 +26,7 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
         return AlgorithmCompareUtil.RESULT_CODE_OK;
     }
 
-    private void bubbleSort(int[] arr, long idRequester, long moveOrder) throws AlgorithmException {
+    private void bubbleSort(int[] arr, String idRequester, long moveOrder) throws AlgorithmException {
         long initialTime = calculateTimestamp();
         int n = arr.length;
         int temp = 0;

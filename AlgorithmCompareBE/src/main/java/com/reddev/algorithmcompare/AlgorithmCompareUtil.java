@@ -8,6 +8,9 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class AlgorithmCompareUtil {
+    public static final int ARRAY_MAX_SIZE = 50;
+    public static final int ARRAY_MIN_SIZE = 10;
+    public static final int ARRAY_MAX_VALUE = 999;
     public static final int RESULT_CODE_OK = 0;
     public static final int RESULT_CODE_KO_GENERIC_ERROR = -1;
     public static final int RESULT_CODE_KO_DB_ERROR = -2;
@@ -15,10 +18,8 @@ public class AlgorithmCompareUtil {
     public static final String RESULT_DESCRIPTION_OK = "OK - Success";
     public static final String RESULT_DESCRIPTION_KO_GENERIC_ERROR = "KO - Generic error";
     public static final String RESULT_DESCRIPTION_KO_DB_ERROR = "KO - Error during db insert";
-    public static final String RESULT_DESCRIPTION_KO_ARRAY_LENGTH_ERROR = "KO - Invalid Array length, should be between 10 and 100";
-    public static final int ARRAY_MAX_SIZE = 101;
-    public static final int ARRAY_MIN_SIZE = 10;
-    public static final int ARRAY_MAX_VALUE = 999;
+    public static final String RESULT_DESCRIPTION_KO_ARRAY_LENGTH_ERROR = "KO - Invalid Array length, should be between " + ARRAY_MIN_SIZE + " and " + ARRAY_MAX_SIZE;
+
 
     public static final Scheduler SCHEDULER = Schedulers.boundedElastic();
 

@@ -15,7 +15,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
     }
 
     @Override
-    public int execute(int[] input, long idRequester) throws AlgorithmException {
+    public int execute(int[] input, String idRequester) throws AlgorithmException {
         int moveOrder = 0;
         int firstInsertResult = saveRecord(idRequester, input, moveOrder, 0);
         if (firstInsertResult != AlgorithmCompareUtil.RESULT_CODE_OK) {
@@ -26,7 +26,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
         return AlgorithmCompareUtil.RESULT_CODE_OK;
     }
 
-    private void quickSort(int[] arr, int low, int high, long idRequester, long moveOrder, Long initialTime) throws AlgorithmException {
+    private void quickSort(int[] arr, int low, int high, String idRequester, long moveOrder, Long initialTime) throws AlgorithmException {
         if (initialTime == 0) {
             initialTime = calculateTimestamp();
         }
@@ -39,7 +39,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
         }
     }
 
-    private int partition(int[] arr, int low, int high, long idRequester, long moveOrder, Long initialTime) throws AlgorithmException {
+    private int partition(int[] arr, int low, int high, String idRequester, long moveOrder, Long initialTime) throws AlgorithmException {
         int pi = arr[high];
         int i = (low - 1); // smaller element index
         for (int j = low; j < high; j++) {

@@ -11,7 +11,7 @@ public class AlgorithmDocument {
 
     @Id
     private String id;
-    private long idRequester;
+    private String idRequester;
     private int[] array;
     private long moveOrder;
     private long moveExecutionTime;
@@ -24,11 +24,11 @@ public class AlgorithmDocument {
         this.id = id;
     }
 
-    public long getIdRequester() {
+    public String getIdRequester() {
         return idRequester;
     }
 
-    public void setIdRequester(long idRequester) {
+    public void setIdRequester(String idRequester) {
         this.idRequester = idRequester;
     }
 
@@ -61,7 +61,7 @@ public class AlgorithmDocument {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AlgorithmDocument that = (AlgorithmDocument) o;
-        return idRequester == that.idRequester && moveOrder == that.moveOrder && moveExecutionTime == that.moveExecutionTime && Objects.equals(id, that.id) && Arrays.equals(array, that.array);
+        return moveOrder == that.moveOrder && moveExecutionTime == that.moveExecutionTime && Objects.equals(id, that.id) && Objects.equals(idRequester, that.idRequester) && Arrays.equals(array, that.array);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class AlgorithmDocument {
     public String toString() {
         return "AlgorithmDocument{" +
                 "id='" + id + '\'' +
-                ", idRequester=" + idRequester +
+                ", idRequester='" + idRequester + '\'' +
                 ", array=" + Arrays.toString(array) +
                 ", moveOrder=" + moveOrder +
                 ", moveExecutionTime=" + moveExecutionTime +

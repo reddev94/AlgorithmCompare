@@ -3,13 +3,13 @@ package com.reddev.algorithmcompare.controller.dto;
 import java.util.Objects;
 
 public class ExecuteAlgorithmResponse extends BaseAlgorithmRestResponse {
-    private long idRequester;
+    private String idRequester;
 
-    public long getIdRequester() {
+    public String getIdRequester() {
         return idRequester;
     }
 
-    public void setIdRequester(long idRequester) {
+    public void setIdRequester(String idRequester) {
         this.idRequester = idRequester;
     }
 
@@ -19,7 +19,7 @@ public class ExecuteAlgorithmResponse extends BaseAlgorithmRestResponse {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ExecuteAlgorithmResponse that = (ExecuteAlgorithmResponse) o;
-        return idRequester == that.idRequester;
+        return Objects.equals(idRequester, that.idRequester);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ExecuteAlgorithmResponse extends BaseAlgorithmRestResponse {
     @Override
     public String toString() {
         return "ExecuteAlgorithmResponse{" +
-                "idRequester=" + idRequester +
+                "idRequester='" + idRequester + '\'' +
                 "} " + super.toString();
     }
 }

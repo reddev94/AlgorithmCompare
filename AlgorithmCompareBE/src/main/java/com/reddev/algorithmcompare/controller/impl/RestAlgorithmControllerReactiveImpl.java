@@ -31,7 +31,7 @@ public class RestAlgorithmControllerReactiveImpl implements RestAlgorithmControl
 
     @Override
     @GetMapping(value = "/getMaxExecutionTime")
-    public Mono<GetMaxExecutionTimeResponse> getMaxExecutionTime(@RequestParam long idRequester) {
+    public Mono<GetMaxExecutionTimeResponse> getMaxExecutionTime(@RequestParam String idRequester) {
         logger.debug("- - - Entering RestAlgorithmControllerReactiveImpl.getMaxExecutionTime() - - -");
         logger.info("getMaxExecutionTime request: idRequester = " + idRequester);
         return restAlgorithmBusiness.getMaxExecutionTime(idRequester)
@@ -40,7 +40,7 @@ public class RestAlgorithmControllerReactiveImpl implements RestAlgorithmControl
 
     @Override
     @GetMapping(value = "/getExecutionData")
-    public Flux<GetExecutionDataResponse> getExecutionData(@RequestParam long idRequester) {
+    public Flux<GetExecutionDataResponse> getExecutionData(@RequestParam String idRequester) {
         logger.debug("- - - Entering RestAlgorithmControllerReactiveImpl.getExecutionData() - - -");
         logger.info("getExecutionData request: idRequester = " + idRequester);
         return restAlgorithmBusiness.getExecutionData(idRequester)
@@ -49,7 +49,7 @@ public class RestAlgorithmControllerReactiveImpl implements RestAlgorithmControl
 
     @Override
     @DeleteMapping(value = "/deleteExecuteAlgorithmData", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(@RequestParam long idRequester) {
+    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(@RequestParam String idRequester) {
         logger.debug("- - - Entering RestAlgorithmControllerImpl.deleteExecuteAlgorithmData() - - -");
         logger.info("deleteExecuteAlgorithmData request: idRequester = " + idRequester);
         return restAlgorithmBusiness.deleteExecuteAlgorithmData(idRequester)
