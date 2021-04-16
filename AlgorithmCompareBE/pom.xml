@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>com.reddev</groupId>
-    <artifactId>AlgorithmCompare</artifactId>
+    <artifactId>AlgorithmCompareBE</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>AlgorithmCompare</name>
-    <description>AlgorithmCompare</description>
+    <name>AlgorithmCompareBE</name>
+    <description>AlgorithmCompareBE</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
