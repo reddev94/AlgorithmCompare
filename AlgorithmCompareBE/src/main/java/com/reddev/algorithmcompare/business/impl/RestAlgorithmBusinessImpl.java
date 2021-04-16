@@ -120,7 +120,12 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
             return algorithmRepository.findByIdRequester(idRequester)
                     .subscribeOn(AlgorithmCompareUtil.SCHEDULER)
                     .sort(Comparator.comparing(AlgorithmDocument::getMoveOrder))
-                    .map(x -> new GetExecutionDataResponse(x.getArray(), x.getMoveExecutionTime(), AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK))
+                    .map(x -> {
+                        logger.debug("execution data moveOrder = " + x.getMoveOrder());
+                        GetExecutionDataResponse response = new GetExecutionDataResponse(x.getArray(), x.getMoveExecutionTime(), AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
+                        logger.info("getExecutionData response = " + response.toString());
+                        return response;
+                    })
                     .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
         } catch (Exception e) {
             logger.error("Exception during getExecutionData", e);
@@ -140,7 +145,11 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
                             .max(algorithmRepository.findByIdRequester(idRequester)
                                     .subscribeOn(AlgorithmCompareUtil.SCHEDULER)
                                     .map(AlgorithmDocument::getMoveExecutionTime)))
-                            .map(maxExecutionTime -> new GetMaxExecutionTimeResponse(maxExecutionTime, AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK)))
+                            .map(maxExecutionTime -> {
+                                GetMaxExecutionTimeResponse response = new GetMaxExecutionTimeResponse(maxExecutionTime, AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
+                                logger.info("getMaxExecutionTime response = " + response.toString());
+                                return response;
+                            }))
                     .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
         } catch (Exception e) {
             logger.error("Exception during getExecutionData", e);

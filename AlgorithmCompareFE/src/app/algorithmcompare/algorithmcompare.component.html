@@ -16,7 +16,8 @@
         <button *ngIf="!utilData.isFirstArrayCompleted" id="submitArray1" class="button" type="submit"
                 (click)="onSubmit('prepareArray1')">Prepare execution
         </button>
-        <button *ngIf="utilData.isFirstArrayCompleted" id="addSecondArray" class="button" (click)="activateSecondArraySlot()">Add
+        <button *ngIf="utilData.isFirstArrayCompleted && !utilData.isSecondArrayActive" id="addSecondArray" class="button"
+                (click)="activateSecondArraySlot()">Add
           second array
         </button>
       </p>
@@ -37,8 +38,10 @@
         </button>
       </p>
     </div>
-    <button *ngIf="(utilData.isFirstArrayCompleted && !utilData.isSecondArrayActive) || (utilData.isFirstArrayCompleted && utilData.isSecondArrayCompleted)"
-            id="submitRun" class="button" type="submit" (click)="onSubmit('run')">Run
+    <button
+      *ngIf="(utilData.isFirstArrayCompleted && !utilData.isSecondArrayActive) || (utilData.isFirstArrayCompleted && utilData.isSecondArrayCompleted)"
+      id="submitRun" class="button" type="submit" (click)="onSubmit('run')">Run
     </button>
   </form>
+  <button id="resetButton" color="primary" (click)="resetData()">Reset</button>
 </div>

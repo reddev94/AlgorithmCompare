@@ -3,6 +3,7 @@ import { AlgorithmService } from '../service/algorithm-service';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { UtilData } from '../model/util-data';
 import { Subscriptions } from '../model/subscriptions';
+import { ExecutionData } from '../model/execution-data';
 
 @Component({
   selector: 'app-algorithmcompare',
@@ -14,15 +15,8 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   algorithmForm: FormGroup;
   utilData: UtilData;
 
-
   constructor(private algorithmService: AlgorithmService, private fb: FormBuilder) {
-      this.utilData = new UtilData(false, false, false);
-      this.algorithmForm = this.fb.group({
-          algorithmType1: '',
-          algorithmType2: '',
-          arrayLength: ''
-        });
-        this.subscriptions = new Subscriptions();
+      this.resetData();
   }
 
   ngOnInit(): void {
@@ -83,11 +77,57 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
                 console.log('Error during comunication');
               }
             });
+          this.algorithmService.getExecutionData(data.idRequester)
+            .subscribe({
+              next : data => {
+                console.log(data);
+                var element = new ExecutionData();
+                element.array = data.array;
+                element.moveExecutionTime = data.moveExecutionTime;
+                if(arrayIdentifier == 1) {
+                  console.log('get execution data for array1');
+                  this.utilData.firstArrayExecutionData.push(element);
+                } else if(arrayIdentifier == 2) {
+                  console.log('get execution data for array2');
+                  this.utilData.secondArrayExecutionData.push(element);
+                }
+              },
+              error : data => {
+                console.log('Error during comunication');
+              }
+            });
         },
         error : data => {
           console.log('Error during comunication');
         }
       });
+  }
+
+  deleteExecutionData(): void {
+    var deleteSub1$;
+    var deleteSub2$;
+    if(this.utilData && this.utilData.firstArrayIdRequester) {
+      deleteSub1$ = this.algorithmService.deleteExecutionData(this.utilData.firstArrayIdRequester).subscribe({
+        next : data => {
+          console.log(data);
+          deleteSub1$.unsubscribe();
+        },
+        error : data => {
+          console.log('Error during comunication');
+        }
+      });
+    }
+    if(this.utilData && this.utilData.secondArrayIdRequester) {
+      deleteSub2$ = this.algorithmService.deleteExecutionData(this.utilData.secondArrayIdRequester).subscribe({
+        next : data => {
+          console.log(data);
+          deleteSub2$.unsubscribe();
+        },
+        error : data => {
+          console.log('Error during comunication');
+        }
+      });
+    }
   }
 
   activateSecondArraySlot(): void {
@@ -107,18 +147,44 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.closeAllConnection();
+  }
+
+  resetData(): void {
+    console.log('initializing data');
+    this.closeAllConnection();
+    var algorithms;
+    if(this.utilData) {
+      algorithms = this.utilData.algorithms;
+    }
+    this.utilData = new UtilData(false, false, false, [], []);
+    this.utilData.algorithms = algorithms;
+    this.algorithmForm = this.fb.group({
+      algorithmType1: '',
+      algorithmType2: '',
+      arrayLength: ''
+    });
+    this.subscriptions = new Subscriptions();
+  }
+
+  private closeAllConnection(): void {
+    console.log('closing open connection');
     this.algorithmService.closeConnection();
-    if ( this.subscriptions.availableAlgorithmSub$ ){
-      this.subscriptions.availableAlgorithmSub$.unsubscribe();
-    }
-    if ( this.subscriptions.generateArraySub$ ) {
-      this.subscriptions.generateArraySub$.unsubscribe();
-    }
-    if(this.subscriptions.executeAlgorithmSub$) {
-      this.subscriptions.executeAlgorithmSub$.unsubscribe();
-    }
-    if(this.subscriptions.maxExecutionTimeSub$) {
-      this.subscriptions.maxExecutionTimeSub$.unsubscribe();
+    this.deleteExecutionData();
+    if(this.subscriptions) {
+      if ( this.subscriptions.availableAlgorithmSub$ ){
+        this.subscriptions.availableAlgorithmSub$.unsubscribe();
+      }
+      if ( this.subscriptions.generateArraySub$ ) {
+        this.subscriptions.generateArraySub$.unsubscribe();
+      }
+      if(this.subscriptions.executeAlgorithmSub$) {
+        this.subscriptions.executeAlgorithmSub$.unsubscribe();
+      }
+      if(this.subscriptions.maxExecutionTimeSub$) {
+        this.subscriptions.maxExecutionTimeSub$.unsubscribe();
+      }
     }
   }
+
 }

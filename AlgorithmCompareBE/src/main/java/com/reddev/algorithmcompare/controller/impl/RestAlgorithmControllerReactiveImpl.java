@@ -48,7 +48,7 @@ public class RestAlgorithmControllerReactiveImpl implements RestAlgorithmControl
     }
 
     @Override
-    @DeleteMapping(value = "/deleteExecuteAlgorithmData", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/deleteExecuteAlgorithmData")
     public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(@RequestParam String idRequester) {
         logger.debug("- - - Entering RestAlgorithmControllerImpl.deleteExecuteAlgorithmData() - - -");
         logger.info("deleteExecuteAlgorithmData request: idRequester = " + idRequester);

@@ -6,6 +6,8 @@ import { AlgorithmAvailable } from '../model/algorithm-available';
 import { GenerateArray } from '../model/generate-array';
 import { ExecuteAlgorithm } from '../model/execute-algorithm';
 import { MaxExecutionTime } from '../model/max-execution-time';
+import { DeleteData } from '../model/delete-data';
+import { AlgorithmExecutionData } from '../model/algorithm-data';
 import {EventSourcePolyfill} from 'ng-event-source';
 
 @Injectable({
@@ -17,6 +19,8 @@ export class AlgorithmService {
   private GENERATE_ARRAY_URL = this.BASE_URL + '/blocking/generateArray';
   private EXECUTE_ALGORITHM_URL = this.BASE_URL + '/reactive/executeAlgorithm';
   private MAX_EXECUTION_DATA_URL = this.BASE_URL + '/reactive/getMaxExecutionTime';
+  private DELETE_DATA_URL = this.BASE_URL + '/reactive/deleteExecuteAlgorithmData';
+  private GET_EXECUTION_DATA_URL = this.BASE_URL + '/reactive/getExecutionData';
   public getExecutionDataEventSource: EventSourcePolyfill;
 
   constructor(private http: HttpClient) {
@@ -45,7 +49,37 @@ export class AlgorithmService {
     return this.http.get<MaxExecutionTime>(this.MAX_EXECUTION_DATA_URL, param);
   }
 
-  closeConnection() {
+  public deleteExecutionData(idRequester: string): Observable<DeleteData> {
+    console.log('Call to delete data rest api');
+    var param = { params: new HttpParams({fromString: "idRequester="+idRequester}) };
+    return this.http.delete<DeleteData>(this.DELETE_DATA_URL, param);
+  }
+
+  public getExecutionData(idRequester: string): Observable<AlgorithmExecutionData> {
+    console.log('Call to get execution data rest api');
+    return Observable.create((observer) => {
+            this.getExecutionDataEventSource = new EventSourcePolyfill(this.GET_EXECUTION_DATA_URL+"?idRequester="+idRequester, {headers: { 'Content-Type': 'text/event-stream'}});
+    		    this.getExecutionDataEventSource.onopen = (open) => {
+    			    console.log('Opened connection');
+    		    };
+    	 	    this.getExecutionDataEventSource.onmessage = (event) => {
+    			    let json = JSON.parse(event.data);
+    			    var message = {
+    			      array: json['array'],
+    			      moveExecutionTime: json['moveExecutionTime'],
+    			      resultCode: json['resultCode'],
+    			      resultDescription: json['resultDescription']
+    			    }
+    			    observer.next(message);
+    	      };
+            this.getExecutionDataEventSource.onerror = (error) => {
+              console.log('Error, closing connection');
+    			    this.getExecutionDataEventSource.close();
+    	      };
+          });
+  }
+
+  public closeConnection() {
     if(this.getExecutionDataEventSource != null) {
       this.getExecutionDataEventSource.close();
     }

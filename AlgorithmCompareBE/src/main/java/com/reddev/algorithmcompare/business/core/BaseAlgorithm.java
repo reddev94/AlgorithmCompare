@@ -24,8 +24,9 @@ public class BaseAlgorithm {
             document.setArray(array);
             document.setMoveOrder(moveOrder);
             document.setMoveExecutionTime(moveExecutionTime);
-            logger.debug("saving AlgorithmDocument = " + document.toString());
-            algorithmRepository.save(document).subscribeOn(AlgorithmCompareUtil.SCHEDULER).subscribe();
+            //algorithmRepository.save(document).subscribeOn(AlgorithmCompareUtil.SCHEDULER).subscribe();
+            algorithmRepository.save(document).block();
+            logger.debug("saved AlgorithmDocument = " + document.toString());
             return AlgorithmCompareUtil.RESULT_CODE_OK;
         } catch (Exception e) {
             logger.error("Exception during save record on db", e);
