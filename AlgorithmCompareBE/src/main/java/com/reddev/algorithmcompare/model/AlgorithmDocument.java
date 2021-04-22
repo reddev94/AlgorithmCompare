@@ -74,8 +74,7 @@ public class AlgorithmDocument {
     @Override
     public String toString() {
         return "AlgorithmDocument{" +
-                "id='" + id + '\'' +
-                ", idRequester='" + idRequester + '\'' +
+                "idRequester='" + idRequester + '\'' +
                 ", array=" + Arrays.toString(array) +
                 ", moveOrder=" + moveOrder +
                 ", moveExecutionTime=" + moveExecutionTime +

@@ -25,9 +25,10 @@ public class BaseAlgorithm {
             document.setIdRequester(idRequester);
             document.setArray(array);
             document.setMoveOrder(moveOrder);
-            document.setMoveExecutionTime(moveExecutionTime);
-            //algorithmRepository.save(document).subscribeOn(AlgorithmCompareUtil.SCHEDULER).subscribe();
-            algorithmRepository.save(document).block();
+            //add 1 millisecond to avoid 0 as moveExecutionTime
+            document.setMoveExecutionTime(moveExecutionTime + 1);
+            algorithmRepository.save(document).subscribeOn(AlgorithmCompareUtil.SCHEDULER).subscribe();
+            //algorithmRepository.save(document).block();
             logger.debug("saved AlgorithmDocument = " + document.toString());
             return AlgorithmCompareUtil.RESULT_CODE_OK;
         } catch (Exception e) {
