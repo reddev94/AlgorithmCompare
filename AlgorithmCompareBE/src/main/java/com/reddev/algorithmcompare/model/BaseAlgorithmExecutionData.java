@@ -5,6 +5,7 @@ public class BaseAlgorithmExecutionData {
     private String idRequester;
     private long moveOrder;
     private long initialTime;
+    private long maxExecutionTime;
 
     public BaseAlgorithmExecutionData() {
 
@@ -47,4 +48,11 @@ public class BaseAlgorithmExecutionData {
         this.initialTime = initialTime;
     }
 
+    public long getMaxExecutionTime() {
+        return maxExecutionTime;
+    }
+
+    public void setMaxExecutionTime(long maxExecutionTime) {
+        this.maxExecutionTime = maxExecutionTime;
+    }
 }

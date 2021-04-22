@@ -18,15 +18,11 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
     }
 
     @Override
-    public int execute(int[] input, String idRequester) throws AlgorithmException {
+    public long execute(int[] input, String idRequester) throws AlgorithmException {
         BaseAlgorithmExecutionData data = new BaseAlgorithmExecutionData(input, idRequester);
-        int firstInsertResult = saveRecord(data.getIdRequester(), data.getArray(), data.getMoveOrder(), 0L);
-        if (firstInsertResult != AlgorithmCompareUtil.RESULT_CODE_OK) {
-            throw new AlgorithmException(firstInsertResult, AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_DB_ERROR);
-        }
-        data.setMoveOrder(data.getMoveOrder() + 1);
+        firstSaveOnDb(data);
         bubbleSort(data);
-        return AlgorithmCompareUtil.RESULT_CODE_OK;
+        return data.getMaxExecutionTime();
     }
 
     private void bubbleSort(BaseAlgorithmExecutionData data) throws AlgorithmException {
@@ -40,14 +36,7 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
                     temp = data.getArray()[j - 1];
                     data.getArray()[j - 1] = data.getArray()[j];
                     data.getArray()[j] = temp;
-                    //calculate move execution time and save on db
-                    long actualTime = calculateTimestamp();
-                    int saveResult = saveRecord(data.getIdRequester(), data.getArray(), data.getMoveOrder(), actualTime - data.getInitialTime());
-                    if (saveResult != AlgorithmCompareUtil.RESULT_CODE_OK) {
-                        throw new AlgorithmException(saveResult, AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_DB_ERROR);
-                    }
-                    data.setMoveOrder(data.getMoveOrder() + 1);
-                    data.setInitialTime(actualTime);
+                    saveOnDb(data);
                 }
             }
         }

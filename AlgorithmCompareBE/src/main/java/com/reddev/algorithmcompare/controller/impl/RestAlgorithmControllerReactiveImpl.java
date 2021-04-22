@@ -29,15 +29,6 @@ public class RestAlgorithmControllerReactiveImpl implements RestAlgorithmControl
     }
 
     @Override
-    @GetMapping(value = "/getMaxExecutionTime")
-    public Mono<GetMaxExecutionTimeResponse> getMaxExecutionTime(@RequestParam String idRequester) {
-        logger.debug("- - - Entering RestAlgorithmControllerReactiveImpl.getMaxExecutionTime() - - -");
-        logger.info("getMaxExecutionTime request: idRequester = " + idRequester);
-        return restAlgorithmBusiness.getMaxExecutionTime(idRequester)
-                .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
-    }
-
-    @Override
     @GetMapping(value = "/getExecutionData")
     public Flux<GetExecutionDataResponse> getExecutionData(@RequestParam String idRequester) {
         logger.debug("- - - Entering RestAlgorithmControllerReactiveImpl.getExecutionData() - - -");

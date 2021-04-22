@@ -18,15 +18,11 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
     }
 
     @Override
-    public int execute(int[] input, String idRequester) throws AlgorithmException {
+    public long execute(int[] input, String idRequester) throws AlgorithmException {
         BaseAlgorithmExecutionData data = new BaseAlgorithmExecutionData(input, idRequester);
-        int firstInsertResult = saveRecord(data.getIdRequester(), input, data.getMoveOrder(), 0L);
-        if (firstInsertResult != AlgorithmCompareUtil.RESULT_CODE_OK) {
-            throw new AlgorithmException(firstInsertResult, AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_DB_ERROR);
-        }
-        data.setMoveOrder(data.getMoveOrder() + 1);
+        firstSaveOnDb(data);
         quickSort(data, 0, data.getArray().length - 1);
-        return AlgorithmCompareUtil.RESULT_CODE_OK;
+        return data.getMaxExecutionTime();
     }
 
     private void quickSort(BaseAlgorithmExecutionData data, int low, int high) throws AlgorithmException {
@@ -54,14 +50,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
                     int temp = data.getArray()[i];
                     data.getArray()[i] = data.getArray()[j];
                     data.getArray()[j] = temp;
-                    //calculate move execution time and save on db
-                    long actualTime = calculateTimestamp();
-                    int saveResult = saveRecord(data.getIdRequester(), data.getArray(), data.getMoveOrder(), actualTime - data.getInitialTime());
-                    if (saveResult != AlgorithmCompareUtil.RESULT_CODE_OK) {
-                        throw new AlgorithmException(saveResult, AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_DB_ERROR);
-                    }
-                    data.setMoveOrder(data.getMoveOrder() + 1);
-                    data.setInitialTime(actualTime);
+                    saveOnDb(data);
                 }
             }
         }
@@ -70,14 +59,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
             int temp = data.getArray()[i + 1];
             data.getArray()[i + 1] = data.getArray()[high];
             data.getArray()[high] = temp;
-            //calculate move execution time and save on db
-            long actualTime = calculateTimestamp();
-            int saveResult = saveRecord(data.getIdRequester(), data.getArray(), data.getMoveOrder(), actualTime - data.getInitialTime());
-            if (saveResult != AlgorithmCompareUtil.RESULT_CODE_OK) {
-                throw new AlgorithmException(saveResult, AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_DB_ERROR);
-            }
-            data.setMoveOrder(data.getMoveOrder() + 1);
-            data.setInitialTime(actualTime);
+            saveOnDb(data);
         }
         return i + 1;
     }

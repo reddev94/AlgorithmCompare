@@ -34,33 +34,35 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
 
     @Override
     public Mono<ExecuteAlgorithmResponse> executeAlgorithm(AlgorithmEnum algorithm, int[] inputArray) {
-        return Mono.just(
-                algorithms
-                        .stream()
-                        .filter(impl -> impl.getName().equals(algorithm.toString()))
-                        .map(element -> {
-                            ExecuteAlgorithmResponse res = new ExecuteAlgorithmResponse();
-                            try {
-                                String idRequester = String.valueOf(AlgorithmCompareUtil.getTimestamp());
-                                logger.info("idRequester created = " + idRequester);
-                                int result = element.execute(inputArray, idRequester);
-                                logger.info("Algorithm execution result = " + result);
-                                if (result != AlgorithmCompareUtil.RESULT_CODE_OK) {
-                                    res.setResultCode(AlgorithmCompareUtil.RESULT_CODE_KO_GENERIC_ERROR);
-                                    res.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_GENERIC_ERROR);
-                                } else {
+        ExecuteAlgorithmResponse res = new ExecuteAlgorithmResponse();
+        if (inputArray.length > AlgorithmCompareUtil.ARRAY_MAX_SIZE) {
+            res.setResultCode(AlgorithmCompareUtil.RESULT_CODE_KO_ARRAY_LENGTH_ERROR);
+            res.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_ARRAY_LENGTH_ERROR);
+            return Mono.just(res).subscribeOn(AlgorithmCompareUtil.SCHEDULER);
+        } else {
+            return Mono.just(
+                    algorithms
+                            .stream()
+                            .filter(impl -> impl.getName().equals(algorithm.toString()))
+                            .map(element -> {
+                                try {
+                                    String idRequester = String.valueOf(AlgorithmCompareUtil.getTimestamp());
+                                    logger.info("idRequester created = " + idRequester);
+                                    long maxMoveExecutionTime = element.execute(inputArray, idRequester);
+                                    logger.info("Algorithm " + algorithm + "executed, maxMoveExecutionTime = " + maxMoveExecutionTime);
+                                    res.setIdRequester(idRequester);
+                                    res.setMaxExecutionTime(maxMoveExecutionTime);
                                     res.setResultCode(AlgorithmCompareUtil.RESULT_CODE_OK);
                                     res.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
-                                    res.setIdRequester(idRequester);
+                                } catch (AlgorithmException exception) {
+                                    logger.error("Exception during executeAlgorithm", exception);
+                                    res.setResultCode(exception.getCode());
+                                    res.setResultDescription(exception.getDescription());
                                 }
-                            } catch (AlgorithmException exception) {
-                                logger.error("Exception during executeAlgorithm", exception);
-                                res.setResultCode(exception.getCode());
-                                res.setResultDescription(exception.getDescription());
-                            }
-                            return res;
-                        }).collect(AlgorithmCompareUtil.getCorrectAlgorithm()))
-                .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
+                                return res;
+                            }).collect(AlgorithmCompareUtil.getCorrectAlgorithm()))
+                    .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
+        }
     }
 
     @Override
@@ -125,39 +127,13 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
                         GetExecutionDataResponse response = new GetExecutionDataResponse(x.getArray(), x.getMoveExecutionTime(), AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
                         logger.info("getExecutionData response = " + response.toString());
                         return response;
-                    })
-                    .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
+                    }).subscribeOn(AlgorithmCompareUtil.SCHEDULER);
         } catch (Exception e) {
             logger.error("Exception during getExecutionData", e);
             GetExecutionDataResponse response = new GetExecutionDataResponse();
             response.setResultCode(AlgorithmCompareUtil.RESULT_CODE_KO_GENERIC_ERROR);
             response.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_GENERIC_ERROR);
-            return Flux.just(response)
-                    .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
-        }
-    }
-
-    @Override
-    public Mono<GetMaxExecutionTimeResponse> getMaxExecutionTime(String idRequester) {
-        try {
-            return Mono
-                    .from((MathFlux
-                            .max(algorithmRepository.findByIdRequester(idRequester)
-                                    .subscribeOn(AlgorithmCompareUtil.SCHEDULER)
-                                    .map(AlgorithmDocument::getMoveExecutionTime)))
-                            .map(maxExecutionTime -> {
-                                GetMaxExecutionTimeResponse response = new GetMaxExecutionTimeResponse(maxExecutionTime, AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
-                                logger.info("getMaxExecutionTime response = " + response.toString());
-                                return response;
-                            }))
-                    .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
-        } catch (Exception e) {
-            logger.error("Exception during getExecutionData", e);
-            GetMaxExecutionTimeResponse response = new GetMaxExecutionTimeResponse();
-            response.setResultCode(AlgorithmCompareUtil.RESULT_CODE_KO_GENERIC_ERROR);
-            response.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_GENERIC_ERROR);
-            return Mono.just(response)
-                    .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
+            return Flux.just(response).subscribeOn(AlgorithmCompareUtil.SCHEDULER);
         }
     }
 

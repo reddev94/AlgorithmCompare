@@ -5,6 +5,6 @@ import com.reddev.algorithmcompare.model.AlgorithmException;
 public interface Algorithm {
 
     public String getName();
-    public int execute(int[] input, String idRequester) throws AlgorithmException;
+    public long execute(int[] input, String idRequester) throws AlgorithmException;
 
 }

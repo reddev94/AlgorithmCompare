@@ -68,24 +68,9 @@ public class RestControllerTest extends AlgorithmCompareTest {
             assertThat(executeAlgorithmResponse.getResultCode()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_OK);
             assertThat(executeAlgorithmResponse.getResultDescription()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
             assertThat(executeAlgorithmResponse.getIdRequester()).isNotEmpty();
+            assertThat(executeAlgorithmResponse.getMaxExecutionTime()).isGreaterThan(0L);
             String idRequester = executeAlgorithmResponse.getIdRequester();
-            //get max execution time by previous algorithm generated idRequester, to generate new user-friendly move execution time
-            GetMaxExecutionTimeResponse getMaxExecutionTimeResponse = webTestClient.get()
-                    .uri(uriBuilder ->
-                            uriBuilder
-                                    .path(TestUtil.PATH_GET_MAX_EXECUTION_TIME)
-                                    .queryParam(TestUtil.PARAM_ID_REQUESTER, idRequester)
-                                    .build())
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectBody(GetMaxExecutionTimeResponse.class)
-                    .returnResult()
-                    .getResponseBody();
-            assertThat(getMaxExecutionTimeResponse).isNotNull();
-            assertThat(getMaxExecutionTimeResponse.getResultCode()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_OK);
-            assertThat(getMaxExecutionTimeResponse.getResultDescription()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
-            assertThat(getMaxExecutionTimeResponse.getMaxExecutionTime()).isGreaterThan(0);
+            long maxExecutionTime = executeAlgorithmResponse.getMaxExecutionTime();
             //FE mapping new move execution time
             //get algorithm execution generated data, to display onscreen
             List<GetExecutionDataResponse> getExecutionDataResponse = webTestClient.get()

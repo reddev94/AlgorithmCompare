@@ -12,6 +12,5 @@ public interface RestAlgorithmBusiness {
     public GenerateArrayResponse generateArray(int length);
     public GetAlgorithmResponse getAvailableAlgorithms();
     public Flux<GetExecutionDataResponse> getExecutionData(String idRequester);
-    public Mono<GetMaxExecutionTimeResponse> getMaxExecutionTime(String idRequester);
 
 }
