@@ -5,7 +5,6 @@ import { tap, map, catchError, retry } from 'rxjs/operators';
 import { AlgorithmAvailable } from '../model/algorithm-available';
 import { GenerateArray } from '../model/generate-array';
 import { ExecuteAlgorithm } from '../model/execute-algorithm';
-import { MaxExecutionTime } from '../model/max-execution-time';
 import { DeleteData } from '../model/delete-data';
 import { AlgorithmExecutionData } from '../model/algorithm-data';
 import {EventSourcePolyfill} from 'ng-event-source';
@@ -41,12 +40,6 @@ export class AlgorithmService {
     console.log('Call to execute algorithm rest api');
     var body = {algorithm: algorithmRequest, array: arrayRequest};
     return this.http.post<ExecuteAlgorithm>(this.EXECUTE_ALGORITHM_URL, body);
-  }
-
-  public getMaxExecutionTime(idRequester: string): Observable<MaxExecutionTime> {
-    console.log('Call to max execution time rest api');
-    var param = { params: new HttpParams({fromString: "idRequester="+idRequester}) };
-    return this.http.get<MaxExecutionTime>(this.MAX_EXECUTION_DATA_URL, param);
   }
 
   public deleteExecutionData(idRequester: string): Observable<DeleteData> {

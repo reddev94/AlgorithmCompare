@@ -21,7 +21,7 @@ public class AlgorithmCompareUtil {
     public static final String RESULT_DESCRIPTION_KO_ARRAY_LENGTH_ERROR = "KO - Invalid Array length, should be between " + ARRAY_MIN_SIZE + " and " + ARRAY_MAX_SIZE;
 
 
-    public static final Scheduler SCHEDULER = Schedulers.boundedElastic();
+    public static final Scheduler SCHEDULER = Schedulers.parallel();
 
     public static long getTimestamp() {
         return Instant.now().toEpochMilli();

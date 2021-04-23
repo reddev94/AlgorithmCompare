@@ -1,6 +1,7 @@
 package com.reddev.algorithmcompare.business.impl;
 
 import com.reddev.algorithmcompare.AlgorithmCompareUtil;
+import com.reddev.algorithmcompare.business.AlgorithmCompareDAO;
 import com.reddev.algorithmcompare.business.RestAlgorithmBusiness;
 import com.reddev.algorithmcompare.business.core.Algorithm;
 import com.reddev.algorithmcompare.controller.dto.*;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.math.MathFlux;
 
 import java.util.Comparator;
 import java.util.List;
@@ -27,10 +27,10 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     Logger logger = LoggerFactory.getLogger(RestAlgorithmBusinessImpl.class);
 
     @Autowired
-    List<Algorithm> algorithms;
+    private List<Algorithm> algorithms;
 
     @Autowired
-    private AlgorithmRepository algorithmRepository;
+    private AlgorithmCompareDAO algorithmCompareDAO;
 
     @Override
     public Mono<ExecuteAlgorithmResponse> executeAlgorithm(AlgorithmEnum algorithm, int[] inputArray) {
@@ -49,7 +49,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
                                     String idRequester = String.valueOf(AlgorithmCompareUtil.getTimestamp());
                                     logger.info("idRequester created = " + idRequester);
                                     long maxMoveExecutionTime = element.execute(inputArray, idRequester);
-                                    logger.info("Algorithm " + algorithm + "executed, maxMoveExecutionTime = " + maxMoveExecutionTime);
+                                    logger.info("Algorithm " + algorithm + " executed, maxMoveExecutionTime = " + maxMoveExecutionTime);
                                     res.setIdRequester(idRequester);
                                     res.setMaxExecutionTime(maxMoveExecutionTime);
                                     res.setResultCode(AlgorithmCompareUtil.RESULT_CODE_OK);
@@ -68,8 +68,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     @Override
     public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(String idRequester) {
         DeleteExecuteAlgorithmDataResponse response = new DeleteExecuteAlgorithmDataResponse();
-        return algorithmRepository.deleteByIdRequester(idRequester)
-                .subscribeOn(AlgorithmCompareUtil.SCHEDULER)
+        return algorithmCompareDAO.deleteDocument(idRequester)
                 .reduce(response, (o1, o2) -> {
                     response.setResultCode(AlgorithmCompareUtil.RESULT_CODE_OK);
                     response.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
@@ -119,8 +118,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     @Override
     public Flux<GetExecutionDataResponse> getExecutionData(String idRequester) {
         try {
-            return algorithmRepository.findByIdRequester(idRequester)
-                    .subscribeOn(AlgorithmCompareUtil.SCHEDULER)
+            return algorithmCompareDAO.findDocument(idRequester)
                     .sort(Comparator.comparing(AlgorithmDocument::getMoveOrder))
                     .map(x -> {
                         logger.debug("execution data moveOrder = " + x.getMoveOrder());

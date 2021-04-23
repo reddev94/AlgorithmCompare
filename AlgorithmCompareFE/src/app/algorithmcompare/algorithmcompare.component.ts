@@ -55,28 +55,14 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
         next : data => {
           console.log(data);
           if(arrayIdentifier == 1) {
-            console.log('saving idRequester for array1');
+            console.log('saving idRequester and maxExecutionTime for array1');
             this.utilData.firstArrayIdRequester = data.idRequester;
+            this.utilData.firstArrayMaxExecutionTime = data.maxExecutionTime;
           } else if(arrayIdentifier == 2) {
-          console.log('saving idRequester for array2');
+          console.log('saving idRequester and maxExecutionTime for array2');
             this.utilData.secondArrayIdRequester = data.idRequester;
+            this.utilData.secondArrayMaxExecutionTime = data.maxExecutionTime;
           }
-          this.subscriptions.maxExecutionTimeSub$ = this.algorithmService.getMaxExecutionTime(data.idRequester)
-            .subscribe({
-              next : data => {
-                console.log(data);
-                if(arrayIdentifier == 1) {
-                  console.log('saving maxExecutionTime for array1');
-                  this.utilData.firstArrayMaxExecutionTime = data.maxExecutionTime;
-                } else if(arrayIdentifier == 2) {
-                  console.log('saving maxExecutionTime for array2');
-                  this.utilData.secondArrayMaxExecutionTime = data.maxExecutionTime;
-                }
-              },
-              error : data => {
-                console.log('Error during comunication');
-              }
-            });
           this.algorithmService.getExecutionData(data.idRequester)
             .subscribe({
               next : data => {
