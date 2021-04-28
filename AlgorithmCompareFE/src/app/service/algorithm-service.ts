@@ -20,7 +20,6 @@ export class AlgorithmService {
   private MAX_EXECUTION_DATA_URL = this.BASE_URL + '/reactive/getMaxExecutionTime';
   private DELETE_DATA_URL = this.BASE_URL + '/reactive/deleteExecuteAlgorithmData';
   private GET_EXECUTION_DATA_URL = this.BASE_URL + '/reactive/getExecutionData';
-  public getExecutionDataEventSource: EventSourcePolyfill;
 
   constructor(private http: HttpClient) {
   }
@@ -51,11 +50,11 @@ export class AlgorithmService {
   public getExecutionData(idRequester: string): Observable<AlgorithmExecutionData> {
     console.log('Call to get execution data rest api');
     return Observable.create((observer) => {
-            this.getExecutionDataEventSource = new EventSourcePolyfill(this.GET_EXECUTION_DATA_URL+"?idRequester="+idRequester, {headers: { 'Content-Type': 'text/event-stream'}});
-    		    this.getExecutionDataEventSource.onopen = (open) => {
+            var eventSource = new EventSourcePolyfill(this.GET_EXECUTION_DATA_URL+"?idRequester="+idRequester, {headers: { 'Content-Type': 'text/event-stream'}});
+    		    eventSource.onopen = (open) => {
     			    console.log('Opened connection');
     		    };
-    	 	    this.getExecutionDataEventSource.onmessage = (event) => {
+    	 	    eventSource.onmessage = (event) => {
     			    let json = JSON.parse(event.data);
     			    var message = {
     			      array: json['array'],
@@ -63,19 +62,19 @@ export class AlgorithmService {
     			      resultCode: json['resultCode'],
     			      resultDescription: json['resultDescription']
     			    }
-    			    observer.next(message);
+    			    if(message.resultCode!=0) {
+    			      observer.next(message);
+    			    } else {
+    			      observer.complete();
+    			      eventSource.close();
+    			    }
+
     	      };
-            this.getExecutionDataEventSource.onerror = (error) => {
+            eventSource.onerror = (error) => {
               console.log('Error, closing connection');
-    			    this.getExecutionDataEventSource.close();
+    			    eventSource.close();
     	      };
           });
-  }
-
-  public closeConnection() {
-    if(this.getExecutionDataEventSource != null) {
-      this.getExecutionDataEventSource.close();
-    }
   }
 
 }

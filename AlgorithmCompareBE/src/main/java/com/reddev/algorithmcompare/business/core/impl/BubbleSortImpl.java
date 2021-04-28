@@ -20,7 +20,7 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
     @Override
     public long execute(int[] input, String idRequester) throws AlgorithmException {
         BaseAlgorithmExecutionData data = new BaseAlgorithmExecutionData(input, idRequester);
-        firstSaveOnDb(data);
+        data.setMoveOrder(1L);
         bubbleSort(data);
         return data.getMaxExecutionTime();
     }

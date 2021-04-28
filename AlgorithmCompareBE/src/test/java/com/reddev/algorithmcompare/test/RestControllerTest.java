@@ -7,12 +7,14 @@ import com.reddev.algorithmcompare.controller.dto.*;
 import com.reddev.algorithmcompare.model.AlgorithmEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.Random;
 
+@Profile("test")
 public class RestControllerTest extends AlgorithmCompareTest {
     @Autowired
     private WebTestClient webTestClient;

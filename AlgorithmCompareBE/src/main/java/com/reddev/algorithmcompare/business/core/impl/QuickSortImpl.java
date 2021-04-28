@@ -20,7 +20,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
     @Override
     public long execute(int[] input, String idRequester) throws AlgorithmException {
         BaseAlgorithmExecutionData data = new BaseAlgorithmExecutionData(input, idRequester);
-        firstSaveOnDb(data);
+        data.setMoveOrder(1L);
         quickSort(data, 0, data.getArray().length - 1);
         return data.getMaxExecutionTime();
     }

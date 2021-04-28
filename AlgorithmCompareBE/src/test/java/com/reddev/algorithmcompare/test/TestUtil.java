@@ -3,9 +3,11 @@ package com.reddev.algorithmcompare.test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.reddev.algorithmcompare.controller.dto.ExecuteAlgorithmRequest;
 import com.reddev.algorithmcompare.model.AlgorithmEnum;
+import org.springframework.context.annotation.Profile;
 
 import java.util.Random;
 
+@Profile("test")
 public class TestUtil {
     public static final String PATH_GET_ALGORITHMS = "/blocking/getAlgorithms";
     public static final String PATH_GENERATE_ARRAY = "/blocking/generateArray";

@@ -39,14 +39,6 @@ public class BaseAlgorithm {
         data.setInitialTime(actualTime);
     }
 
-    protected void firstSaveOnDb(BaseAlgorithmExecutionData data) throws AlgorithmException {
-        int firstInsertResult = saveRecord(data.getIdRequester(), data.getArray(), data.getMoveOrder(), 0L);
-        if (firstInsertResult != AlgorithmCompareUtil.RESULT_CODE_OK) {
-            throw new AlgorithmException(firstInsertResult, AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_DB_ERROR);
-        }
-        data.setMoveOrder(data.getMoveOrder() + 1);
-    }
-
     private int saveRecord(String idRequester, int[] array, long moveOrder, long moveExecutionTime) {
         try {
             algorithmCompareDAO.saveDocument(array, idRequester, moveExecutionTime, moveOrder).subscribe();

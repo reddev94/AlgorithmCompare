@@ -122,10 +122,12 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
                     .sort(Comparator.comparing(AlgorithmDocument::getMoveOrder))
                     .map(x -> {
                         logger.debug("execution data moveOrder = " + x.getMoveOrder());
-                        GetExecutionDataResponse response = new GetExecutionDataResponse(x.getArray(), x.getMoveExecutionTime(), AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
+                        GetExecutionDataResponse response = new GetExecutionDataResponse(x.getArray(), x.getMoveExecutionTime(), AlgorithmCompareUtil.RESULT_CODE_PROCESSING, AlgorithmCompareUtil.RESULT_DESCRIPTION_PROCESSING);
                         logger.info("getExecutionData response = " + response.toString());
                         return response;
-                    }).subscribeOn(AlgorithmCompareUtil.SCHEDULER);
+                    })
+                    .concatWithValues(new GetExecutionDataResponse(new int[]{}, 0, AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK))
+                    .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
         } catch (Exception e) {
             logger.error("Exception during getExecutionData", e);
             GetExecutionDataResponse response = new GetExecutionDataResponse();

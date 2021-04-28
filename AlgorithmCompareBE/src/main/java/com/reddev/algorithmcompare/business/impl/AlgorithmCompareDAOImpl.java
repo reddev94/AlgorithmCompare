@@ -45,4 +45,10 @@ public class AlgorithmCompareDAOImpl implements AlgorithmCompareDAO {
         logger.debug("finding AlgorithmDocument with idRequester = " + idRequester);
         return algorithmRepository.findByIdRequester(idRequester).publishOn(AlgorithmCompareUtil.SCHEDULER);
     }
+
+    @Override
+    public Flux<AlgorithmDocument> findAll() {
+        logger.debug("finding all AlgorithmDocument");
+        return algorithmRepository.findAll().publishOn(AlgorithmCompareUtil.SCHEDULER);
+    }
 }
