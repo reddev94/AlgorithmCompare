@@ -45,34 +45,34 @@
   </form>
   <ng-container *ngIf="this.utilData.firstArrayExecutionData.length > 0">
     <br>array1 size = {{this.utilData.firstArrayExecutionData.length}}
-    <div class="chart-wrapper">
-      <canvas baseChart
-              [datasets]="this.chartData.barChartData"
-              [labels]="this.chartData.barChartLabels"
-              [options]="this.chartData.barChartOptions"
-              [plugins]="this.chartData.barChartPlugins"
-              [legend]="this.chartData.barChartLegend"
-              [chartType]="this.chartData.barChartType">
-      </canvas>
-    </div>
-    <ng-container *ngFor="let element of this.utilData.firstArrayExecutionData; let i = index" [attr.data-index]="i">
+<!--    <div class="chart-wrapper">-->
+<!--      <canvas baseChart-->
+<!--              [datasets]="this.chartData.barChartData"-->
+<!--              [labels]="this.chartData.barChartLabels"-->
+<!--              [options]="this.chartData.barChartOptions"-->
+<!--              [plugins]="this.chartData.barChartPlugins"-->
+<!--              [legend]="this.chartData.barChartLegend"-->
+<!--              [chartType]="this.chartData.barChartType">-->
+<!--      </canvas>-->
+<!--    </div>-->
+    <ng-container *ngFor="let element of this.utilData.firstArrayExecutionData; let i = index">
       <br>array={{element.array}}, moveExecutionTime={{element.moveExecutionTime}}, {{i}}
     </ng-container>
   </ng-container>
   <br>
   <ng-container *ngIf="this.utilData.secondArrayExecutionData.length > 0">
     <br>array2 size = {{this.utilData.secondArrayExecutionData.length}}
-    <div class="chart-wrapper">
-      <canvas baseChart
-              [datasets]="this.chartData.barChartData"
-              [labels]="this.chartData.barChartLabels"
-              [options]="this.chartData.barChartOptions"
-              [plugins]="this.chartData.barChartPlugins"
-              [legend]="this.chartData.barChartLegend"
-              [chartType]="this.chartData.barChartType">
-      </canvas>
-    </div>
-    <ng-container *ngFor="let element of this.utilData.secondArrayExecutionData; let i = index" [attr.data-index]="i">
+<!--    <div class="chart-wrapper">-->
+<!--      <canvas baseChart-->
+<!--              [datasets]="this.chartData.barChartData"-->
+<!--              [labels]="this.chartData.barChartLabels"-->
+<!--              [options]="this.chartData.barChartOptions"-->
+<!--              [plugins]="this.chartData.barChartPlugins"-->
+<!--              [legend]="this.chartData.barChartLegend"-->
+<!--              [chartType]="this.chartData.barChartType">-->
+<!--      </canvas>-->
+<!--    </div>-->
+    <ng-container *ngFor="let element of this.utilData.secondArrayExecutionData; let i = index">
       <br>array={{element.array}}, moveExecutionTime={{element.moveExecutionTime}}, {{i}}
     </ng-container>
   </ng-container>

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { tap, map, catchError, retry } from 'rxjs/operators';
+import { Observable, of, throwError, asyncScheduler } from 'rxjs';
+import { tap, map, catchError, retry, concatMap } from 'rxjs/operators';
 import { AlgorithmAvailable } from '../model/algorithm-available';
 import { GenerateArray } from '../model/generate-array';
 import { ExecuteAlgorithm } from '../model/execute-algorithm';
 import { DeleteData } from '../model/delete-data';
 import { AlgorithmExecutionData } from '../model/algorithm-data';
 import {EventSourcePolyfill} from 'ng-event-source';
+import { subscribeOn, delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -47,20 +48,21 @@ export class AlgorithmService {
     return this.http.delete<DeleteData>(this.DELETE_DATA_URL, param);
   }
 
-  public getExecutionData(idRequester: string): Observable<AlgorithmExecutionData> {
+  public getExecutionData(idRequester: string, arrayId: number, maxMoveExecutionTime: number): Observable<AlgorithmExecutionData> {
     console.log('Call to get execution data rest api');
     return Observable.create((observer) => {
-            var eventSource = new EventSourcePolyfill(this.GET_EXECUTION_DATA_URL+"?idRequester="+idRequester, {headers: { 'Content-Type': 'text/event-stream'}});
+            var eventSource = new EventSourcePolyfill(this.GET_EXECUTION_DATA_URL+"?idRequester="+idRequester+"&maxMoveExecutionTime="+maxMoveExecutionTime, {headers: { 'Content-Type': 'text/event-stream'}});
     		    eventSource.onopen = (open) => {
     			    console.log('Opened connection');
     		    };
-    	 	    eventSource.onmessage = (event) => {
+    	 	    eventSource.onmessage = async (event) => {
     			    let json = JSON.parse(event.data);
     			    var message = {
     			      array: json['array'],
     			      moveExecutionTime: json['moveExecutionTime'],
     			      resultCode: json['resultCode'],
-    			      resultDescription: json['resultDescription']
+    			      resultDescription: json['resultDescription'],
+    			      arrayIdentifier: arrayId
     			    }
     			    if(message.resultCode!=0) {
     			      observer.next(message);
@@ -68,13 +70,13 @@ export class AlgorithmService {
     			      observer.complete();
     			      eventSource.close();
     			    }
-
     	      };
             eventSource.onerror = (error) => {
               console.log('Error, closing connection');
     			    eventSource.close();
     	      };
-          });
+          })
+          //.pipe(subscribeOn(asyncScheduler));
   }
 
 }

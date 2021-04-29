@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -116,7 +117,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     }
 
     @Override
-    public Flux<GetExecutionDataResponse> getExecutionData(String idRequester) {
+    public Flux<GetExecutionDataResponse> getExecutionData(String idRequester, long maxMoveExecutionTime) {
         try {
             return algorithmCompareDAO.findDocument(idRequester)
                     .sort(Comparator.comparing(AlgorithmDocument::getMoveOrder))
@@ -126,6 +127,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
                         logger.info("getExecutionData response = " + response.toString());
                         return response;
                     })
+                    .delayUntil(d -> Mono.delay(Duration.ofMillis((d.getMoveExecutionTime()*1000)/maxMoveExecutionTime)))
                     .concatWithValues(new GetExecutionDataResponse(new int[]{}, 0, AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK))
                     .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
         } catch (Exception e) {

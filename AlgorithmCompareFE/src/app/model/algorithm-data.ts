@@ -3,4 +3,5 @@ export interface AlgorithmExecutionData {
   moveExecutionTime: number;
   resultCode: number;
   resultDescription: string;
+  arrayIdentifier: number;
 }

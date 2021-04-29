@@ -30,10 +30,10 @@ public class RestAlgorithmControllerReactiveImpl implements RestAlgorithmControl
 
     @Override
     @GetMapping(value = "/getExecutionData")
-    public Flux<GetExecutionDataResponse> getExecutionData(@RequestParam String idRequester) {
+    public Flux<GetExecutionDataResponse> getExecutionData(@RequestParam String idRequester, @RequestParam long maxMoveExecutionTime) {
         logger.debug("- - - Entering RestAlgorithmControllerReactiveImpl.getExecutionData() - - -");
-        logger.info("getExecutionData request: idRequester = " + idRequester);
-        return restAlgorithmBusiness.getExecutionData(idRequester)
+        logger.info("getExecutionData request: idRequester = " + idRequester + ",  maxMoveExecutionTime = " + maxMoveExecutionTime);
+        return restAlgorithmBusiness.getExecutionData(idRequester, maxMoveExecutionTime)
                 .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
     }
 

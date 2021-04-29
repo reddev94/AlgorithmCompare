@@ -5,9 +5,11 @@ import { UtilData } from '../model/util-data';
 import { Subscriptions } from '../model/subscriptions';
 import { ExecutionData } from '../model/execution-data';
 import { ChartData } from '../model/chart-data';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, merge } from 'rxjs';
 import { Label } from 'ng2-charts';
 import { ChartDataSets } from 'chart.js';
+import { fromWorker } from 'observable-webworker';
+import { AlgorithmExecutionData } from '../model/algorithm-data';
 
 @Component({
   selector: 'app-algorithmcompare',
@@ -19,6 +21,8 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   algorithmForm: FormGroup;
   utilData: UtilData;
   chartData: ChartData;
+  webWorker1: Worker
+  webWorker2: Worker
 
   constructor(private algorithmService: AlgorithmService, private fb: FormBuilder) {
       this.resetData();
@@ -78,8 +82,8 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   }
 
   startVisualization1(): void {
-    console.log('calling getExecutionData for array1');
-    this.subscriptions.getExecutionDataSub1$ = this.algorithmService.getExecutionData(this.utilData.firstArrayIdRequester)
+    /**console.log('calling getExecutionData for array1');
+    fromWorker<AlgorithmExecutionData, AlgorithmExecutionData>(() => new Worker('/src/app/webworker.worker', { type: 'module'}), this.algorithmService.getExecutionData(this.utilData.firstArrayIdRequester))
       .subscribe({
         next: data => {
           console.log('response data array1');
@@ -99,12 +103,34 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
         error: data => {
           console.log('Error during comunication');
         }
-      });
+      });*/
+
+    /**this.subscriptions.getExecutionDataSub1$ = this.algorithmService.getExecutionData(this.utilData.firstArrayIdRequester)
+      .subscribe({
+        next: data => {
+          console.log('response data array1');
+          console.log(data);
+          var element = new ExecutionData();
+          element.array = data.array;
+          element.moveExecutionTime = data.moveExecutionTime;
+          this.utilData.firstArrayExecutionData.push(element);
+          var labels: Label[] = [];
+          for(var i=0; i<data.array.length; i++) {
+            labels.push(data.array[i]+'');
+          }
+          this.chartData.barChartLabels = labels;
+          var barChartData: ChartDataSets[] = [{ data: data.array, label: 'Array1' }];
+          this.chartData.barChartData = barChartData;
+        },
+        error: data => {
+          console.log('Error during comunication');
+        }
+      });*/
   }
 
     startVisualization2(): void {
-      console.log('calling getExecutionData for array2');
-      this.subscriptions.getExecutionDataSub2$ = this.algorithmService.getExecutionData(this.utilData.secondArrayIdRequester)
+      /**console.log('calling getExecutionData for array2');
+      fromWorker<AlgorithmExecutionData, AlgorithmExecutionData>(() => new Worker('/src/app/webworker.worker', { type: 'module'}), this.algorithmService.getExecutionData(this.utilData.secondArrayIdRequester))
         .subscribe({
           next: data => {
             console.log('response data array2');
@@ -124,8 +150,59 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
           error: data => {
             console.log('Error during comunication');
           }
-        });
+        });*/
+
+      /**this.subscriptions.getExecutionDataSub2$ = this.algorithmService.getExecutionData(this.utilData.secondArrayIdRequester)
+        .subscribe({
+          next: data => {
+            console.log('response data array2');
+            console.log(data);
+            var element = new ExecutionData();
+            element.array = data.array;
+            element.moveExecutionTime = data.moveExecutionTime;
+            this.utilData.secondArrayExecutionData.push(element);
+            var labels: Label[] = [];
+            for(var i=0; i<data.array.length; i++) {
+              labels.push(data.array[i]+'');
+            }
+            this.chartData.barChartLabels = labels;
+            var barChartData: ChartDataSets[] = [{ data: data.array, label: 'Array1' }];
+            this.chartData.barChartData = barChartData;
+          },
+          error: data => {
+            console.log('Error during comunication');
+          }
+        });*/
     }
+
+  startVisualization(): void {
+    merge(this.algorithmService.getExecutionData(this.utilData.firstArrayIdRequester, 1, this.utilData.firstArrayMaxExecutionTime), this.algorithmService.getExecutionData(this.utilData.secondArrayIdRequester, 2, this.utilData.secondArrayMaxExecutionTime))
+              .subscribe({
+                next: data => {
+                  console.log(data);
+                  var element = new ExecutionData();
+                  var arrayIdentifier = data.arrayIdentifier;
+                  console.log('response data array'+arrayIdentifier);
+                  element.array = data.array;
+                  element.moveExecutionTime = data.moveExecutionTime;
+                  if(arrayIdentifier == 1) {
+                    this.utilData.firstArrayExecutionData.push(element);
+                  } else if (arrayIdentifier == 2) {
+                    this.utilData.secondArrayExecutionData.push(element);
+                  }
+                  var labels: Label[] = [];
+                  for(var i=0; i<data.array.length; i++) {
+                    labels.push(data.array[i]+'');
+                  }
+                  this.chartData.barChartLabels = labels;
+                  var barChartData: ChartDataSets[] = [{ data: data.array, label: 'Array'+arrayIdentifier }];
+                  this.chartData.barChartData = barChartData;
+                },
+                error: data => {
+                  console.log('Error during comunication');
+                }
+              });
+  }
 
   deleteExecutionData(): void {
     var deleteSub1$;
@@ -166,10 +243,12 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     } else if(buttonType==="run") {
       this.utilData.isRunning = true;
       if(this.utilData.isSecondArrayActive) {
-        this.startVisualization1();
-        this.startVisualization2();
+        //this.startVisualization1();
+        //this.startVisualization2();
+        this.startVisualization();
       } else {
-        this.startVisualization1();
+        //this.startVisualization1();
+        this.startVisualization();
       }
     }
   }
@@ -198,6 +277,12 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
 
   private closeAllConnection(): void {
     console.log('closing open connection');
+    if(this.webWorker1) {
+      this.webWorker1.terminate();
+    }
+    if(this.webWorker2) {
+      this.webWorker2.terminate();
+    }
     this.deleteExecutionData();
     if(this.subscriptions) {
       if ( this.subscriptions.availableAlgorithmSub$ ){

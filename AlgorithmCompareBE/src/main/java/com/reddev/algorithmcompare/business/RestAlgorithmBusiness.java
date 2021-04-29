@@ -11,6 +11,6 @@ public interface RestAlgorithmBusiness {
     public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(String idRequester);
     public GenerateArrayResponse generateArray(int length);
     public GetAlgorithmResponse getAvailableAlgorithms();
-    public Flux<GetExecutionDataResponse> getExecutionData(String idRequester);
+    public Flux<GetExecutionDataResponse> getExecutionData(String idRequester, long maxMoveExecutionTime);
 
 }
