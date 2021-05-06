@@ -8,7 +8,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class AlgorithmCompareUtil {
-    public static final int ARRAY_MAX_SIZE = 50;
+    public static final int ARRAY_MAX_SIZE = 30;
     public static final int ARRAY_MIN_SIZE = 10;
     public static final int ARRAY_MAX_VALUE = 99;
     public static final int RESULT_CODE_OK = 0;

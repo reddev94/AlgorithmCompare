@@ -1,5 +1,3 @@
-import { ExecutionData } from '../model/execution-data';
-
 export class UtilData {
   isFirstArrayCompleted: boolean;
   isSecondArrayCompleted: boolean;
@@ -11,15 +9,13 @@ export class UtilData {
   secondArrayIdRequester: string;
   algorithms: string[];
   array: number[];
-  firstArrayExecutionData: ExecutionData[];
-  secondArrayExecutionData: ExecutionData[];
+  firstArrayExecutionData: number[];
+  secondArrayExecutionData: number[];
 
-  constructor(isFirstArrayCompleted: boolean, isSecondArrayCompleted: boolean, isSecondArrayActive: boolean, isRunning: boolean, firstArrayExecutionData: ExecutionData[], secondArrayExecutionData: ExecutionData[]) {
+  constructor(isFirstArrayCompleted: boolean, isSecondArrayCompleted: boolean, isSecondArrayActive: boolean, isRunning: boolean) {
     this.isFirstArrayCompleted = isFirstArrayCompleted;
     this.isSecondArrayCompleted = isSecondArrayCompleted;
     this.isSecondArrayActive = isSecondArrayActive;
     this.isRunning = isRunning;
-    this.firstArrayExecutionData = firstArrayExecutionData;
-    this.secondArrayExecutionData = secondArrayExecutionData;
   }
 }

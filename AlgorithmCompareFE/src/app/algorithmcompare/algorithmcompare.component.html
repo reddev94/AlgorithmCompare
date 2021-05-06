@@ -8,7 +8,7 @@
         </option>
       </select>
       <button color="primary" style="margin-left:5px" (click)="generateArray()">Generate array</button>
-      <input id="arrayLength" type="text" formControlName="arrayLength" placeholder="insert size between 10 and 50">
+      <input id="arrayLength" type="text" formControlName="arrayLength" placeholder="insert size between 10 and 30">
       <ng-container *ngIf="this.utilData.array">
         <br>array: {{this.utilData.array}}
       </ng-container>
@@ -16,66 +16,39 @@
         <button *ngIf="!utilData.isFirstArrayCompleted" id="submitArray1" class="button" type="submit"
                 (click)="onSubmit('prepareArray1')">Prepare execution
         </button>
-        <button *ngIf="utilData.isFirstArrayCompleted && !utilData.isSecondArrayActive && !utilData.isRunning" id="addSecondArray" class="button"
-                (click)="activateSecondArraySlot()">Add
+      </p>
+      <canvas #array1Graph [style.display]="array1GraphIsVisible ? 'block' : 'none'" width=1200 height=260
+              style="border: 1px solid black;"></canvas>
+      <p>
+        <button *ngIf="utilData.isFirstArrayCompleted && !utilData.isSecondArrayActive && !utilData.isRunning"
+                id="addSecondArray" class="button" (click)="activateSecondArraySlot()">Add
           second array
         </button>
       </p>
     </div>
-    <div *ngIf="utilData.isSecondArrayActive" id="secondArrayDiv">
-      <select *ngIf="this.utilData.algorithms" id="algorithmType2" formControlName="algorithmType2">
+    <div id="secondArrayDiv">
+      <select *ngIf="utilData.isSecondArrayActive && this.utilData.algorithms" id="algorithmType2"
+              formControlName="algorithmType2">
         <option value="" disabled selected>Select algorithm</option>
         <option value="{{element}}" *ngFor="let element of this.utilData.algorithms">
           {{element}}
         </option>
       </select>
-      <ng-container *ngIf="this.utilData.array">
-        <br>array: {{this.utilData.array}}
-      </ng-container>
       <p>
-        <button *ngIf="!utilData.isSecondArrayCompleted" id="submitArray2" class="button" type="submit"
+        <button *ngIf="utilData.isSecondArrayActive && !utilData.isSecondArrayCompleted" id="submitArray2"
+                class="button" type="submit"
                 (click)="onSubmit('prepareArray2')">Prepare execution
         </button>
       </p>
+      <canvas #array2Graph [style.display]="array2GraphIsVisible ? 'block' : 'none'" width=1200 height=260
+              style="border: 1px solid black;"></canvas>
     </div>
     <button
       *ngIf="(utilData.isFirstArrayCompleted && !utilData.isSecondArrayActive && !utilData.isRunning) || (utilData.isFirstArrayCompleted && utilData.isSecondArrayCompleted && !utilData.isRunning)"
       id="submitRun" class="button" type="submit" (click)="onSubmit('run')">Run
     </button>
   </form>
-  <ng-container *ngIf="this.utilData.firstArrayExecutionData.length > 0">
-    <br>array1 size = {{this.utilData.firstArrayExecutionData.length}}
-<!--    <div class="chart-wrapper">-->
-<!--      <canvas baseChart-->
-<!--              [datasets]="this.chartData.barChartData"-->
-<!--              [labels]="this.chartData.barChartLabels"-->
-<!--              [options]="this.chartData.barChartOptions"-->
-<!--              [plugins]="this.chartData.barChartPlugins"-->
-<!--              [legend]="this.chartData.barChartLegend"-->
-<!--              [chartType]="this.chartData.barChartType">-->
-<!--      </canvas>-->
-<!--    </div>-->
-    <ng-container *ngFor="let element of this.utilData.firstArrayExecutionData; let i = index">
-      <br>array={{element.array}}, moveExecutionTime={{element.moveExecutionTime}}, {{i}}
-    </ng-container>
-  </ng-container>
-  <br>
-  <ng-container *ngIf="this.utilData.secondArrayExecutionData.length > 0">
-    <br>array2 size = {{this.utilData.secondArrayExecutionData.length}}
-<!--    <div class="chart-wrapper">-->
-<!--      <canvas baseChart-->
-<!--              [datasets]="this.chartData.barChartData"-->
-<!--              [labels]="this.chartData.barChartLabels"-->
-<!--              [options]="this.chartData.barChartOptions"-->
-<!--              [plugins]="this.chartData.barChartPlugins"-->
-<!--              [legend]="this.chartData.barChartLegend"-->
-<!--              [chartType]="this.chartData.barChartType">-->
-<!--      </canvas>-->
-<!--    </div>-->
-    <ng-container *ngFor="let element of this.utilData.secondArrayExecutionData; let i = index">
-      <br>array={{element.array}}, moveExecutionTime={{element.moveExecutionTime}}, {{i}}
-    </ng-container>
-  </ng-container>
-  <br>
-  <button id="resetButton" color="primary" (click)="resetData()">Reset</button>
+  <p>
+  <button id="resetButton" color="primary" (click)="resetAction()">Reset</button>
+  </p>
 </div>

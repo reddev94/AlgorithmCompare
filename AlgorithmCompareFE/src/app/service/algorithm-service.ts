@@ -49,7 +49,7 @@ export class AlgorithmService {
   }
 
   public getExecutionData(idRequester: string, arrayId: number, maxMoveExecutionTime: number): Observable<AlgorithmExecutionData> {
-    console.log('Call to get execution data rest api');
+    console.log('Call to get execution data rest api for array ' + arrayId);
     return Observable.create((observer) => {
             var eventSource = new EventSourcePolyfill(this.GET_EXECUTION_DATA_URL+"?idRequester="+idRequester+"&maxMoveExecutionTime="+maxMoveExecutionTime, {headers: { 'Content-Type': 'text/event-stream'}});
     		    eventSource.onopen = (open) => {
