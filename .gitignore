@@ -75,6 +75,8 @@ hs_err_pid*
 */.idea/*
 */target/*
 target/*
+target
+*/target
 *.iml
 node_modules/
 .editorconfig
