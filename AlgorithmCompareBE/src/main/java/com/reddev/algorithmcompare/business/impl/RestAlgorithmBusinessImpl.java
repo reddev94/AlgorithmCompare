@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -86,14 +87,17 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
             response.setResultCode(AlgorithmCompareUtil.RESULT_CODE_KO_ARRAY_LENGTH_ERROR);
             response.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_ARRAY_LENGTH_ERROR);
         } else {
-            int[] array = new int[length];
-            Random rand = new Random();
-            for (int i = 0; i < length; i++) {
-                array[i] = rand.nextInt(AlgorithmCompareUtil.ARRAY_MAX_VALUE);
+            List<Integer> list = new ArrayList<Integer>();
+            Random rand = new Random(Double.doubleToLongBits(Math.random()));
+            while (list.size() < length) {
+                int number = rand.nextInt(AlgorithmCompareUtil.ARRAY_MAX_VALUE) + 1;
+                if (!list.contains(number)) {
+                    list.add(number);
+                }
             }
             response.setResultCode(AlgorithmCompareUtil.RESULT_CODE_OK);
             response.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
-            response.setArray(array);
+            response.setArray(list.stream().mapToInt(Integer::intValue).toArray());
         }
         return response;
     }
@@ -123,12 +127,12 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
                     .sort(Comparator.comparing(AlgorithmDocument::getMoveOrder))
                     .map(x -> {
                         logger.debug("execution data moveOrder = " + x.getMoveOrder());
-                        GetExecutionDataResponse response = new GetExecutionDataResponse(x.getArray(), x.getMoveExecutionTime(), AlgorithmCompareUtil.RESULT_CODE_PROCESSING, AlgorithmCompareUtil.RESULT_DESCRIPTION_PROCESSING);
+                        GetExecutionDataResponse response = new GetExecutionDataResponse(x.getArray(), x.getMoveExecutionTime(), x.getIndexOfSwappedElement(), AlgorithmCompareUtil.RESULT_CODE_PROCESSING, AlgorithmCompareUtil.RESULT_DESCRIPTION_PROCESSING);
                         logger.info("getExecutionData response = " + response.toString());
                         return response;
                     })
-                    .delayUntil(d -> Mono.delay(Duration.ofMillis((d.getMoveExecutionTime()*1000)/maxMoveExecutionTime)))
-                    .concatWithValues(new GetExecutionDataResponse(new int[]{}, 0, AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK))
+                    .concatWithValues(new GetExecutionDataResponse(new int[]{}, maxMoveExecutionTime, -1, AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK))
+                    .delayUntil(d -> Mono.delay(Duration.ofMillis((d.getMoveExecutionTime() * 1000) / maxMoveExecutionTime)))
                     .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
         } catch (Exception e) {
             logger.error("Exception during getExecutionData", e);

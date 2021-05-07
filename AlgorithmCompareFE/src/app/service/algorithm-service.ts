@@ -60,15 +60,15 @@ export class AlgorithmService {
     			    var message = {
     			      array: json['array'],
     			      moveExecutionTime: json['moveExecutionTime'],
+    			      indexOfSwappedElement: json['indexOfSwappedElement'],
     			      resultCode: json['resultCode'],
     			      resultDescription: json['resultDescription'],
     			      arrayIdentifier: arrayId
     			    }
-    			    if(message.resultCode!=0) {
-    			      observer.next(message);
-    			    } else {
+    			    observer.next(message);
+    			    if(message.resultCode==0) {
     			      observer.complete();
-    			      eventSource.close();
+                eventSource.close();
     			    }
     	      };
             eventSource.onerror = (error) => {

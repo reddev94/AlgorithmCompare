@@ -36,6 +36,7 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
                     temp = data.getArray()[j - 1];
                     data.getArray()[j - 1] = data.getArray()[j];
                     data.getArray()[j] = temp;
+                    data.setIndexOfSwappedElement(j);
                     saveOnDb(data);
                 }
             }

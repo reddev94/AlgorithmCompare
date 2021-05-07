@@ -1,14 +1,11 @@
 package com.reddev.algorithmcompare.business.core.impl;
 
-import com.reddev.algorithmcompare.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.business.core.Algorithm;
 import com.reddev.algorithmcompare.business.core.BaseAlgorithm;
 import com.reddev.algorithmcompare.model.AlgorithmEnum;
 import com.reddev.algorithmcompare.model.AlgorithmException;
 import com.reddev.algorithmcompare.model.BaseAlgorithmExecutionData;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 @Component
 public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
@@ -50,6 +47,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
                     int temp = data.getArray()[i];
                     data.getArray()[i] = data.getArray()[j];
                     data.getArray()[j] = temp;
+                    data.setIndexOfSwappedElement(j);
                     saveOnDb(data);
                 }
             }
@@ -59,6 +57,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
             int temp = data.getArray()[i + 1];
             data.getArray()[i + 1] = data.getArray()[high];
             data.getArray()[high] = temp;
+            data.setIndexOfSwappedElement(high);
             saveOnDb(data);
         }
         return i + 1;

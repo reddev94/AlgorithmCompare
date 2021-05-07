@@ -1,17 +1,11 @@
 package com.reddev.algorithmcompare.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Arrays;
 import java.util.Objects;
 
-//@Data
-//@AllArgsConstructor
-//@NoArgsConstructor
 @Document
 public class AlgorithmDocument {
 
@@ -21,6 +15,7 @@ public class AlgorithmDocument {
     private int[] array;
     private long moveOrder;
     private long moveExecutionTime;
+    private int indexOfSwappedElement;
 
     public String getId() {
         return id;
@@ -62,17 +57,25 @@ public class AlgorithmDocument {
         this.moveExecutionTime = moveExecutionTime;
     }
 
+    public int getIndexOfSwappedElement() {
+        return indexOfSwappedElement;
+    }
+
+    public void setIndexOfSwappedElement(int indexOfSwappedElement) {
+        this.indexOfSwappedElement = indexOfSwappedElement;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AlgorithmDocument that = (AlgorithmDocument) o;
-        return moveOrder == that.moveOrder && moveExecutionTime == that.moveExecutionTime && Objects.equals(id, that.id) && Objects.equals(idRequester, that.idRequester) && Arrays.equals(array, that.array);
+        return moveOrder == that.moveOrder && moveExecutionTime == that.moveExecutionTime && indexOfSwappedElement == that.indexOfSwappedElement && Objects.equals(id, that.id) && Objects.equals(idRequester, that.idRequester) && Arrays.equals(array, that.array);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, idRequester, moveOrder, moveExecutionTime);
+        int result = Objects.hash(id, idRequester, moveOrder, moveExecutionTime, indexOfSwappedElement);
         result = 31 * result + Arrays.hashCode(array);
         return result;
     }
@@ -84,6 +87,7 @@ public class AlgorithmDocument {
                 ", array=" + Arrays.toString(array) +
                 ", moveOrder=" + moveOrder +
                 ", moveExecutionTime=" + moveExecutionTime +
+                ", indexOfSwappedElement=" + indexOfSwappedElement +
                 '}';
     }
 }

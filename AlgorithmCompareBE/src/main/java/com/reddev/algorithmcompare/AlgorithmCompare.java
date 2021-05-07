@@ -22,7 +22,7 @@ public class AlgorithmCompare implements CommandLineRunner {
     @Override
     public void run(String... args) {
         logger.info("Insert document to initialize database");
-        algorithmCompareDAO.saveDocument(null, "-1", 0, 0).block();
+        algorithmCompareDAO.saveDocument(null, "-1", 0, 0, 0).block();
         algorithmCompareDAO.deleteDocument("-1").subscribe();
     }
 }

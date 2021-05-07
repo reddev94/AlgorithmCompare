@@ -4,18 +4,14 @@ import com.reddev.algorithmcompare.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.business.AlgorithmCompareDAO;
 import com.reddev.algorithmcompare.model.AlgorithmDocument;
 import com.reddev.algorithmcompare.repository.AlgorithmRepository;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-//@RequiredArgsConstructor
 public class AlgorithmCompareDAOImpl implements AlgorithmCompareDAO {
     protected Logger logger = LoggerFactory.getLogger(AlgorithmCompareDAOImpl.class);
 
@@ -23,13 +19,13 @@ public class AlgorithmCompareDAOImpl implements AlgorithmCompareDAO {
     private AlgorithmRepository algorithmRepository;
 
     @Override
-    //@Transactional(value = "reactiveTransactionManager", isolation = Isolation.REPEATABLE_READ)
-    public Mono<AlgorithmDocument> saveDocument(int[] array, String idRequester, long moveExecutionTime, long moveOrder) {
+    public Mono<AlgorithmDocument> saveDocument(int[] array, String idRequester, long moveExecutionTime, long moveOrder, int indexOfSwappedElement) {
         AlgorithmDocument request = new AlgorithmDocument();
         request.setArray(array);
         request.setIdRequester(idRequester);
         request.setMoveExecutionTime(moveExecutionTime);
         request.setMoveOrder(moveOrder);
+        request.setIndexOfSwappedElement(indexOfSwappedElement);
         logger.debug("saving AlgorithmDocument = " + request.toString());
         return algorithmRepository.save(request).publishOn(AlgorithmCompareUtil.SCHEDULER);
     }

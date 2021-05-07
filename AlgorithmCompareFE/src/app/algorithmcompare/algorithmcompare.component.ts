@@ -6,6 +6,7 @@ import { Subscriptions } from '../model/subscriptions';
 import { Observable, forkJoin, merge } from 'rxjs';
 import { AlgorithmExecutionData } from '../model/algorithm-data';
 import { ArrayCanvasData } from '../model/array-canvas-data';
+import { ExecutionData } from '../model/execution-data';
 
 @Component({
   selector: 'app-algorithmcompare',
@@ -21,8 +22,8 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   @ViewChild('array2Graph') array2Graph: ElementRef;
   array1GraphIsVisible: boolean;
   array2GraphIsVisible: boolean;
-  arrayGraphWidth = 1200;
-  arrayGraphHeight = 260;
+  arrayGraphWidth: number;
+  arrayGraphHeight: number;
 
 
   constructor(private algorithmService: AlgorithmService, private fb: FormBuilder) {
@@ -56,6 +57,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
         next: data => {
           console.log(data);
           this.utilData.array = data.array;
+          this.arrayGraphWidth = 40*data.array.length;
         },
         error: data => {
           console.log('Error during comunication');
@@ -99,12 +101,19 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
           console.log(data);
           var arrayIdentifier = data.arrayIdentifier;
           console.log('response data array'+arrayIdentifier);
-          if(arrayIdentifier == 1) {
-            this.utilData.firstArrayExecutionData = data.array;
-            this.drawArrayCanvas(1, false);
-          } else if (arrayIdentifier == 2) {
-            this.utilData.secondArrayExecutionData = data.array;
-            this.drawArrayCanvas(2, false);
+          if(data.resultCode!=0) {
+            let executionData = new ExecutionData();
+            executionData.array = data.array;
+            executionData.swappedElement = data.indexOfSwappedElement;
+            if(arrayIdentifier == 1) {
+              this.utilData.firstArrayExecutionData = executionData;
+              this.drawArrayCanvas(1, false);
+            } else if (arrayIdentifier == 2) {
+              this.utilData.secondArrayExecutionData = executionData;
+              this.drawArrayCanvas(2, false);
+            }
+          } else {
+            this.completeArrayCanvas(arrayIdentifier);
           }
         },
         error: data => {
@@ -179,7 +188,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     if(this.utilData) {
       algorithms = this.utilData.algorithms;
     }
-    this.utilData = new UtilData(false, false, false, false);
+    this.utilData = new UtilData(false, false, false, false, new ExecutionData(), new ExecutionData());
     this.utilData.algorithms = algorithms;
     this.algorithmForm = this.fb.group({
       algorithmType1: '',
@@ -189,6 +198,8 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     this.subscriptions = new Subscriptions();
     this.array1GraphIsVisible = false;
     this.array2GraphIsVisible = false;
+    this.arrayGraphWidth = 1;
+    this.arrayGraphHeight = 270;
   }
 
   private closeAllConnection(): void {
@@ -231,45 +242,75 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     this.arrayCanvasData.array2ContextCanvas.clearRect(0, 0, this.arrayCanvasData.xCanvas, this.arrayCanvasData.yCanvas);
   }
 
+  completeArrayCanvas(arrayIdentifier: number): void {
+    let executionData = new ExecutionData();
+    executionData.swappedElement = -1;
+    if(arrayIdentifier == 1) {
+      executionData.array = this.utilData.firstArrayExecutionData.array;
+      this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, executionData);
+      this.addCompletedTitle(this.arrayCanvasData.array1ContextCanvas, 'COMPLETED');
+    } else if(arrayIdentifier == 2) {
+      executionData.array = this.utilData.secondArrayExecutionData.array;
+      this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, executionData);
+      this.addCompletedTitle(this.arrayCanvasData.array2ContextCanvas, 'COMPLETED');
+    }
+  }
+
+  addCompletedTitle(context, title): void {
+    context.font = '18px sans-serif';
+    context.fillStyle = 'yellow';
+    context.fillText(title, this.arrayGraphWidth/2-70, this.arrayGraphHeight/2-100);
+  }
+
   drawArrayCanvas(arrayIdentifier: number, firstDraw: boolean): void {
     if(arrayIdentifier == 1) {
       this.arrayCanvasData.array1ContextCanvas.fillStyle='#262a33';
       this.arrayCanvasData.array1ContextCanvas.fillRect(0, 0, this.arrayGraphWidth, this.arrayGraphHeight);
       if(firstDraw) {
-        this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, this.utilData.array);
+        let executionData = new ExecutionData();
+        executionData.array = this.utilData.array;
+        executionData.swappedElement = -2;
+        this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, executionData);
       } else {
         this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, this.utilData.firstArrayExecutionData);
       }
-      this.addTitleToChart(this.arrayCanvasData.array1ContextCanvas, 'Array 1');
+      this.addTitleToChart(this.arrayCanvasData.array1ContextCanvas, 'Sorting with ' + this.algorithmForm.controls['algorithmType1'].value);
     } else if(arrayIdentifier == 2) {
       this.arrayCanvasData.array2ContextCanvas.fillStyle='#262a33';
       this.arrayCanvasData.array2ContextCanvas.fillRect(0, 0, this.arrayGraphWidth, this.arrayGraphHeight);
       if(firstDraw) {
-        this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, this.utilData.array);
+        let executionData = new ExecutionData();
+        executionData.array = this.utilData.array;
+        executionData.swappedElement = -2;
+        this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, executionData);
       } else {
         this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, this.utilData.secondArrayExecutionData);
       }
-      this.addTitleToChart(this.arrayCanvasData.array2ContextCanvas, 'Array 2');
+      this.addTitleToChart(this.arrayCanvasData.array2ContextCanvas, 'Sorting with ' + this.algorithmForm.controls['algorithmType2'].value);
     }
   }
 
   addTitleToChart(context, title){
     context.font = '16px sans-serif';
     context.fillStyle = 'white';
-    context.fillText(title, this.arrayGraphWidth/2-30, 15);
+    context.fillText(title, this.arrayGraphWidth/2-105, 15);
   }
 
-  addColumnName(context,name,xpos,ypos){
+  addColumnName(context, name, xpos, ypos){
     context.font = '12px sans-serif';
     context.fillStyle = 'white';
     context.fillText(name, xpos, ypos);
   }
 
-  drawBarChart(context, array){
-    for(let element=0; element<array.length; element++) {
-      context.fillStyle = "#36b5d8";
-      context.fillRect(5 + element*40, this.arrayGraphHeight-array[element]*2-20, 30, array[element]*2);
-      this.addColumnName(context, array[element], 13 + element*40, this.arrayGraphHeight-5);
+  drawBarChart(context, executionData){
+    for(let element=0; element<executionData.array.length; element++) {
+      if(executionData.swappedElement == element || executionData.swappedElement == -1) {
+        context.fillStyle = "#FF0000";
+      } else {
+        context.fillStyle = "#36b5d8";
+      }
+      context.fillRect(5 + element*40, this.arrayGraphHeight-executionData.array[element]*2-20, 30, executionData.array[element]*2);
+      this.addColumnName(context, executionData.array[element], 13 + element*40, this.arrayGraphHeight-5);
     }
   }
 

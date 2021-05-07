@@ -6,6 +6,7 @@ public class BaseAlgorithmExecutionData {
     private long moveOrder;
     private long initialTime;
     private long maxExecutionTime;
+    private int indexOfSwappedElement;
 
     public BaseAlgorithmExecutionData() {
 
@@ -54,5 +55,13 @@ public class BaseAlgorithmExecutionData {
 
     public void setMaxExecutionTime(long maxExecutionTime) {
         this.maxExecutionTime = maxExecutionTime;
+    }
+
+    public int getIndexOfSwappedElement() {
+        return indexOfSwappedElement;
+    }
+
+    public void setIndexOfSwappedElement(int indexOfSwappedElement) {
+        this.indexOfSwappedElement = indexOfSwappedElement;
     }
 }
