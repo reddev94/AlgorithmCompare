@@ -24,4 +24,12 @@
         <maven.compiler.target>16</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.pf4j</groupId>
+            <artifactId>pf4j</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+    </dependencies>
+
 </project>
