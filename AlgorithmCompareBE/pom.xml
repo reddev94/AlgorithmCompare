@@ -7,6 +7,8 @@
     <modules>
         <module>Plugins</module>
         <module>Core</module>
+        <module>Commons</module>
+        <module>Dao</module>
     </modules>
 
     <parent>
