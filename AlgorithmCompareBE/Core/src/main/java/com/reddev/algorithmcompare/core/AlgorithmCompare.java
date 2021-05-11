@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 
-@SpringBootApplication(scanBasePackages= {
+@SpringBootApplication(scanBasePackages = {
         "com.reddev.algorithmcompare.core",
         "com.reddev.algorithmcompare.commons",
         "com.reddev.algorithmcompare.dao"})
@@ -38,8 +38,6 @@ public class AlgorithmCompare implements CommandLineRunner {
         //start plugin
         List<Algorithm> plugins = springPluginManager.getExtensions(Algorithm.class);
         logger.info(String.format("Found %d extensions for extension point '%s'", plugins.size(), Algorithm.class.getName()));
-        for (Algorithm alg : plugins) {
-            logger.info(">>> " + alg.getName());
-        }
+        plugins.forEach(el -> logger.info(">>> " + el.getName()));
     }
 }

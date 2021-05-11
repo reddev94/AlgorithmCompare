@@ -14,6 +14,7 @@ public class TestUtil {
     public static final String PATH_DELETE_ALGORITHM_DATA = "/reactive/deleteExecuteAlgorithmData";
     public static final String PARAM_LENGTH = "length";
     public static final String PARAM_ID_REQUESTER = "idRequester";
+    public static final String PARAM_MAX_MOVE_EXECUTION_TIME = "maxMoveExecutionTime";
 
     public static ExecuteAlgorithmRequest forgeExecuteAlgorithmRequest(AlgorithmEnum algorithmEnum, int[] array) throws JsonProcessingException {
         ExecuteAlgorithmRequest requestObj = new ExecuteAlgorithmRequest();

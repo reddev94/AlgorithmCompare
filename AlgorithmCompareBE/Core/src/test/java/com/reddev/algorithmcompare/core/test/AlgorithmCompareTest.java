@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 
 @Profile("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@AutoConfigureWebTestClient
+@AutoConfigureWebTestClient(timeout = "30000")
 @AutoConfigureDataMongo
 public class AlgorithmCompareTest {
 }

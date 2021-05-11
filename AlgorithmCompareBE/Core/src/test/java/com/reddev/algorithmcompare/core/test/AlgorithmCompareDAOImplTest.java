@@ -1,8 +1,8 @@
-package com.reddev.algorithmcompare.dao.impl;
+package com.reddev.algorithmcompare.core.test;
 
 import com.reddev.algorithmcompare.commons.AlgorithmCompareUtil;
-import com.reddev.algorithmcompare.dao.model.AlgorithmDocument;
 import com.reddev.algorithmcompare.dao.AlgorithmCompareDAO;
+import com.reddev.algorithmcompare.dao.model.AlgorithmDocument;
 import com.reddev.algorithmcompare.dao.repository.AlgorithmRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Profile("prod")
+@Profile("test")
 @Service
-public class AlgorithmCompareDAOImpl implements AlgorithmCompareDAO {
-    protected Logger logger = LoggerFactory.getLogger(AlgorithmCompareDAOImpl.class);
+public class AlgorithmCompareDAOImplTest implements AlgorithmCompareDAO {
+    protected Logger logger = LoggerFactory.getLogger(AlgorithmCompareDAOImplTest.class);
 
     @Autowired
     private AlgorithmRepository algorithmRepository;
@@ -50,4 +50,15 @@ public class AlgorithmCompareDAOImpl implements AlgorithmCompareDAO {
         return algorithmRepository.findAll().publishOn(AlgorithmCompareUtil.SCHEDULER);
     }
 
+    public Mono<AlgorithmDocument> saveDocumentTest(String id, int[] array, String idRequester, long moveExecutionTime, long moveOrder, int indexOfSwappedElement) {
+        AlgorithmDocument request = new AlgorithmDocument();
+        request.setId(id);
+        request.setArray(array);
+        request.setIdRequester(idRequester);
+        request.setMoveExecutionTime(moveExecutionTime);
+        request.setMoveOrder(moveOrder);
+        request.setIndexOfSwappedElement(indexOfSwappedElement);
+        logger.debug("saving AlgorithmDocument = " + request.toString());
+        return algorithmRepository.save(request).publishOn(AlgorithmCompareUtil.SCHEDULER);
+    }
 }

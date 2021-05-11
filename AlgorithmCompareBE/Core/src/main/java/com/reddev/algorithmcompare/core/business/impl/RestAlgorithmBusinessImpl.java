@@ -127,11 +127,15 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
                     .map(x -> {
                         logger.debug("execution data moveOrder = " + x.getMoveOrder());
                         GetExecutionDataResponse response = new GetExecutionDataResponse(x.getArray(), x.getMoveExecutionTime(), x.getIndexOfSwappedElement(), AlgorithmCompareUtil.RESULT_CODE_PROCESSING, AlgorithmCompareUtil.RESULT_DESCRIPTION_PROCESSING);
-                        logger.info("getExecutionData response = " + response.toString());
+                        logger.debug("requester: " + idRequester + " getExecutionData response = " + response.toString());
                         return response;
                     })
                     .concatWithValues(new GetExecutionDataResponse(new int[]{}, maxMoveExecutionTime, -1, AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_OK))
-                    .delayUntil(d -> Mono.delay(Duration.ofMillis((d.getMoveExecutionTime() * 1000) / maxMoveExecutionTime)))
+                    .delayUntil(data -> {
+                        long delay = (data.getMoveExecutionTime() * 1000) / maxMoveExecutionTime;
+                        logger.info("emitting data for requester " + idRequester + ", with delay of " + delay + ", getExecutionData response = " + data.toString());
+                        return Mono.delay(Duration.ofMillis(delay));
+                    })
                     .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
         } catch (Exception e) {
             logger.error("Exception during getExecutionData", e);
