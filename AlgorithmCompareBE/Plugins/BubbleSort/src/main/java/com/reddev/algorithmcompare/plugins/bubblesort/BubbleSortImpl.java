@@ -11,7 +11,7 @@ import org.pf4j.Extension;
 public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
     @Override
     public String getName() {
-        return AlgorithmEnum.BUBBLE_SORT.toString();
+        return AlgorithmEnum.BUBBLE_SORT.getValue();
     }
 
     @Override

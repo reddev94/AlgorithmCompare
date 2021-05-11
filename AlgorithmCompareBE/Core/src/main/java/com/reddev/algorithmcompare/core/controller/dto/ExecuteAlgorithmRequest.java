@@ -8,14 +8,14 @@ import java.util.Objects;
 
 public class ExecuteAlgorithmRequest implements Serializable {
 
-    private AlgorithmEnum algorithm;
+    private String algorithm;
     private int[] array;
 
-    public AlgorithmEnum getAlgorithm() {
+    public String getAlgorithm() {
         return algorithm;
     }
 
-    public void setAlgorithm(AlgorithmEnum algorithm) {
+    public void setAlgorithm(String algorithm) {
         this.algorithm = algorithm;
     }
 

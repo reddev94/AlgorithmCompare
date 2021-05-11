@@ -1,6 +1,7 @@
 package com.reddev.algorithmcompare.core.controller.impl;
 
 import com.reddev.algorithmcompare.commons.AlgorithmCompareUtil;
+import com.reddev.algorithmcompare.commons.model.AlgorithmEnum;
 import com.reddev.algorithmcompare.core.business.RestAlgorithmBusiness;
 import com.reddev.algorithmcompare.core.controller.RestAlgorithmControllerReactive;
 import com.reddev.algorithmcompare.core.controller.dto.DeleteExecuteAlgorithmDataResponse;
@@ -27,7 +28,7 @@ public class RestAlgorithmControllerReactiveImpl implements RestAlgorithmControl
     public Mono<ExecuteAlgorithmResponse> executeAlgorithm(@RequestBody ExecuteAlgorithmRequest request) {
         logger.debug("- - - Entering RestAlgorithmControllerReactiveImpl.executeAlgorithm() - - -");
         logger.info("executeAlgorithm request = " + request.toString());
-        return restAlgorithmBusiness.executeAlgorithm(request.getAlgorithm(), request.getArray())
+        return restAlgorithmBusiness.executeAlgorithm(AlgorithmEnum.get(request.getAlgorithm()), request.getArray())
                 .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
     }
 

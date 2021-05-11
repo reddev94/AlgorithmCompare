@@ -11,7 +11,7 @@ import org.pf4j.Extension;
 public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
     @Override
     public String getName() {
-        return AlgorithmEnum.QUICK_SORT.toString();
+        return AlgorithmEnum.QUICK_SORT.getValue();
     }
 
     @Override

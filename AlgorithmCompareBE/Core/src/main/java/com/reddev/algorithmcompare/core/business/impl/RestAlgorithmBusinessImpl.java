@@ -44,7 +44,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
             return Mono.just(
                     algorithms
                             .stream()
-                            .filter(impl -> impl.getName().equals(algorithm.toString()))
+                            .filter(impl -> impl.getName().equals(algorithm.getValue()))
                             .map(element -> {
                                 try {
                                     String idRequester = String.valueOf(AlgorithmCompareUtil.getTimestamp());
@@ -106,7 +106,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
         GetAlgorithmResponse response = new GetAlgorithmResponse();
         try {
             List<String> availableAlgorithms = Stream.of(AlgorithmEnum.values())
-                    .map(Enum::name)
+                    .map(AlgorithmEnum::getValue)
                     .collect(Collectors.toList());
             response.setResultCode(AlgorithmCompareUtil.RESULT_CODE_OK);
             response.setResultDescription(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
