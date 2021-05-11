@@ -1,7 +1,6 @@
 package com.reddev.algorithmcompare.core.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import com.reddev.algorithmcompare.commons.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.core.controller.dto.*;
 import com.reddev.algorithmcompare.commons.model.AlgorithmEnum;
@@ -12,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @Profile("test")
@@ -19,8 +19,11 @@ public class RestControllerTest extends AlgorithmCompareTest {
     @Autowired
     private WebTestClient webTestClient;
 
+    @Autowired
+    private AlgorithmCompareDAOImplTest algorithmCompareDAO;
+
     @Test
-    public void testExecuteAlgorithmBubbleSort() throws Exception {
+    public void testExecuteAllAlgorithms() throws Exception {
         Random rand = new Random();
         //populate combobox of available algorithms
         GetAlgorithmResponse getAlgorithmResponse = webTestClient.get()
@@ -60,7 +63,7 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .uri(TestUtil.PATH_EXECUTE_ALGORITHM)
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequest(AlgorithmEnum.valueOf(algorithm), generateArrayResponse.getArray())), ExecuteAlgorithmRequest.class)
+                    .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequest(AlgorithmEnum.get(algorithm), generateArrayResponse.getArray())), ExecuteAlgorithmRequest.class)
                     .exchange()
                     .expectStatus().isOk()
                     .expectBody(ExecuteAlgorithmResponse.class)
@@ -72,14 +75,18 @@ public class RestControllerTest extends AlgorithmCompareTest {
             assertThat(executeAlgorithmResponse.getIdRequester()).isNotEmpty();
             assertThat(executeAlgorithmResponse.getMaxExecutionTime()).isGreaterThan(0L);
             String idRequester = executeAlgorithmResponse.getIdRequester();
-            long maxExecutionTime = executeAlgorithmResponse.getMaxExecutionTime();
-            //FE mapping new move execution time
+            //make getExecutionData delay fast for test
+            long maxExecutionTime = 1000;
+            Objects.requireNonNull(algorithmCompareDAO.findDocument(idRequester).collectList().block()).forEach(x -> {
+                algorithmCompareDAO.saveDocumentTest(x.getId(), x.getArray(), x.getIdRequester(), 1, x.getMoveOrder(), x.getIndexOfSwappedElement()).block();
+            });
             //get algorithm execution generated data, to display onscreen
             List<GetExecutionDataResponse> getExecutionDataResponse = webTestClient.get()
                     .uri(uriBuilder ->
                             uriBuilder
                                     .path(TestUtil.PATH_GET_EXECUTION_DATA)
                                     .queryParam(TestUtil.PARAM_ID_REQUESTER, idRequester)
+                                    .queryParam(TestUtil.PARAM_MAX_MOVE_EXECUTION_TIME, maxExecutionTime)
                                     .build())
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()
@@ -89,9 +96,9 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .getResponseBody();
             assertThat(getExecutionDataResponse).isNotNull();
             for (GetExecutionDataResponse data : getExecutionDataResponse) {
-                assertThat(data.getResultCode()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_OK);
-                assertThat(data.getResultDescription()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
-                assertThat(data.getArray()).hasSize(length);
+                assertThat(data.getResultCode()).isIn(AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_CODE_PROCESSING);
+                assertThat(data.getResultDescription()).isIn(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_PROCESSING);
+                assertThat(data.getArray()).hasSizeBetween(0, length);
             }
             //delete all data of idRequester before close the app
             DeleteExecuteAlgorithmDataResponse deleteExecuteAlgorithmDataResponse = webTestClient.delete()
