@@ -1,13 +1,13 @@
 package com.reddev.algorithmcompare.core.business.impl;
 
-import com.reddev.algorithmcompare.core.AlgorithmCompareUtil;
-import com.reddev.algorithmcompare.core.business.AlgorithmCompareDAO;
+import com.reddev.algorithmcompare.commons.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.core.business.RestAlgorithmBusiness;
-import com.reddev.algorithmcompare.core.business.core.Algorithm;
 import com.reddev.algorithmcompare.core.controller.dto.*;
-import com.reddev.algorithmcompare.core.model.AlgorithmDocument;
-import com.reddev.algorithmcompare.core.model.AlgorithmEnum;
-import com.reddev.algorithmcompare.core.model.AlgorithmException;
+import com.reddev.algorithmcompare.commons.model.AlgorithmEnum;
+import com.reddev.algorithmcompare.commons.model.AlgorithmException;
+import com.reddev.algorithmcompare.dao.AlgorithmCompareDAO;
+import com.reddev.algorithmcompare.dao.model.AlgorithmDocument;
+import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

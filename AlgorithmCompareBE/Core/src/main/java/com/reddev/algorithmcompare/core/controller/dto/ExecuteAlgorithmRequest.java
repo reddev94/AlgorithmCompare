@@ -1,6 +1,6 @@
 package com.reddev.algorithmcompare.core.controller.dto;
 
-import com.reddev.algorithmcompare.core.model.AlgorithmEnum;
+import com.reddev.algorithmcompare.commons.model.AlgorithmEnum;
 
 import java.io.Serializable;
 import java.util.Arrays;

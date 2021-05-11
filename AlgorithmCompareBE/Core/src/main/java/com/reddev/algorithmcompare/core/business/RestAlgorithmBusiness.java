@@ -1,7 +1,7 @@
 package com.reddev.algorithmcompare.core.business;
 
 import com.reddev.algorithmcompare.core.controller.dto.*;
-import com.reddev.algorithmcompare.core.model.AlgorithmEnum;
+import com.reddev.algorithmcompare.commons.model.AlgorithmEnum;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

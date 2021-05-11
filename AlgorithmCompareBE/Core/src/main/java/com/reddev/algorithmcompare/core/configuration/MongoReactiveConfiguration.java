@@ -9,7 +9,7 @@ import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 
 @Configuration
-@EnableReactiveMongoRepositories(basePackages = "com.reddev.algorithmcompare.core.repository")
+@EnableReactiveMongoRepositories(basePackages = "com.reddev.algorithmcompare.dao.repository")
 public class MongoReactiveConfiguration extends AbstractReactiveMongoConfiguration {
     @Value("${database.url}")
     private String databaseUrl;

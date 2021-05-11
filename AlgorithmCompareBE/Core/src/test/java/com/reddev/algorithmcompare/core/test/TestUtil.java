@@ -2,7 +2,7 @@ package com.reddev.algorithmcompare.core.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.reddev.algorithmcompare.core.controller.dto.ExecuteAlgorithmRequest;
-import com.reddev.algorithmcompare.core.model.AlgorithmEnum;
+import com.reddev.algorithmcompare.commons.model.AlgorithmEnum;
 import org.springframework.context.annotation.Profile;
 
 @Profile("test")

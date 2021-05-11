@@ -1,6 +1,6 @@
 package com.reddev.algorithmcompare.core.controller.impl;
 
-import com.reddev.algorithmcompare.core.AlgorithmCompareUtil;
+import com.reddev.algorithmcompare.commons.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.core.business.RestAlgorithmBusiness;
 import com.reddev.algorithmcompare.core.controller.RestAlgorithmControllerReactive;
 import com.reddev.algorithmcompare.core.controller.dto.DeleteExecuteAlgorithmDataResponse;
