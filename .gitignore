@@ -97,5 +97,7 @@ public/
 
 # exclude everything
 plugins-zipped/*.zip
+plugins-zipped/**
+plugins-zipped/
 # exception to the rule
 !plugins-zipped/.gitkeep
