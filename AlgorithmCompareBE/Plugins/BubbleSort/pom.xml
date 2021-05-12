@@ -62,6 +62,7 @@
                         </descriptor>
                     </descriptors>
                     <appendAssemblyId>false</appendAssemblyId>
+                    <outputDirectory>../../../plugins-zipped</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
