@@ -71,6 +71,12 @@ Thumbs.db
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+dist
+dist/
+dist/*
+*/dist
+*/dist/**
+*/dist/*
 .idea/*
 */.idea/*
 */target/*
@@ -83,3 +89,8 @@ target/
 node_modules/
 .editorconfig
 .browserslistrc
+
+# exclude everything
+public/
+# exception to the rule
+!public/.gitkeep 
