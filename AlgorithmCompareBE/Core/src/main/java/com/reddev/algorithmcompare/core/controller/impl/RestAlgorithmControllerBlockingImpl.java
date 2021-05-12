@@ -6,6 +6,7 @@ import com.reddev.algorithmcompare.core.controller.dto.GenerateArrayResponse;
 import com.reddev.algorithmcompare.core.controller.dto.GetAlgorithmResponse;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class RestAlgorithmControllerBlockingImpl implements RestAlgorithmControl
 
     @Override
     @GetMapping(value = "/getAlgorithms", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Cacheable(value="getAlgorithms")
     public GetAlgorithmResponse getAvailableAlgorithms() {
         logger.debug("- - - Entering RestAlgorithmControllerImpl.getAvailableAlgorithms() - - -");
         GetAlgorithmResponse response = restAlgorithmBusiness.getAvailableAlgorithms();

@@ -11,6 +11,7 @@ import com.reddev.algorithmcompare.core.controller.dto.GetExecutionDataResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,6 +26,7 @@ public class RestAlgorithmControllerReactiveImpl implements RestAlgorithmControl
 
     @Override
     @PostMapping(value = "/executeAlgorithm")
+    @Cacheable(value="executeAlgorithm", key="#request.algorithm+#request.array")
     public Mono<ExecuteAlgorithmResponse> executeAlgorithm(@RequestBody ExecuteAlgorithmRequest request) {
         logger.debug("- - - Entering RestAlgorithmControllerReactiveImpl.executeAlgorithm() - - -");
         logger.info("executeAlgorithm request = " + request.toString());
