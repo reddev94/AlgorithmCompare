@@ -50,4 +50,10 @@ public class AlgorithmCompareDAOImpl implements AlgorithmCompareDAO {
         return algorithmRepository.findAll().publishOn(AlgorithmCompareUtil.SCHEDULER);
     }
 
+    @Override
+    public Flux<AlgorithmDocument> deleteOldData(long idRequester) {
+        logger.debug("deleting old db data");
+        return algorithmRepository.deleteWhereIdRequesterLtThanMaxOldTime(idRequester).publishOn(AlgorithmCompareUtil.SCHEDULER);
+    }
+
 }

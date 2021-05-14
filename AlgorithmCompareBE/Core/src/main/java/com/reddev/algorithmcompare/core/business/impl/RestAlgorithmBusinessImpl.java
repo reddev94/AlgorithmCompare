@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 @Service
 public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
-    Logger logger = LoggerFactory.getLogger(RestAlgorithmBusinessImpl.class);
+    private Logger logger = LoggerFactory.getLogger(RestAlgorithmBusinessImpl.class);
 
     @Autowired
     private List<Algorithm> algorithms;

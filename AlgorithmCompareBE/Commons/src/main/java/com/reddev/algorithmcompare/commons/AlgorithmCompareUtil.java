@@ -29,6 +29,10 @@ public class AlgorithmCompareUtil {
         return Instant.now().toEpochMilli();
     }
 
+    public static long getTimestampMinusSeconds(long seconds) {
+        return Instant.now().minusSeconds(seconds).toEpochMilli();
+    }
+
     public static <T> Collector<T, ?, T> getCorrectAlgorithm() {
         return Collectors.collectingAndThen(
                 Collectors.toList(),

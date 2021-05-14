@@ -50,6 +50,12 @@ public class AlgorithmCompareDAOImplTest implements AlgorithmCompareDAO {
         return algorithmRepository.findAll().publishOn(AlgorithmCompareUtil.SCHEDULER);
     }
 
+    @Override
+    public Flux<AlgorithmDocument> deleteOldData(long idRequester) {
+        logger.debug("deleting old db data");
+        return algorithmRepository.deleteWhereIdRequesterLtThanMaxOldTime(idRequester).publishOn(AlgorithmCompareUtil.SCHEDULER);
+    }
+
     public Mono<AlgorithmDocument> saveDocumentTest(String id, int[] array, String idRequester, long moveExecutionTime, long moveOrder, int indexOfSwappedElement) {
         AlgorithmDocument request = new AlgorithmDocument();
         request.setId(id);

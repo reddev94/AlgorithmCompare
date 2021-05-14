@@ -9,4 +9,5 @@ public interface AlgorithmCompareDAO {
     public Flux<AlgorithmDocument> deleteDocument(String idRequester);
     public Flux<AlgorithmDocument> findDocument(String idRequester);
     public Flux<AlgorithmDocument> findAll();
+    public Flux<AlgorithmDocument> deleteOldData(long idRequester);
 }
