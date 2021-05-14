@@ -1,0 +1,26 @@
+<?xml version = "1.0" encoding="UTF-8"?>
+<config
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xsi:schemaLocation="
+            http://www.ehcache.org/v3
+            http://www.ehcache.org/schema/ehcache-core-3.7.xsd">
+
+    <cache alias="executeAlgorithm">
+        <expiry>
+            <ttl unit="seconds">30</ttl>
+        </expiry>
+        <resources>
+            <heap>100</heap>
+        </resources>
+    </cache>
+
+    <cache alias="getAlgorithms">
+        <expiry>
+            <none/>
+        </expiry>
+        <resources>
+            <heap>1</heap>
+        </resources>
+    </cache>
+</config>

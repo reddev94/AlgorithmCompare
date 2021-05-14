@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 
 import java.util.List;
 
@@ -18,7 +17,6 @@ import java.util.List;
         "com.reddev.algorithmcompare.core",
         "com.reddev.algorithmcompare.commons",
         "com.reddev.algorithmcompare.dao"})
-@EnableCaching
 public class AlgorithmCompare implements CommandLineRunner {
     protected Logger logger = LoggerFactory.getLogger(AlgorithmCompare.class);
 
