@@ -34,7 +34,7 @@ public class BaseAlgorithm {
         data.setInitialTime(actualTime);
     }
 
-    private int saveRecord(String idRequester, int[] array, long moveOrder, long moveExecutionTime, int indexOfSwappedElement) {
+    private int saveRecord(long idRequester, int[] array, long moveOrder, long moveExecutionTime, int indexOfSwappedElement) {
         try {
             algorithmCompareDAO.saveDocument(array, idRequester, moveExecutionTime, moveOrder, indexOfSwappedElement).subscribe();
             return AlgorithmCompareUtil.RESULT_CODE_OK;

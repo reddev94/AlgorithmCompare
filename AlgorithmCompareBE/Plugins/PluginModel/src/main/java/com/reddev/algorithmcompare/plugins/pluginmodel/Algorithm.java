@@ -5,5 +5,5 @@ import org.pf4j.ExtensionPoint;
 
 public interface Algorithm extends ExtensionPoint {
     public String getName();
-    public long execute(int[] input, String idRequester) throws AlgorithmException;
+    public long execute(int[] input, long idRequester) throws AlgorithmException;
 }

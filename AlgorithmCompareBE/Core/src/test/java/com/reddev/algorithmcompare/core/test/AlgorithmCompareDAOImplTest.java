@@ -21,7 +21,7 @@ public class AlgorithmCompareDAOImplTest implements AlgorithmCompareDAO {
     private AlgorithmRepository algorithmRepository;
 
     @Override
-    public Mono<AlgorithmDocument> saveDocument(int[] array, String idRequester, long moveExecutionTime, long moveOrder, int indexOfSwappedElement) {
+    public Mono<AlgorithmDocument> saveDocument(int[] array, long idRequester, long moveExecutionTime, long moveOrder, int indexOfSwappedElement) {
         AlgorithmDocument request = new AlgorithmDocument();
         request.setArray(array);
         request.setIdRequester(idRequester);
@@ -33,13 +33,13 @@ public class AlgorithmCompareDAOImplTest implements AlgorithmCompareDAO {
     }
 
     @Override
-    public Flux<AlgorithmDocument> deleteDocument(String idRequester) {
+    public Flux<AlgorithmDocument> deleteDocument(long idRequester) {
         logger.debug("deleting AlgorithmDocument with idRequester = " + idRequester);
         return algorithmRepository.deleteByIdRequester(idRequester).publishOn(AlgorithmCompareUtil.SCHEDULER);
     }
 
     @Override
-    public Flux<AlgorithmDocument> findDocument(String idRequester) {
+    public Flux<AlgorithmDocument> findDocument(long idRequester) {
         logger.debug("finding AlgorithmDocument with idRequester = " + idRequester);
         return algorithmRepository.findByIdRequester(idRequester).publishOn(AlgorithmCompareUtil.SCHEDULER);
     }
@@ -56,7 +56,7 @@ public class AlgorithmCompareDAOImplTest implements AlgorithmCompareDAO {
         return algorithmRepository.deleteWhereIdRequesterLtThanMaxOldTime(idRequester).publishOn(AlgorithmCompareUtil.SCHEDULER);
     }
 
-    public Mono<AlgorithmDocument> saveDocumentTest(String id, int[] array, String idRequester, long moveExecutionTime, long moveOrder, int indexOfSwappedElement) {
+    public Mono<AlgorithmDocument> saveDocumentTest(String id, int[] array, long idRequester, long moveExecutionTime, long moveOrder, int indexOfSwappedElement) {
         AlgorithmDocument request = new AlgorithmDocument();
         request.setId(id);
         request.setArray(array);

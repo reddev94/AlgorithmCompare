@@ -3,14 +3,14 @@ package com.reddev.algorithmcompare.core.controller.dto;
 import java.util.Objects;
 
 public class ExecuteAlgorithmResponse extends BaseAlgorithmRestResponse {
-    private String idRequester;
+    private long idRequester;
     private long maxExecutionTime;
 
-    public String getIdRequester() {
+    public long getIdRequester() {
         return idRequester;
     }
 
-    public void setIdRequester(String idRequester) {
+    public void setIdRequester(long idRequester) {
         this.idRequester = idRequester;
     }
 

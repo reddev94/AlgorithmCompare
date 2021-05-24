@@ -33,8 +33,8 @@ public class AlgorithmCompare implements CommandLineRunner {
     @Override
     public void run(String... args) {
         logger.info("Insert document to initialize database");
-        algorithmCompareDAO.saveDocument(null, "-1", 0, 0, 0).block();
-        algorithmCompareDAO.deleteDocument("-1").subscribe();
+        algorithmCompareDAO.saveDocument(null, -1, 0, 0, 0).block();
+        algorithmCompareDAO.deleteDocument(-1).subscribe();
         //start plugin
         List<Algorithm> plugins = springPluginManager.getExtensions(Algorithm.class);
         logger.info(String.format("Found %d extensions for extension point '%s'", plugins.size(), Algorithm.class.getName()));

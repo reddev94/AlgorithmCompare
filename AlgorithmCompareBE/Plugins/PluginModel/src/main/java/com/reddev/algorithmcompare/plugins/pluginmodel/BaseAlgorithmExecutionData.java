@@ -2,7 +2,7 @@ package com.reddev.algorithmcompare.plugins.pluginmodel;
 
 public class BaseAlgorithmExecutionData {
     private int[] array;
-    private String idRequester;
+    private long idRequester;
     private long moveOrder;
     private long initialTime;
     private long maxExecutionTime;
@@ -12,7 +12,7 @@ public class BaseAlgorithmExecutionData {
 
     }
 
-    public BaseAlgorithmExecutionData(int[] array, String idRequester) {
+    public BaseAlgorithmExecutionData(int[] array, long idRequester) {
         this.array = array;
         this.idRequester = idRequester;
     }
@@ -25,11 +25,11 @@ public class BaseAlgorithmExecutionData {
         this.array = array;
     }
 
-    public String getIdRequester() {
+    public long getIdRequester() {
         return idRequester;
     }
 
-    public void setIdRequester(String idRequester) {
+    public void setIdRequester(long idRequester) {
         this.idRequester = idRequester;
     }
 

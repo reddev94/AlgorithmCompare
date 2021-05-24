@@ -8,7 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface RestAlgorithmControllerReactive {
-    public Flux<GetExecutionDataResponse> getExecutionData(String idRequester, long maxMoveExecutionTime);
+    public Flux<GetExecutionDataResponse> getExecutionData(long idRequester, long maxMoveExecutionTime);
     public Mono<ExecuteAlgorithmResponse> executeAlgorithm(ExecuteAlgorithmRequest request);
-    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(String idRequester);
+    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(long idRequester);
 }

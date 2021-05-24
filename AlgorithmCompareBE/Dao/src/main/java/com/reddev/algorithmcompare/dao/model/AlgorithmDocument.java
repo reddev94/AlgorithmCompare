@@ -11,7 +11,7 @@ public class AlgorithmDocument {
 
     @Id
     private String id;
-    private String idRequester;
+    private long idRequester;
     private int[] array;
     private long moveOrder;
     private long moveExecutionTime;
@@ -25,11 +25,11 @@ public class AlgorithmDocument {
         this.id = id;
     }
 
-    public String getIdRequester() {
+    public long getIdRequester() {
         return idRequester;
     }
 
-    public void setIdRequester(String idRequester) {
+    public void setIdRequester(long idRequester) {
         this.idRequester = idRequester;
     }
 

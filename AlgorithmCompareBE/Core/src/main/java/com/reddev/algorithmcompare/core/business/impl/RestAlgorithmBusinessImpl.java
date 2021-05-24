@@ -47,7 +47,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
                             .filter(impl -> impl.getName().equals(algorithm.getValue()))
                             .map(element -> {
                                 try {
-                                    String idRequester = String.valueOf(AlgorithmCompareUtil.getTimestamp());
+                                    long idRequester = AlgorithmCompareUtil.getTimestamp();
                                     logger.info("idRequester created = " + idRequester);
                                     long maxMoveExecutionTime = element.execute(inputArray, idRequester);
                                     logger.info("Algorithm " + algorithm + " executed, maxMoveExecutionTime = " + maxMoveExecutionTime);
@@ -67,7 +67,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     }
 
     @Override
-    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(String idRequester) {
+    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(long idRequester) {
         DeleteExecuteAlgorithmDataResponse response = new DeleteExecuteAlgorithmDataResponse();
         return algorithmCompareDAO.deleteDocument(idRequester)
                 .reduce(response, (o1, o2) -> {
@@ -120,7 +120,7 @@ public class RestAlgorithmBusinessImpl implements RestAlgorithmBusiness {
     }
 
     @Override
-    public Flux<GetExecutionDataResponse> getExecutionData(String idRequester, long maxMoveExecutionTime) {
+    public Flux<GetExecutionDataResponse> getExecutionData(long idRequester, long maxMoveExecutionTime) {
         try {
             return algorithmCompareDAO.findDocument(idRequester)
                     .sort(Comparator.comparing(AlgorithmDocument::getMoveOrder))

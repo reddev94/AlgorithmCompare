@@ -65,7 +65,7 @@ public class JobConfiguration {
     static SimpleTriggerFactoryBean createTrigger(JobDetail jobDetail, long pollFrequencyMs, String triggerName) {
         SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
         factoryBean.setJobDetail(jobDetail);
-        factoryBean.setStartDelay(5000L);
+        factoryBean.setStartDelay(10000L);
         factoryBean.setRepeatInterval(pollFrequencyMs);
         factoryBean.setName(triggerName);
         factoryBean.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY);

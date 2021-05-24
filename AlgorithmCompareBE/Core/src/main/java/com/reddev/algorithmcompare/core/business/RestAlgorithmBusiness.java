@@ -8,9 +8,9 @@ import reactor.core.publisher.Mono;
 public interface RestAlgorithmBusiness {
 
     public Mono<ExecuteAlgorithmResponse> executeAlgorithm(AlgorithmEnum algorithm, int[] inputArray);
-    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(String idRequester);
+    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(long idRequester);
     public GenerateArrayResponse generateArray(int length);
     public GetAlgorithmResponse getAvailableAlgorithms();
-    public Flux<GetExecutionDataResponse> getExecutionData(String idRequester, long maxMoveExecutionTime);
+    public Flux<GetExecutionDataResponse> getExecutionData(long idRequester, long maxMoveExecutionTime);
 
 }

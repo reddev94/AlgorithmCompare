@@ -72,9 +72,9 @@ public class RestControllerTest extends AlgorithmCompareTest {
             assertThat(executeAlgorithmResponse).isNotNull();
             assertThat(executeAlgorithmResponse.getResultCode()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_OK);
             assertThat(executeAlgorithmResponse.getResultDescription()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
-            assertThat(executeAlgorithmResponse.getIdRequester()).isNotEmpty();
+            assertThat(executeAlgorithmResponse.getIdRequester()).isGreaterThan(0L);
             assertThat(executeAlgorithmResponse.getMaxExecutionTime()).isGreaterThan(0L);
-            String idRequester = executeAlgorithmResponse.getIdRequester();
+            long idRequester = executeAlgorithmResponse.getIdRequester();
             //make getExecutionData delay fast for test
             long maxExecutionTime = 1000;
             Objects.requireNonNull(algorithmCompareDAO.findDocument(idRequester).collectList().block()).forEach(x -> {
