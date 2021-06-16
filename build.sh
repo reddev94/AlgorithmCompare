@@ -10,13 +10,8 @@ ng build --prod
 
 sleep 2
 
-echo "cd dist"
-cd dist
-
-sleep 2
-
-echo "cd AlgorithmCompareFE"
-cd AlgorithmCompareFE
+echo "cd dist/AlgorithmCompareFE"
+cd dist/AlgorithmCompareFE
 
 sleep 2
 
@@ -25,8 +20,8 @@ cp -a * . ../../../AlgorithmCompareBE/Core/src/main/resources/public/
 
 sleep 2
 
-echo "cd .."
-cd ..
+echo "cd ../../../"
+cd ../../../
 
 sleep 2
 
@@ -37,6 +32,5 @@ sleep 2
 
 echo "mvn clean install"
 mvn clean install
-
 
 sleep 2
