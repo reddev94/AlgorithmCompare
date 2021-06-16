@@ -14,6 +14,7 @@ public class SpringPluginConfiguration {
 
     @Bean
     public SpringPluginManager customPluginManager() {
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
         return new SpringPluginManager(Paths.get(pluginPath));
     }
 }
