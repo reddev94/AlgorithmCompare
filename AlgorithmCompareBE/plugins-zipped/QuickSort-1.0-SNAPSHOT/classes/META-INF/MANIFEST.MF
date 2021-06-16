@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Created-By: Apache Maven 3.8.1
-Built-By: DavideVennari
-Build-Jdk: 16
-Implementation-Title: QuickSort
-Implementation-Version: 1.0-SNAPSHOT
-Implementation-Vendor-Id: com.reddev
-
