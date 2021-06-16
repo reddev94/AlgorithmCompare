@@ -15,7 +15,7 @@ import { subscribeOn, delay } from 'rxjs/operators';
 })
 export class AlgorithmService {
   private PORT = window.location.port;
-  private BASE_URL = 'http://localhost:' + this.PORT;
+  private BASE_URL = 'https://localhost:' + this.PORT;
   private AVAILABLE_ALGORITHM_URL = this.BASE_URL + '/blocking/getAlgorithms';
   private GENERATE_ARRAY_URL = this.BASE_URL + '/blocking/generateArray';
   private EXECUTE_ALGORITHM_URL = this.BASE_URL + '/reactive/executeAlgorithm';
