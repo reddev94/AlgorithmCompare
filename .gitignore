@@ -91,9 +91,9 @@ node_modules/
 .browserslistrc
 
 # exclude everything
-public/
+#public/
 # exception to the rule
-!public/.gitkeep
+#!public/.gitkeep
 
 # exclude everything
 plugins-zipped/*.zip
