@@ -96,7 +96,7 @@ node_modules/
 #!public/.gitkeep
 
 # exclude everything
-plugins-zipped/
+**/plugins-zipped/*/
 # exception to the rule
 !plugins-zipped/.gitkeep
-!plugins-zipped/*.zip
+!**/plugins-zipped/*.zip
