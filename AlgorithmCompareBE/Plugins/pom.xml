@@ -3,11 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <packaging>pom</packaging>
+
     <modules>
         <module>BubbleSort</module>
         <module>PluginModel</module>
         <module>QuickSort</module>
     </modules>
+
     <parent>
         <artifactId>AlgorithmCompareBE</artifactId>
         <groupId>com.reddev</groupId>
@@ -19,28 +21,21 @@
     <name>Plugins</name>
     <description>Plugins</description>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>16</java.version>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.reddev</groupId>
-            <artifactId>Commons</artifactId>
+            <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.pf4j</groupId>
             <artifactId>pf4j</artifactId>
-            <version>3.6.0</version>
+            <version>${pf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pf4j</groupId>
             <artifactId>pf4j-spring</artifactId>
-            <version>0.7.0</version>
+            <version>${pf4j-spring.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 
 @Configuration
 public class SpringPluginConfiguration {
+
     @Value("${plugin.path}")
     private String pluginPath;
 

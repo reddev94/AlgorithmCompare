@@ -2,14 +2,13 @@ package com.reddev.algorithmcompare.plugins.bubblesort;
 
 import com.reddev.algorithmcompare.plugins.pluginmodel.conf.SpringPlugin;
 import com.reddev.algorithmcompare.plugins.pluginmodel.conf.SpringPluginManager;
+import lombok.extern.log4j.Log4j2;
 import org.pf4j.PluginWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+@Log4j2
 public class BubbleSortPlugin extends SpringPlugin {
-    Logger logger = LoggerFactory.getLogger(BubbleSortPlugin.class);
 
     public BubbleSortPlugin(PluginWrapper wrapper) {
         super(wrapper);
@@ -17,12 +16,12 @@ public class BubbleSortPlugin extends SpringPlugin {
 
     @Override
     public void start() {
-        logger.info("BubbleSortPlugin.start()");
+        log.info("BubbleSortPlugin.start()");
     }
 
     @Override
     public void stop() {
-        logger.info("BubbleSortPlugin.stop()");
+        log.info("BubbleSortPlugin.stop()");
         super.stop(); // to close applicationContext
     }
 

@@ -1,8 +1,7 @@
 package com.reddev.algorithmcompare.core.test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.reddev.algorithmcompare.core.controller.dto.ExecuteAlgorithmRequest;
-import com.reddev.algorithmcompare.commons.model.AlgorithmEnum;
+import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
+import com.reddev.algorithmcompare.core.domain.rest.ExecuteAlgorithmRequest;
 import org.springframework.context.annotation.Profile;
 
 @Profile("test")
@@ -16,10 +15,7 @@ public class TestUtil {
     public static final String PARAM_ID_REQUESTER = "idRequester";
     public static final String PARAM_MAX_MOVE_EXECUTION_TIME = "maxMoveExecutionTime";
 
-    public static ExecuteAlgorithmRequest forgeExecuteAlgorithmRequest(AlgorithmEnum algorithmEnum, int[] array) throws JsonProcessingException {
-        ExecuteAlgorithmRequest requestObj = new ExecuteAlgorithmRequest();
-        requestObj.setAlgorithm(algorithmEnum.getValue());
-        requestObj.setArray(array);
-        return requestObj;
+    public static ExecuteAlgorithmRequest forgeExecuteAlgorithmRequest(AlgorithmEnum algorithmEnum, int[] array) {
+        return ExecuteAlgorithmRequest.builder().algorithm(algorithmEnum.getValue()).array(array).build();
     }
 }

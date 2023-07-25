@@ -1,29 +1,31 @@
 package com.reddev.algorithmcompare.core.test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import com.reddev.algorithmcompare.commons.AlgorithmCompareUtil;
-import com.reddev.algorithmcompare.core.controller.dto.*;
-import com.reddev.algorithmcompare.commons.model.AlgorithmEnum;
+import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
+import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
+import com.reddev.algorithmcompare.core.domain.rest.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @Profile("test")
 public class RestControllerTest extends AlgorithmCompareTest {
+
     @Autowired
     private WebTestClient webTestClient;
-
     @Autowired
     private AlgorithmCompareDAOImplTest algorithmCompareDAO;
 
     @Test
-    public void testExecuteAllAlgorithms() throws Exception {
+    public void testExecuteAllAlgorithms() {
         Random rand = new Random();
         //populate combobox of available algorithms
         GetAlgorithmResponse getAlgorithmResponse = webTestClient.get()
@@ -35,8 +37,6 @@ public class RestControllerTest extends AlgorithmCompareTest {
                 .returnResult()
                 .getResponseBody();
         assertThat(getAlgorithmResponse).isNotNull();
-        assertThat(getAlgorithmResponse.getResultCode()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_OK);
-        assertThat(getAlgorithmResponse.getResultDescription()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
         assertThat(getAlgorithmResponse.getAvailableAlgorithms()).isNotNull().hasSize(AlgorithmEnum.values().length);
         //execute main flow for every algorithm
         for (String algorithm : getAlgorithmResponse.getAvailableAlgorithms()) {
@@ -55,8 +55,6 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .returnResult()
                     .getResponseBody();
             assertThat(generateArrayResponse).isNotNull();
-            assertThat(generateArrayResponse.getResultCode()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_OK);
-            assertThat(generateArrayResponse.getResultDescription()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
             assertThat(generateArrayResponse.getArray()).hasSize(length);
             //execute chosen algorithm on array
             ExecuteAlgorithmResponse executeAlgorithmResponse = webTestClient.post()
@@ -70,8 +68,6 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .returnResult()
                     .getResponseBody();
             assertThat(executeAlgorithmResponse).isNotNull();
-            assertThat(executeAlgorithmResponse.getResultCode()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_OK);
-            assertThat(executeAlgorithmResponse.getResultDescription()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
             assertThat(executeAlgorithmResponse.getIdRequester()).isGreaterThan(0L);
             assertThat(executeAlgorithmResponse.getMaxExecutionTime()).isGreaterThan(0L);
             long idRequester = executeAlgorithmResponse.getIdRequester();
@@ -96,8 +92,7 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .getResponseBody();
             assertThat(getExecutionDataResponse).isNotNull();
             for (GetExecutionDataResponse data : getExecutionDataResponse) {
-                assertThat(data.getResultCode()).isIn(AlgorithmCompareUtil.RESULT_CODE_OK, AlgorithmCompareUtil.RESULT_CODE_PROCESSING);
-                assertThat(data.getResultDescription()).isIn(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK, AlgorithmCompareUtil.RESULT_DESCRIPTION_PROCESSING);
+                //TODO potrebbe servire verificare il nuovo campo aggiunto alal response, quello che torna processing = 1
                 assertThat(data.getArray()).hasSizeBetween(0, length);
             }
             //delete all data of idRequester before close the app
@@ -114,8 +109,6 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .returnResult()
                     .getResponseBody();
             assertThat(deleteExecuteAlgorithmDataResponse).isNotNull();
-            assertThat(deleteExecuteAlgorithmDataResponse.getResultCode()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_OK);
-            assertThat(deleteExecuteAlgorithmDataResponse.getResultDescription()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_OK);
             assertThat(deleteExecuteAlgorithmDataResponse.getRecordEliminated()).isGreaterThan(0);
         }
 

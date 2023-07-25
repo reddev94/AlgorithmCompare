@@ -1,24 +1,28 @@
 package com.reddev.algorithmcompare.plugins.pluginmodel.business;
 
-import com.reddev.algorithmcompare.commons.AlgorithmCompareUtil;
-import com.reddev.algorithmcompare.commons.model.AlgorithmException;
-import com.reddev.algorithmcompare.dao.AlgorithmCompareDAO;
+import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
+import com.reddev.algorithmcompare.common.domain.exception.AlgorithmException;
+import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Log4j2
 public class BaseAlgorithm {
-    protected Logger logger = LoggerFactory.getLogger(BaseAlgorithm.class);
+
+    private AlgorithmRepository algorithmRepository;
 
     @Autowired
-    private AlgorithmCompareDAO algorithmCompareDAO;
+    public void setAlgorithmRepository(AlgorithmRepository algorithmRepository) {
+        this.algorithmRepository = algorithmRepository;
+    }
 
     protected long calculateTimestamp() {
         return AlgorithmCompareUtil.getTimestamp();
     }
 
-    protected void saveOnDb(BaseAlgorithmExecutionData data) throws AlgorithmException {
+    protected void saveOnDb(BaseAlgorithmExecutionData data) {
         //calculate move execution time and save on db
         long actualTime = calculateTimestamp();
         long moveExecutionTime = (actualTime - data.getInitialTime()) + 1L; //add 1 millisecond to avoid 0 as moveExecutionTime
@@ -36,10 +40,17 @@ public class BaseAlgorithm {
 
     private int saveRecord(long idRequester, int[] array, long moveOrder, long moveExecutionTime, int indexOfSwappedElement) {
         try {
-            algorithmCompareDAO.saveDocument(array, idRequester, moveExecutionTime, moveOrder, indexOfSwappedElement).subscribe();
+            algorithmRepository.save(AlgorithmDocument.builder()
+                            .array(array)
+                            .idRequester(idRequester).
+                            moveExecutionTime(moveExecutionTime).
+                            moveOrder(moveOrder)
+                            .indexOfSwappedElement(indexOfSwappedElement)
+                            .build()).publishOn(AlgorithmCompareUtil.SCHEDULER)
+                    .subscribe();
             return AlgorithmCompareUtil.RESULT_CODE_OK;
         } catch (Exception e) {
-            logger.error("Exception during save record on db", e);
+            log.error("Exception during save record on db", e);
             return AlgorithmCompareUtil.RESULT_CODE_KO_DB_ERROR;
         }
     }

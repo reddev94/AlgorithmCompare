@@ -8,12 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import static java.util.Objects.nonNull;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static java.util.Objects.nonNull;
 
 public class SpringExtensionFactory implements ExtensionFactory {
     Logger logger = LoggerFactory.getLogger(SpringExtensionFactory.class);

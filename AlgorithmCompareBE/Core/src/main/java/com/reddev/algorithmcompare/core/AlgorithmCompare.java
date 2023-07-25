@@ -1,30 +1,25 @@
 package com.reddev.algorithmcompare.core;
 
-
-import com.reddev.algorithmcompare.dao.AlgorithmCompareDAO;
+import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
+import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
+import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.conf.SpringPluginManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 
-@SpringBootApplication(scanBasePackages = {
-        "com.reddev.algorithmcompare.core",
-        "com.reddev.algorithmcompare.commons",
-        "com.reddev.algorithmcompare.dao"})
+@SpringBootApplication(scanBasePackages = {"com.reddev"})
+@RequiredArgsConstructor
+@Log4j2
 public class AlgorithmCompare implements CommandLineRunner {
-    protected Logger logger = LoggerFactory.getLogger(AlgorithmCompare.class);
 
-    @Autowired
-    private AlgorithmCompareDAO algorithmCompareDAO;
-
-    @Autowired
-    private SpringPluginManager springPluginManager;
+    private final AlgorithmRepository algorithmRepository;
+    private final SpringPluginManager springPluginManager;
 
     public static void main(String[] args) {
         SpringApplication.run(AlgorithmCompare.class, args);
@@ -32,12 +27,22 @@ public class AlgorithmCompare implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        logger.info("Insert document to initialize database");
-        algorithmCompareDAO.saveDocument(null, -1, 0, 0, 0).block();
-        algorithmCompareDAO.deleteDocument(-1).subscribe();
+
+        log.info("Insert document to initialize database");
+        algorithmRepository.save(AlgorithmDocument.builder()
+                .array(null)
+                .idRequester(-1).
+                moveExecutionTime(0).
+                moveOrder(0)
+                .indexOfSwappedElement(0)
+                .build()).publishOn(AlgorithmCompareUtil.SCHEDULER)
+                .block();
+        algorithmRepository.deleteByIdRequester(-1).publishOn(AlgorithmCompareUtil.SCHEDULER).subscribe();
+
         //start plugin
         List<Algorithm> plugins = springPluginManager.getExtensions(Algorithm.class);
-        logger.info(String.format("Found %d extensions for extension point '%s'", plugins.size(), Algorithm.class.getName()));
-        plugins.forEach(el -> logger.info(">>> " + el.getName()));
+        log.info(String.format("Found %d extensions for extension point '%s'", plugins.size(), Algorithm.class.getName()));
+        plugins.forEach(el -> log.info(">>> " + el.getName()));
+
     }
 }

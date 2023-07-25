@@ -7,14 +7,13 @@
     <modules>
         <module>Plugins</module>
         <module>Core</module>
-        <module>Commons</module>
-        <module>Dao</module>
+        <module>Common</module>
     </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.0-SNAPSHOT</version>
+        <version>3.1.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -26,9 +25,19 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>16</java.version>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <java.version>20</java.version>
+        <maven.compiler.source>20</maven.compiler.source>
+        <maven.compiler.target>20</maven.compiler.target>
+        <maven-jar.version>3.3.0</maven-jar.version>
+        <maven-assembly.version>3.6.0</maven-assembly.version>
+        <maven-ant.version>3.1.0</maven-ant.version>
+        <lombok.version>1.18.28</lombok.version>
+        <reactor-extra.version>3.5.1</reactor-extra.version>
+        <ehcache.version>3.10.8</ehcache.version>
+        <jaxb.version>4.0.3</jaxb.version>
+        <embed-mongo.version>4.7.1</embed-mongo.version>
+        <pf4j.version>3.9.0</pf4j.version>
+        <pf4j-spring.version>0.8.0</pf4j-spring.version>
     </properties>
 
     <dependencies>
@@ -47,6 +56,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
 

@@ -1,7 +1,6 @@
 package com.reddev.algorithmcompare.plugins.quicksort;
 
-import com.reddev.algorithmcompare.commons.model.AlgorithmEnum;
-import com.reddev.algorithmcompare.commons.model.AlgorithmException;
+import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
@@ -9,20 +8,24 @@ import org.pf4j.Extension;
 
 @Extension(ordinal = 1)
 public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
+
     @Override
     public String getName() {
         return AlgorithmEnum.QUICK_SORT.getValue();
     }
 
     @Override
-    public long execute(int[] input, long idRequester) throws AlgorithmException {
-        BaseAlgorithmExecutionData data = new BaseAlgorithmExecutionData(input, idRequester);
-        data.setMoveOrder(1L);
+    public long execute(int[] input, long idRequester) {
+        BaseAlgorithmExecutionData data = BaseAlgorithmExecutionData.builder()
+                .array(input)
+                .idRequester(idRequester)
+                .moveOrder(1L)
+                .build();
         quickSort(data, 0, data.getArray().length - 1);
         return data.getMaxExecutionTime();
     }
 
-    private void quickSort(BaseAlgorithmExecutionData data, int low, int high) throws AlgorithmException {
+    private void quickSort(BaseAlgorithmExecutionData data, int low, int high) {
         if (data.getInitialTime() == 0L) {
             data.setInitialTime(calculateTimestamp());
         }
@@ -35,7 +38,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
         }
     }
 
-    private int partition(BaseAlgorithmExecutionData data, int low, int high) throws AlgorithmException {
+    private int partition(BaseAlgorithmExecutionData data, int low, int high) {
         int pi = data.getArray()[high];
         int i = (low - 1); // smaller element index
         for (int j = low; j < high; j++) {

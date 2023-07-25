@@ -1,12 +1,12 @@
 package com.reddev.algorithmcompare.core.configuration;
 
-import com.reddev.algorithmcompare.core.business.DbJob;
-import org.apache.commons.lang3.ArrayUtils;
+import com.reddev.algorithmcompare.core.job.DbJob;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.ArrayUtils;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.quartz.QuartzProperties;
@@ -19,15 +19,14 @@ import java.util.Calendar;
 import java.util.Properties;
 
 @Configuration
+@RequiredArgsConstructor
 public class JobConfiguration {
+
     @Value("${job.trigger.timeout}")
     private long jobTriggerTimeout;
 
-    @Autowired
-    private ApplicationContext applicationContext;
-
-    @Autowired
-    private QuartzProperties quartzProperties;
+    private final ApplicationContext applicationContext;
+    private final QuartzProperties quartzProperties;
 
     @Bean
     public SpringBeanJobFactory springBeanJobFactory() {
@@ -46,7 +45,7 @@ public class JobConfiguration {
         schedulerFactory.setQuartzProperties(properties);
         schedulerFactory.setJobFactory(springBeanJobFactory());
         schedulerFactory.setWaitForJobsToCompleteOnShutdown(true);
-        if (ArrayUtils.isNotEmpty(triggers)) {
+        if (!ArrayUtils.isEmpty(triggers)) {
             schedulerFactory.setTriggers(triggers);
         }
         return schedulerFactory;

@@ -1,18 +1,16 @@
 package com.reddev.algorithmcompare.plugins.pluginmodel.conf;
 
+import jakarta.annotation.PostConstruct;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.ExtensionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import javax.annotation.PostConstruct;
+
 import java.nio.file.Path;
 
 public class SpringPluginManager extends DefaultPluginManager implements ApplicationContextAware {
-    Logger logger = LoggerFactory.getLogger(SpringPluginManager.class);
 
     private ApplicationContext applicationContext;
     private ExtensionsInjector extensionsInjector;

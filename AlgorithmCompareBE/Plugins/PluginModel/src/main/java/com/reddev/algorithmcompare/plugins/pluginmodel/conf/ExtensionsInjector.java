@@ -1,18 +1,15 @@
 package com.reddev.algorithmcompare.plugins.pluginmodel.conf;
 
+import lombok.extern.log4j.Log4j2;
 import org.pf4j.PluginWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Log4j2
 public class ExtensionsInjector {
-    Logger logger = LoggerFactory.getLogger(ExtensionsInjector.class);
-
-    private static final String REGISTER_EXTENSION_AS_BEAN = "Register extension '{}' as bean";
 
     protected final SpringPluginManager springPluginManager;
     protected final AbstractAutowireCapableBeanFactory beanFactory;
@@ -27,26 +24,26 @@ public class ExtensionsInjector {
         Set<String> extensionClassNames = springPluginManager.getExtensionClassNames(null);
         for (String extensionClassName : extensionClassNames) {
             try {
-                logger.debug("Register extension '{}' as bean", extensionClassName);
+                log.debug("Register extension '{}' as bean", extensionClassName);
                 Class<?> extensionClass = getClass().getClassLoader().loadClass(extensionClassName);
                 registerExtension(extensionClass);
             } catch (ClassNotFoundException e) {
-                logger.error(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
         }
 
         // add extensions for each started plugin
         List<PluginWrapper> startedPlugins = springPluginManager.getStartedPlugins();
         for (PluginWrapper plugin : startedPlugins) {
-            logger.debug("Registering extensions of the plugin '{}' as beans", plugin.getPluginId());
+            log.debug("Registering extensions of the plugin '{}' as beans", plugin.getPluginId());
             extensionClassNames = springPluginManager.getExtensionClassNames(plugin.getPluginId());
             for (String extensionClassName : extensionClassNames) {
                 try {
-                    logger.debug("Register extension '{}' as bean", extensionClassName);
+                    log.debug("Register extension '{}' as bean", extensionClassName);
                     Class<?> extensionClass = plugin.getPluginClassLoader().loadClass(extensionClassName);
                     registerExtension(extensionClass);
                 } catch (ClassNotFoundException e) {
-                    logger.error(e.getMessage(), e);
+                    log.error(e.getMessage(), e);
                 }
             }
         }
@@ -65,7 +62,7 @@ public class ExtensionsInjector {
             Object extension = springPluginManager.getExtensionFactory().create(extensionClass);
             beanFactory.registerSingleton(extensionClass.getName(), extension);
         } else {
-            logger.debug("Bean registeration aborted! Extension '{}' already existed as bean!", extensionClass.getName());
+            log.debug("Bean registration aborted! Extension '{}' already existed as bean!", extensionClass.getName());
         }
     }
 }
