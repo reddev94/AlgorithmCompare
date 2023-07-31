@@ -29,21 +29,18 @@ public class JobConfiguration {
     private final QuartzProperties quartzProperties;
 
     @Bean
-    public SpringBeanJobFactory springBeanJobFactory() {
+    public SchedulerFactoryBean scheduler(Trigger... triggers) {
+
         AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
         jobFactory.setApplicationContext(applicationContext);
-        return jobFactory;
-    }
 
-    @Bean
-    public SchedulerFactoryBean scheduler(Trigger... triggers) {
         SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
         Properties properties = new Properties();
         properties.putAll(quartzProperties.getProperties());
         schedulerFactory.setOverwriteExistingJobs(true);
         schedulerFactory.setAutoStartup(true);
         schedulerFactory.setQuartzProperties(properties);
-        schedulerFactory.setJobFactory(springBeanJobFactory());
+        schedulerFactory.setJobFactory(jobFactory);
         schedulerFactory.setWaitForJobsToCompleteOnShutdown(true);
         if (!ArrayUtils.isEmpty(triggers)) {
             schedulerFactory.setTriggers(triggers);

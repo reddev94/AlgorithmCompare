@@ -11,12 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Log4j2
 public class BaseAlgorithm {
 
-    private AlgorithmRepository algorithmRepository;
-
     @Autowired
-    public void setAlgorithmRepository(AlgorithmRepository algorithmRepository) {
-        this.algorithmRepository = algorithmRepository;
-    }
+    private AlgorithmRepository algorithmRepository;
 
     protected long calculateTimestamp() {
         return AlgorithmCompareUtil.getTimestamp();

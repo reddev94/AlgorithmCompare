@@ -1,0 +1,95 @@
+spring:
+  profiles:
+    active: local
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: test
+    mongodb:
+      port: 27017
+      min-connections-per-host: 10
+      max-connections-per-host: 100
+      server-selection-timeout: 10000
+      max-wait-time: 10000
+      connect-timeout: 10000
+  quartz:
+    job-store-type: memory
+    properties:
+      org.quartz.scheduler.instanceId: AUTO
+      org.quartz.threadPool.threadCount: 1
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 6.0.6
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    com.reddev.algorithmcompare: INFO
+    org.mongodb: ERROR
+    org.springframework.boot.autoconfigure.mongo.embedded: ERROR
+
+cors:
+  allowed:
+    origins: http://localhost
+    # origins: https://algorithm-compare.herokuapp.com
+
+job:
+  seconds:
+    old:
+      data: 21600
+  trigger:
+    timeout: 21600000
+
+plugin:
+  #path: plugins-zipped
+  path: /home/reddev/Projects/AlgorithmCompare/AlgorithmCompareBE/plugins-zipped
+
+database:
+  url: mongodb://localhost:27017
+  name: reactive-db
+
+cache:
+  services:
+    - name: executeAlgorithm
+      ttl: 240
+    - name: availableAlgorithms
+      ttl: 1440
+
+# spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
+# MONGODB (MongoProperties)
+# spring.data.mongodb.authentication-database= # Authentication database name.
+# spring.data.mongodb.database=test # Database name.
+# spring.data.mongodb.field-naming-strategy= # Fully qualified name of the FieldNamingStrategy to use.
+# spring.data.mongodb.grid-fs-database= # GridFS database name.
+# spring.data.mongodb.host=localhost # Mongo server host.
+# spring.data.mongodb.password= # Login password of the mongo server.
+# spring.data.mongodb.port=27017 # Mongo server port.
+# spring.data.mongodb.repositories.enabled=true # Enable Mongo repositories.
+# spring.data.mongodb.uri=mongodb://localhost/test # Mongo database URI. When set, host and port are ignored.
+# spring.data.mongodb.username= # Login user of the mongo server.
+# EMBEDDED MONGODB (EmbeddedMongoProperties)
+# spring.mongodb.embedded.features=SYNC_DELAY # Comma-separated list of features to enable.
+# spring.mongodb.embedded.storage.databaseDir= # Directory used for data storage.
+# spring.mongodb.embedded.storage.oplogSize= # Maximum size of the oplog in megabytes.
+# spring.mongodb.embedded.storage.replSetName= # Name of the replica set.
+# spring.mongodb.embedded.version=2.6.10 # Version of Mongo to use.
+# spring.data.mongodb.threads-allowed-to-block-for-connection-multiplier=5
+# spring.data.mongodb.max-connection-idle-time=0
+# spring.data.mongodb.max-connection-life-time=0
+# spring.data.mongodb.socket-timeout=0
+# spring.data.mongodb.socket-keep-alive=false
+# spring.data.mongodb.ssl-enabled=false
+# spring.data.mongodb.ssl-invalid-host-name-allowed=false
+# spring.data.mongodb.always-use-m-beans=false
+# spring.data.mongodb.heartbeat-socket-timeout=20000
+# spring.data.mongodb.heartbeat-connect-timeout=20000
+# spring.data.mongodb.min-heartbeat-frequency=500
+# spring.data.mongodb.heartbeat-frequency=10000
+# spring.data.mongodb.local-threshold=15

@@ -9,7 +9,10 @@ import com.reddev.algorithmcompare.core.domain.rest.*;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,7 +33,7 @@ public class RestAlgorithmService {
     private final List<Algorithm> algorithms;
     private final AlgorithmRepository algorithmRepository;
 
-    @Cacheable(value="executeAlgorithm")
+    @Cacheable(value = "executeAlgorithm")
     public Mono<ExecuteAlgorithmResponse> executeAlgorithm(AlgorithmEnum algorithm, int[] inputArray) {
 
         if (inputArray.length > AlgorithmCompareUtil.ARRAY_MAX_SIZE) {
@@ -53,6 +56,7 @@ public class RestAlgorithmService {
 
     }
 
+    @CacheEvict(value = "executeAlgorithm", allEntries = true)
     public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(long idRequester) {
 
         DeleteExecuteAlgorithmDataResponse response = new DeleteExecuteAlgorithmDataResponse();
@@ -86,7 +90,7 @@ public class RestAlgorithmService {
 
     }
 
-    @Cacheable(value="getAlgorithms")
+    @Cacheable(value="availableAlgorithms")
     public GetAlgorithmResponse getAvailableAlgorithms() {
 
         List<String> availableAlgorithms = Stream.of(AlgorithmEnum.values())

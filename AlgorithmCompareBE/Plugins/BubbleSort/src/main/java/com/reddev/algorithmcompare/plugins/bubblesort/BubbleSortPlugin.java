@@ -1,9 +1,9 @@
 package com.reddev.algorithmcompare.plugins.bubblesort;
 
-import com.reddev.algorithmcompare.plugins.pluginmodel.conf.SpringPlugin;
-import com.reddev.algorithmcompare.plugins.pluginmodel.conf.SpringPluginManager;
 import lombok.extern.log4j.Log4j2;
 import org.pf4j.PluginWrapper;
+import org.pf4j.spring.SpringPlugin;
+import org.pf4j.spring.SpringPluginManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

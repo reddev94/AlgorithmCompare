@@ -1,4 +1,4 @@
-package com.reddev.algorithmcompare.core.domain.business;
+package com.reddev.algorithmcompare.core.domain.job;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

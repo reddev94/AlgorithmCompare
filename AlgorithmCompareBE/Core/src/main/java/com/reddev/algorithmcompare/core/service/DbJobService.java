@@ -2,7 +2,7 @@ package com.reddev.algorithmcompare.core.service;
 
 import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
-import com.reddev.algorithmcompare.core.domain.business.DeleteOldDataJobResponse;
+import com.reddev.algorithmcompare.core.domain.job.DeleteOldDataJobResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
