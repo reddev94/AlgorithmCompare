@@ -2,7 +2,6 @@ package com.reddev.algorithmcompare.core.service;
 
 import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
-import com.reddev.algorithmcompare.common.domain.exception.AlgorithmException;
 import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.core.domain.rest.*;
@@ -34,10 +33,6 @@ public class RestAlgorithmService {
     @Cacheable(value = "executeAlgorithm", key = "#algorithm.value.concat('_').concat(#inputArray)")
     public ExecuteAlgorithmResponse executeAlgorithm(AlgorithmEnum algorithm, int[] inputArray) {
 
-        if (inputArray.length > AlgorithmCompareUtil.ARRAY_MAX_SIZE) {
-            throw new AlgorithmException(AlgorithmCompareUtil.RESULT_CODE_KO_ARRAY_LENGTH_ERROR, AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_ARRAY_LENGTH_ERROR);
-        }
-
         return algorithms
                 .stream()
                 .filter(impl -> impl.getName().equals(algorithm.getValue()))
@@ -66,11 +61,6 @@ public class RestAlgorithmService {
     }
 
     public GenerateArrayResponse generateArray(int length) {
-
-        if (length < AlgorithmCompareUtil.ARRAY_MIN_SIZE || length > AlgorithmCompareUtil.ARRAY_MAX_SIZE) {
-            log.error("Invalid array length, should be between " + AlgorithmCompareUtil.ARRAY_MIN_SIZE + " and " + AlgorithmCompareUtil.ARRAY_MAX_SIZE);
-            throw new AlgorithmException(AlgorithmCompareUtil.RESULT_CODE_KO_ARRAY_LENGTH_ERROR, AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_ARRAY_LENGTH_ERROR);
-        }
 
         List<Integer> list = new ArrayList<>();
         Random rand = new Random(Double.doubleToLongBits(Math.random()));

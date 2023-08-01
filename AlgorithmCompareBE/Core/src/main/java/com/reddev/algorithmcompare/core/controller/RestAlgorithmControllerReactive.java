@@ -7,6 +7,7 @@ import com.reddev.algorithmcompare.core.domain.rest.ExecuteAlgorithmRequest;
 import com.reddev.algorithmcompare.core.domain.rest.ExecuteAlgorithmResponse;
 import com.reddev.algorithmcompare.core.domain.rest.GetExecutionDataResponse;
 import com.reddev.algorithmcompare.core.service.RestAlgorithmService;
+import com.reddev.algorithmcompare.core.util.RequestValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class RestAlgorithmControllerReactive {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<ExecuteAlgorithmResponse> executeAlgorithm(@RequestBody ExecuteAlgorithmRequest request) {
 
+        RequestValidator.checkExecuteAlgorithmRequest(request);
         return Mono.just(
                 restAlgorithmService.executeAlgorithm(AlgorithmEnum.get(request.getAlgorithm()), request.getArray()))
                         .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
@@ -34,6 +36,7 @@ public class RestAlgorithmControllerReactive {
     @ResponseStatus(HttpStatus.OK)
     public Flux<GetExecutionDataResponse> getExecutionData(@RequestParam long idRequester, @RequestParam long maxMoveExecutionTime) {
 
+        RequestValidator.checkIdRequester(idRequester);
         return restAlgorithmService.getExecutionData(idRequester, maxMoveExecutionTime)
                         .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
 
@@ -43,6 +46,7 @@ public class RestAlgorithmControllerReactive {
     @ResponseStatus(HttpStatus.OK)
     public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(@RequestParam long idRequester) {
 
+        RequestValidator.checkIdRequester(idRequester);
         return restAlgorithmService.deleteExecuteAlgorithmData(idRequester)
                         .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
 

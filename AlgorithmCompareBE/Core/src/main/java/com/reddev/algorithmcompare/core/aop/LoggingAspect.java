@@ -1,6 +1,6 @@
 package com.reddev.algorithmcompare.core.aop;
 
-import com.reddev.algorithmcompare.common.domain.exception.AlgorithmException;
+import com.reddev.algorithmcompare.common.domain.exception.DatabaseException;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +61,7 @@ public class LoggingAspect {
 			result = executeMillisMethod(joinPoint, stopWatch);
 		} catch (Exception e) {
 			log.error("Error during query execution: ", e);
-			throw new AlgorithmException(AlgorithmCompareUtil.RESULT_CODE_KO_DB_ERROR, AlgorithmCompareUtil.RESULT_DESCRIPTION_KO_DB_ERROR);
+			throw new DatabaseException(AlgorithmCompareUtil.RESULT_CODE_DB_ERROR, AlgorithmCompareUtil.RESULT_DESCRIPTION_DB_ERROR);
 		}
 		log.info("Query " + className + "." + methodName + "() executed in " + stopWatch.getTotalTimeMillis() + " ms");
 		log.debug("with response: " + getResult(joinPoint, result));

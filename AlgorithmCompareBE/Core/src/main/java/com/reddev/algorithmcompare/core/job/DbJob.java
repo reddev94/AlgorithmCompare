@@ -1,8 +1,6 @@
 package com.reddev.algorithmcompare.core.job;
 
 import com.reddev.algorithmcompare.core.service.DbJobService;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
