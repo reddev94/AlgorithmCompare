@@ -16,5 +16,6 @@ public class GetExecutionDataResponse implements Serializable {
     private int[] array;
     private long moveExecutionTime;
     private int indexOfSwappedElement;
+    private int executionStatus;
 
 }

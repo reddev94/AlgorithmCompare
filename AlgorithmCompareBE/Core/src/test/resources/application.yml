@@ -9,7 +9,7 @@ spring:
       port: 6379
       password: test
     mongodb:
-      port: 27017
+      port: 27018
       min-connections-per-host: 10
       max-connections-per-host: 100
       server-selection-timeout: 10000

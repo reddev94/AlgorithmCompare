@@ -1,21 +1,21 @@
 package com.reddev.algorithmcompare.common.domain.business;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
+@AllArgsConstructor
 public enum AlgorithmEnum {
     BUBBLE_SORT("BUBBLE SORT"),
-    QUICK_SORT("QUICK SORT");
+    QUICK_SORT("QUICK SORT"),
+    MERGE_SORT("MERGE SORT"),
+    INSERTION_SORT("INSERTION SORT"),
+    SELECTION_SORT("SELECTION SORT");
 
     private final String value;
-
-    AlgorithmEnum(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
 
     //****** Reverse Lookup Implementation************//
     //Lookup table

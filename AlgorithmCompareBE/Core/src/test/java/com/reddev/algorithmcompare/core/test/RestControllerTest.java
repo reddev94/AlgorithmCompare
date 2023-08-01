@@ -63,7 +63,7 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequest(AlgorithmEnum.get(algorithm), generateArrayResponse.getArray())), ExecuteAlgorithmRequest.class)
                     .exchange()
-                    .expectStatus().isOk()
+                    .expectStatus().isCreated()
                     .expectBody(ExecuteAlgorithmResponse.class)
                     .returnResult()
                     .getResponseBody();

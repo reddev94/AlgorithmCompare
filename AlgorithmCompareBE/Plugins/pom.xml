@@ -8,6 +8,9 @@
         <module>BubbleSort</module>
         <module>PluginModel</module>
         <module>QuickSort</module>
+        <module>MergeSort</module>
+        <module>InsertionSort</module>
+        <module>SelectionSort</module>
     </modules>
 
     <parent>
@@ -20,6 +23,12 @@
     <artifactId>Plugins</artifactId>
     <name>Plugins</name>
     <description>Plugins</description>
+
+    <properties>
+        <maven.compiler.source>20</maven.compiler.source>
+        <maven.compiler.target>20</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>

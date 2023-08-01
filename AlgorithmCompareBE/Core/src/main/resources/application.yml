@@ -31,7 +31,7 @@ logging:
   level:
     root: INFO
     org.springframework: INFO
-    com.reddev.algorithmcompare: INFO
+    com.reddev.algorithmcompare: DEBUG
     org.mongodb: ERROR
     org.springframework.boot.autoconfigure.mongo.embedded: ERROR
 

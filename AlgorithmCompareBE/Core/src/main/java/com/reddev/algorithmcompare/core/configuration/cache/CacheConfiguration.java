@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
@@ -19,17 +20,16 @@ public class CacheConfiguration {
     private final CacheDataReader cacheDataReader;
 
     @Bean
-    public RedisCacheConfiguration redisCacheConfiguration() {
-        return RedisCacheConfiguration.defaultCacheConfig()
-                .disableCachingNullValues()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
-    }
-
-    @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
+
         return (builder) ->
                 cacheDataReader.getServices().forEach(el -> builder
                         .withCacheConfiguration(el.getName(),
-                                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(el.getTtl()))));
+                                RedisCacheConfiguration.defaultCacheConfig()
+                                        .disableCachingNullValues()
+                                        .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                                        .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
+                                        .entryTtl(Duration.ofMinutes(el.getTtl()))));
+
     }
 }

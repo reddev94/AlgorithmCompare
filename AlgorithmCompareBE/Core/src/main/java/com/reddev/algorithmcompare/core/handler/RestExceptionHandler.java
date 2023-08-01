@@ -32,7 +32,7 @@ public class RestExceptionHandler {
                 .status(status.value())
                 .path(request.getRequestURI())
                 .timestamp(Instant.now())
-                .message(e.getMessage())
+                .message(e.getDescription())
                 .error(e.getCode())
                 .exception(e.getClass().getName())
                 .build();
