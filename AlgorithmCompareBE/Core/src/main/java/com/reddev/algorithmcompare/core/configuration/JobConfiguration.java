@@ -3,7 +3,6 @@ package com.reddev.algorithmcompare.core.configuration;
 import com.reddev.algorithmcompare.core.job.DbJob;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.ArrayUtils;
-import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
@@ -13,12 +12,10 @@ import org.springframework.boot.autoconfigure.quartz.QuartzProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
-import java.util.Calendar;
 import java.util.Properties;
 
 @Configuration
@@ -53,44 +50,23 @@ public class JobConfiguration {
 
     @Bean(name = "deleteOldDataJob")
     public JobDetailFactoryBean deleteOldDataJob() {
-        return createJobDetail(DbJob.class, "Delete old db data Job");
+        JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
+        factoryBean.setName("Delete old db data Job");
+        factoryBean.setJobClass(DbJob.class);
+        factoryBean.setDurability(true);
+        return factoryBean;
     }
 
     @Bean(name = "triggerDeleteOldDataJob")
     public SimpleTriggerFactoryBean triggerDeleteOldDataJob(@Qualifier("deleteOldDataJob") JobDetail jobDetail) {
-        return createTrigger(jobDetail, jobTriggerTimeout, "Delete old db data Job trigger");
-    }
-
-    static SimpleTriggerFactoryBean createTrigger(JobDetail jobDetail, long pollFrequencyMs, String triggerName) {
         SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
         factoryBean.setJobDetail(jobDetail);
         factoryBean.setStartDelay(10000L);
-        factoryBean.setRepeatInterval(pollFrequencyMs);
-        factoryBean.setName(triggerName);
+        factoryBean.setRepeatInterval(jobTriggerTimeout);
+        factoryBean.setName("Delete old db data Job trigger");
         factoryBean.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY);
         factoryBean.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT);
         return factoryBean;
     }
 
-    static CronTriggerFactoryBean createCronTrigger(JobDetail jobDetail, String cronExpression, String triggerName) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        CronTriggerFactoryBean factoryBean = new CronTriggerFactoryBean();
-        factoryBean.setJobDetail(jobDetail);
-        factoryBean.setCronExpression(cronExpression);
-        factoryBean.setStartTime(calendar.getTime());
-        factoryBean.setStartDelay(0L);
-        factoryBean.setName(triggerName);
-        factoryBean.setMisfireInstruction(CronTrigger.MISFIRE_INSTRUCTION_DO_NOTHING);
-        return factoryBean;
-    }
-
-    static JobDetailFactoryBean createJobDetail(Class jobClass, String jobName) {
-        JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
-        factoryBean.setName(jobName);
-        factoryBean.setJobClass(jobClass);
-        factoryBean.setDurability(true);
-        return factoryBean;
-    }
 }

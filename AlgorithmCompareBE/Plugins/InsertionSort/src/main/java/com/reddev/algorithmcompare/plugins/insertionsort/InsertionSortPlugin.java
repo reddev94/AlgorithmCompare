@@ -1,19 +1,14 @@
 package com.reddev.algorithmcompare.plugins.insertionsort;
 
+import com.reddev.algorithmcompare.plugins.pluginmodel.business.BasePlugin;
 import lombok.extern.log4j.Log4j2;
 import org.pf4j.PluginWrapper;
-import org.pf4j.spring.SpringPlugin;
-import org.pf4j.spring.SpringPluginManager;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @Log4j2
-public class InsertionSortPlugin extends SpringPlugin {
+public class InsertionSortPlugin extends BasePlugin {
 
-    public InsertionSortPlugin(PluginWrapper wrapper) {
-        super(wrapper);
-    }
+    public InsertionSortPlugin(PluginWrapper wrapper) { super(wrapper, InsertionSortConf.class); }
 
     @Override
     @CacheEvict(value = "executeAlgorithm", allEntries = true)
@@ -23,19 +18,10 @@ public class InsertionSortPlugin extends SpringPlugin {
 
     @Override
     public void stop() {
-        log.info("InsertionSortPlugin.stop()");
-        super.stop(); // to close applicationContext
-    }
 
-    @Override
-    protected ApplicationContext createApplicationContext() {
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
-        // set the parent context (to access beans from application)
-        applicationContext.setParent(((SpringPluginManager) getWrapper().getPluginManager()).getApplicationContext());
-        applicationContext.setClassLoader(getWrapper().getPluginClassLoader());
-        applicationContext.register(InsertionSortConf.class);
-        applicationContext.refresh();
-        return applicationContext;
+        log.info("InsertionSortPlugin.stop()");
+        super.stop();
+
     }
 
 }

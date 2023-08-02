@@ -1,10 +1,15 @@
 package com.reddev.algorithmcompare.core.test;
 
 import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
+import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
+import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.core.domain.rest.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -17,15 +22,18 @@ import java.util.Random;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Profile("test")
-public class RestControllerTest extends AlgorithmCompareTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@AutoConfigureWebTestClient(timeout = "30000")
+@AutoConfigureDataMongo
+class RestControllerTest {
 
     @Autowired
     private WebTestClient webTestClient;
     @Autowired
-    private AlgorithmCompareDAOImplTest algorithmCompareDAO;
+    private AlgorithmRepository algorithmRepository;
 
     @Test
-    public void generateArrayLengthError() {
+    void generateArrayLengthError() {
         ErrorResponseDTO errorResponseDTO = webTestClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
@@ -44,7 +52,7 @@ public class RestControllerTest extends AlgorithmCompareTest {
     }
 
     @Test
-    public void executeAlgorithmRequestAlgorithmInvalid() {
+    void executeAlgorithmRequestAlgorithmInvalid() {
         ErrorResponseDTO errorResponseDTO = webTestClient.post()
                 .uri(TestUtil.PATH_EXECUTE_ALGORITHM)
                 .accept(MediaType.APPLICATION_JSON)
@@ -61,7 +69,7 @@ public class RestControllerTest extends AlgorithmCompareTest {
     }
 
     @Test
-    public void executeAlgorithmRequestArrayLength() {
+    void executeAlgorithmRequestArrayLength() {
         ErrorResponseDTO errorResponseDTO = webTestClient.post()
                 .uri(TestUtil.PATH_EXECUTE_ALGORITHM)
                 .accept(MediaType.APPLICATION_JSON)
@@ -78,7 +86,7 @@ public class RestControllerTest extends AlgorithmCompareTest {
     }
 
     @Test
-    public void getExecutionDataIdRequester() {
+    void getExecutionDataIdRequester() {
         ErrorResponseDTO errorResponseDTO = webTestClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
@@ -98,7 +106,7 @@ public class RestControllerTest extends AlgorithmCompareTest {
     }
 
     @Test
-    public void deleteExecutionDataIdRequester() {
+    void deleteExecutionDataIdRequester() {
         ErrorResponseDTO errorResponseDTO = webTestClient.delete()
                 .uri(uriBuilder ->
                         uriBuilder
@@ -117,7 +125,7 @@ public class RestControllerTest extends AlgorithmCompareTest {
     }
 
     @Test
-    public void testExecuteAllAlgorithms() {
+    void testExecuteAllAlgorithms() {
         Random rand = new Random();
         //populate combobox of available algorithms
         GetAlgorithmResponse getAlgorithmResponse = webTestClient.get()
@@ -160,13 +168,21 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .returnResult()
                     .getResponseBody();
             assertThat(executeAlgorithmResponse).isNotNull();
-            assertThat(executeAlgorithmResponse.getIdRequester()).isGreaterThan(0L);
-            assertThat(executeAlgorithmResponse.getMaxExecutionTime()).isGreaterThan(0L);
+            assertThat(executeAlgorithmResponse.getIdRequester()).isPositive();
+            assertThat(executeAlgorithmResponse.getMaxExecutionTime()).isPositive();
             long idRequester = executeAlgorithmResponse.getIdRequester();
             //make getExecutionData delay fast for test
             long maxExecutionTime = 1000;
-            Objects.requireNonNull(algorithmCompareDAO.findDocument(idRequester).collectList().block()).forEach(x -> {
-                algorithmCompareDAO.saveDocumentTest(x.getId(), x.getArray(), x.getIdRequester(), 1, x.getMoveOrder(), x.getIndexOfSwappedElement()).block();
+            Objects.requireNonNull(algorithmRepository.findByIdRequester(idRequester).collectList().block()).forEach(x -> {
+                algorithmRepository.save(AlgorithmDocument.builder()
+                        .id(x.getId())
+                        .array(x.getArray())
+                        .idRequester(x.getIdRequester())
+                        .moveExecutionTime(1)
+                        .moveOrder(x.getMoveOrder())
+                        .indexOfSwappedElement(x.getIndexOfSwappedElement())
+                        .build()).block();
+
             });
             //get algorithm execution generated data, to display onscreen
             List<GetExecutionDataResponse> getExecutionDataResponse = webTestClient.get()
@@ -200,7 +216,7 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .returnResult()
                     .getResponseBody();
             assertThat(deleteExecuteAlgorithmDataResponse).isNotNull();
-            assertThat(deleteExecuteAlgorithmDataResponse.getRecordEliminated()).isGreaterThan(0);
+            assertThat(deleteExecuteAlgorithmDataResponse.getRecordEliminated()).isPositive();
         }
 
     }

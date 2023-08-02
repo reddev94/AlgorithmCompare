@@ -34,7 +34,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>${maven-ant.version}</version><!-- <version>1.6</version> -->
+                <version>${maven-ant.version}</version>
                 <executions>
                     <execution>
                         <id>unzip jar file</id>
@@ -70,7 +70,7 @@
                         <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal> <!-- <goal>attached</goal> -->
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>

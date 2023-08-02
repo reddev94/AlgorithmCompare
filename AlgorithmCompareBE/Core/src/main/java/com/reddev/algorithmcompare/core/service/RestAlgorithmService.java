@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.security.SecureRandom;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Service
@@ -62,16 +62,15 @@ public class RestAlgorithmService {
 
     public GenerateArrayResponse generateArray(int length) {
 
-        List<Integer> list = new ArrayList<>();
-        Random rand = new Random(Double.doubleToLongBits(Math.random()));
-        while (list.size() < length) {
-            int number = rand.nextInt(AlgorithmCompareUtil.ARRAY_MAX_VALUE) + 1;
-            if (!list.contains(number)) {
-                list.add(number);
-            }
+        Set<Integer> uniqueValues = new HashSet<>();
+        SecureRandom secureRand = new SecureRandom();
+
+        while (uniqueValues.size() < length) {
+            int number = secureRand.nextInt(AlgorithmCompareUtil.ARRAY_MAX_VALUE) + 1;
+            uniqueValues.add(number);
         }
 
-        return new GenerateArrayResponse(list.stream().mapToInt(Integer::intValue).toArray());
+        return new GenerateArrayResponse(uniqueValues.stream().mapToInt(Integer::intValue).toArray());
 
     }
 
@@ -80,7 +79,7 @@ public class RestAlgorithmService {
 
         List<String> availableAlgorithms = Stream.of(AlgorithmEnum.values())
                 .map(AlgorithmEnum::getValue)
-                .collect(Collectors.toList());
+                .toList();
 
         return new GetAlgorithmResponse(availableAlgorithms);
 

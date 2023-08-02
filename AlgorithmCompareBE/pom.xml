@@ -28,6 +28,7 @@
         <java.version>20</java.version>
         <maven.compiler.source>20</maven.compiler.source>
         <maven.compiler.target>20</maven.compiler.target>
+        <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
         <maven-jar.version>3.3.0</maven-jar.version>
         <maven-assembly.version>3.6.0</maven-assembly.version>
         <maven-ant.version>3.1.0</maven-ant.version>
@@ -38,6 +39,14 @@
         <embed-mongo.version>4.7.0</embed-mongo.version>
         <pf4j.version>3.9.0</pf4j.version>
         <pf4j-spring.version>0.8.0</pf4j-spring.version>
+        <!-- JaCoCo Properties -->
+        <jacoco.version>0.8.10</jacoco.version>
+        <jacoco-outputPath>${project.build.directory}/jacoco.exec</jacoco-outputPath>
+        <jacoco-it-outputPath>${project.build.directory}/jacoco-it.exec</jacoco-it-outputPath>
+        <!-- SonarQube -->
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.language>java</sonar.language>
     </properties>
 
     <dependencies>
@@ -62,7 +71,53 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Jacoco Maven Plugin -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <formats>
+                                <format>XML</format>
+                            </formats>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <!-- SonarQube Plugin -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <repositories>
         <repository>

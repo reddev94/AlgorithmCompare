@@ -44,7 +44,7 @@ public class LoggingAspect {
 		final StopWatch stopWatch = new StopWatch();
 		log.info("Call to rest api " + apiPath + " with request: " + getArguments(joinPoint));
 		Object result = executeMillisMethod(joinPoint, stopWatch);
-		log.info("Rest api " + apiPath + " executed in {} ms, with response: " + getResult(joinPoint, result),
+		log.info("Rest api " + apiPath + " executed in {} ms, with response: " + getResult(result),
 				stopWatch.getTotalTimeMillis());
 		return result;
 	}
@@ -64,7 +64,7 @@ public class LoggingAspect {
 			throw new DatabaseException(AlgorithmCompareUtil.RESULT_CODE_DB_ERROR, AlgorithmCompareUtil.RESULT_DESCRIPTION_DB_ERROR);
 		}
 		log.info("Query " + className + "." + methodName + "() executed in " + stopWatch.getTotalTimeMillis() + " ms");
-		log.debug("with response: " + getResult(joinPoint, result));
+		log.debug("with response: " + getResult(result));
 		return result;
 	}
 
@@ -89,7 +89,7 @@ public class LoggingAspect {
 		return arguments;
 	}
 
-	private String getResult(ProceedingJoinPoint joinPoint, Object result) {
+	private String getResult(Object result) {
 		String resultString = "empty";
 		if (result != null) {
 			int resultLength = result.toString().length();

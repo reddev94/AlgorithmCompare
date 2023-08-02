@@ -22,7 +22,7 @@ public class CacheConfiguration {
     @Bean
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
 
-        return (builder) ->
+        return builder ->
                 cacheDataReader.getServices().forEach(el -> builder
                         .withCacheConfiguration(el.getName(),
                                 RedisCacheConfiguration.defaultCacheConfig()
