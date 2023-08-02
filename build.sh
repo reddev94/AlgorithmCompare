@@ -1,13 +1,12 @@
 #!/bin/bash
-export NODE_OPTIONS=--openssl-legacy-provider;
 
 echo "cd AlgorithmCompareFE"
 cd AlgorithmCompareFE
 
 sleep 2
 
-echo "ng build"
-ng build
+echo "ng build --prod"
+ng build --prod
 
 sleep 2
 
