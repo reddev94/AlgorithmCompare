@@ -18,4 +18,8 @@ public class TestUtil {
     public static ExecuteAlgorithmRequest forgeExecuteAlgorithmRequest(AlgorithmEnum algorithmEnum, int[] array) {
         return ExecuteAlgorithmRequest.builder().algorithm(algorithmEnum.getValue()).array(array).build();
     }
+
+    public static ExecuteAlgorithmRequest forgeExecuteAlgorithmRequestInvalid(String algorithmEnum, int[] array) {
+        return ExecuteAlgorithmRequest.builder().algorithm(algorithmEnum).array(array).build();
+    }
 }

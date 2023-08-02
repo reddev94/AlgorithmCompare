@@ -21,11 +21,9 @@ public class AlgorithmCompareUtil {
     public static final String RESULT_DESCRIPTION_DB_ERROR = "KO - error during db operation";
     public static final int RESULT_CODE_ARRAY_LENGTH_ERROR = -3;
     public static final String RESULT_DESCRIPTION_ARRAY_LENGTH_ERROR = "KO - invalid Array length, should be between " + ARRAY_MIN_SIZE + " and " + ARRAY_MAX_SIZE;
-    public static final int RESULT_CODE_REQUEST_NULL = -4;
-    public static final String RESULT_DESCRIPTION_REQUEST_NULL = "KO - request object is null";
-    public static final int RESULT_CODE_INVALID_ALGORITHM = -5;
+    public static final int RESULT_CODE_INVALID_ALGORITHM = -4;
     public static final String RESULT_DESCRIPTION_INVALID_ALGORITHM = "KO - invalid algorithm";
-    public static final int RESULT_CODE_INVALID_ID_REQUESTER = -6;
+    public static final int RESULT_CODE_INVALID_ID_REQUESTER = -5;
     public static final String RESULT_DESCRIPTION_INVALID_ID_REQUESTER = "KO - invalid id requester";
 
     public static final Scheduler SCHEDULER = Schedulers.parallel();

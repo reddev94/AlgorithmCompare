@@ -22,10 +22,6 @@ public class RequestValidator {
 
     public static void checkExecuteAlgorithmRequest(ExecuteAlgorithmRequest request) {
 
-        if (request == null) {
-            throw new ValidationException(AlgorithmCompareUtil.RESULT_CODE_REQUEST_NULL, AlgorithmCompareUtil.RESULT_DESCRIPTION_REQUEST_NULL);
-        }
-
         if (!StringUtils.hasText(request.getAlgorithm()) ||
                 Arrays.stream(AlgorithmEnum.values()).noneMatch(el -> el.getValue().equals(request.getAlgorithm()))) {
             throw new ValidationException(AlgorithmCompareUtil.RESULT_CODE_INVALID_ALGORITHM, AlgorithmCompareUtil.RESULT_DESCRIPTION_INVALID_ALGORITHM);

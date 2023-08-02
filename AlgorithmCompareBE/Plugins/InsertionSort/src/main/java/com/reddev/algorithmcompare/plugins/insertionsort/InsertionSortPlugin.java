@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.pf4j.PluginWrapper;
 import org.pf4j.spring.SpringPlugin;
 import org.pf4j.spring.SpringPluginManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -15,6 +16,7 @@ public class InsertionSortPlugin extends SpringPlugin {
     }
 
     @Override
+    @CacheEvict(value = "executeAlgorithm", allEntries = true)
     public void start() {
         log.info("InsertionSortPlugin.start()");
     }

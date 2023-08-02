@@ -25,6 +25,98 @@ public class RestControllerTest extends AlgorithmCompareTest {
     private AlgorithmCompareDAOImplTest algorithmCompareDAO;
 
     @Test
+    public void generateArrayLengthError() {
+        ErrorResponseDTO errorResponseDTO = webTestClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path(TestUtil.PATH_GENERATE_ARRAY)
+                                .queryParam(TestUtil.PARAM_LENGTH, 40)
+                                .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ErrorResponseDTO.class)
+                .returnResult()
+                .getResponseBody();
+        assertThat(errorResponseDTO).isNotNull();
+        assertThat(errorResponseDTO.getMessage()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_ARRAY_LENGTH_ERROR);
+        assertThat(errorResponseDTO.getError()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_ARRAY_LENGTH_ERROR);
+    }
+
+    @Test
+    public void executeAlgorithmRequestAlgorithmInvalid() {
+        ErrorResponseDTO errorResponseDTO = webTestClient.post()
+                .uri(TestUtil.PATH_EXECUTE_ALGORITHM)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequestInvalid("", new int[]{})), ExecuteAlgorithmRequest.class)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ErrorResponseDTO.class)
+                .returnResult()
+                .getResponseBody();
+        assertThat(errorResponseDTO).isNotNull();
+        assertThat(errorResponseDTO.getMessage()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_INVALID_ALGORITHM);
+        assertThat(errorResponseDTO.getError()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_INVALID_ALGORITHM);
+    }
+
+    @Test
+    public void executeAlgorithmRequestArrayLength() {
+        ErrorResponseDTO errorResponseDTO = webTestClient.post()
+                .uri(TestUtil.PATH_EXECUTE_ALGORITHM)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequest(AlgorithmEnum.get("QUICK SORT"), new int[]{})), ExecuteAlgorithmRequest.class)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ErrorResponseDTO.class)
+                .returnResult()
+                .getResponseBody();
+        assertThat(errorResponseDTO).isNotNull();
+        assertThat(errorResponseDTO.getMessage()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_ARRAY_LENGTH_ERROR);
+        assertThat(errorResponseDTO.getError()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_ARRAY_LENGTH_ERROR);
+    }
+
+    @Test
+    public void getExecutionDataIdRequester() {
+        ErrorResponseDTO errorResponseDTO = webTestClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path(TestUtil.PATH_GET_EXECUTION_DATA)
+                                .queryParam(TestUtil.PARAM_ID_REQUESTER, -1)
+                                .queryParam(TestUtil.PARAM_MAX_MOVE_EXECUTION_TIME, 1000)
+                                .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ErrorResponseDTO.class)
+                .returnResult()
+                .getResponseBody();
+        assertThat(errorResponseDTO).isNotNull();
+        assertThat(errorResponseDTO.getMessage()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_INVALID_ID_REQUESTER);
+        assertThat(errorResponseDTO.getError()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_INVALID_ID_REQUESTER);
+    }
+
+    @Test
+    public void deleteExecutionDataIdRequester() {
+        ErrorResponseDTO errorResponseDTO = webTestClient.delete()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .path(TestUtil.PATH_DELETE_ALGORITHM_DATA)
+                                .queryParam(TestUtil.PARAM_ID_REQUESTER, -1)
+                                .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ErrorResponseDTO.class)
+                .returnResult()
+                .getResponseBody();
+        assertThat(errorResponseDTO).isNotNull();
+        assertThat(errorResponseDTO.getMessage()).isEqualTo(AlgorithmCompareUtil.RESULT_DESCRIPTION_INVALID_ID_REQUESTER);
+        assertThat(errorResponseDTO.getError()).isEqualTo(AlgorithmCompareUtil.RESULT_CODE_INVALID_ID_REQUESTER);
+    }
+
+    @Test
     public void testExecuteAllAlgorithms() {
         Random rand = new Random();
         //populate combobox of available algorithms
@@ -92,7 +184,6 @@ public class RestControllerTest extends AlgorithmCompareTest {
                     .getResponseBody();
             assertThat(getExecutionDataResponse).isNotNull();
             for (GetExecutionDataResponse data : getExecutionDataResponse) {
-                //TODO potrebbe servire verificare il nuovo campo aggiunto alal response, quello che torna processing = 1
                 assertThat(data.getArray()).hasSizeBetween(0, length);
             }
             //delete all data of idRequester before close the app
