@@ -37,8 +37,7 @@ logging:
 
 cors:
   allowed:
-    origins: http://localhost
-    # origins: https://algorithm-compare.herokuapp.com
+    origins: http://localhost:4200
 
 job:
   seconds:

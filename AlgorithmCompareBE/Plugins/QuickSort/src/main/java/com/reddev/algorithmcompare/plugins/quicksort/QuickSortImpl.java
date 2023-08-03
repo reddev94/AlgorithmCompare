@@ -4,7 +4,10 @@ import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
+import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import org.pf4j.Extension;
+
+import java.util.List;
 
 @Extension(ordinal = 1)
 public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
@@ -46,21 +49,39 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
             if (data.getArray()[j] <= pi) {
                 i++;
                 if (i != j) {
+                    //before swap
+                    data.setSwappedElementInfo(generateSwappedElementInfo(
+                            List.of(j, i, high),
+                            List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
+                    ));
+                    saveOnDb(data);
                     //swap intArray[i] and intArray[j]
                     int temp = data.getArray()[i];
                     data.getArray()[i] = data.getArray()[j];
                     data.getArray()[j] = temp;
-                    data.setIndexOfSwappedElement(j);
+                    data.setSwappedElementInfo(generateSwappedElementInfo(
+                            List.of(i, j, high),
+                            List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
+                    ));
                     saveOnDb(data);
                 }
             }
         }
         if ((i + 1) != high) {
+            //before swap
+            data.setSwappedElementInfo(generateSwappedElementInfo(
+                    List.of(i + 1, high),
+                    List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
+            ));
+            saveOnDb(data);
             //swap intArray[i+1] and intArray[high] (or pi)
             int temp = data.getArray()[i + 1];
             data.getArray()[i + 1] = data.getArray()[high];
             data.getArray()[high] = temp;
-            data.setIndexOfSwappedElement(high);
+            data.setSwappedElementInfo(generateSwappedElementInfo(
+                    List.of(i + 1, high),
+                    List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
+            ));
             saveOnDb(data);
         }
         return i + 1;

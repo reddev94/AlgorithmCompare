@@ -1,10 +1,12 @@
 package com.reddev.algorithmcompare.plugins.pluginmodel;
 
+import com.reddev.algorithmcompare.common.domain.entity.SwappedElementInfo;
 import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -18,6 +20,6 @@ public class BaseAlgorithmExecutionData implements Serializable {
     private long moveOrder;
     private long initialTime;
     private long maxExecutionTime;
-    private int indexOfSwappedElement;
+    private List<SwappedElementInfo> swappedElementInfo;
 
 }

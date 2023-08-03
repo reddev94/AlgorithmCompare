@@ -57,7 +57,7 @@ class RestControllerTest {
                 .uri(TestUtil.PATH_EXECUTE_ALGORITHM)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequestInvalid("", new int[]{})), ExecuteAlgorithmRequest.class)
+                .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequestInvalid("", new int[]{}, AlgorithmCompareUtil.getTimestamp())), ExecuteAlgorithmRequest.class)
                 .exchange()
                 .expectStatus().isBadRequest()
                 .expectBody(ErrorResponseDTO.class)
@@ -74,7 +74,7 @@ class RestControllerTest {
                 .uri(TestUtil.PATH_EXECUTE_ALGORITHM)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequest(AlgorithmEnum.get("QUICK SORT"), new int[]{})), ExecuteAlgorithmRequest.class)
+                .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequest(AlgorithmEnum.get("QUICK SORT"), new int[]{}, AlgorithmCompareUtil.getTimestamp())), ExecuteAlgorithmRequest.class)
                 .exchange()
                 .expectStatus().isBadRequest()
                 .expectBody(ErrorResponseDTO.class)
@@ -161,7 +161,7 @@ class RestControllerTest {
                     .uri(TestUtil.PATH_EXECUTE_ALGORITHM)
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequest(AlgorithmEnum.get(algorithm), generateArrayResponse.getArray())), ExecuteAlgorithmRequest.class)
+                    .body(Mono.just(TestUtil.forgeExecuteAlgorithmRequest(AlgorithmEnum.get(algorithm), generateArrayResponse.getArray(), AlgorithmCompareUtil.getTimestamp())), ExecuteAlgorithmRequest.class)
                     .exchange()
                     .expectStatus().isCreated()
                     .expectBody(ExecuteAlgorithmResponse.class)
@@ -180,7 +180,7 @@ class RestControllerTest {
                         .idRequester(x.getIdRequester())
                         .moveExecutionTime(1)
                         .moveOrder(x.getMoveOrder())
-                        .indexOfSwappedElement(x.getIndexOfSwappedElement())
+                        .swappedElementInfo(x.getSwappedElementInfo())
                         .build()).block();
 
             });

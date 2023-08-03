@@ -4,7 +4,10 @@ import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
+import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import org.pf4j.Extension;
+
+import java.util.List;
 
 @Extension(ordinal = 1)
 public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
@@ -59,13 +62,19 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
             if (tempArray[i] <= tempArray[j]) {
                 // swap
                 data.getArray()[k] = tempArray[i];
-                data.setIndexOfSwappedElement(k);
+                data.setSwappedElementInfo(generateSwappedElementInfo(
+                        List.of(k, i),
+                        List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
+                ));
                 saveOnDb(data);
                 i++;
             } else {
                 // swap
                 data.getArray()[k] = tempArray[j];
-                data.setIndexOfSwappedElement(k);
+                data.setSwappedElementInfo(generateSwappedElementInfo(
+                        List.of(k, j),
+                        List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
+                ));
                 saveOnDb(data);
                 j++;
             }
@@ -76,7 +85,10 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
         while (i <= mid) {
             // swap
             data.getArray()[k] = tempArray[i];
-            data.setIndexOfSwappedElement(k);
+            data.setSwappedElementInfo(generateSwappedElementInfo(
+                    List.of(k, i),
+                    List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
+            ));
             saveOnDb(data);
             i++;
             k++;
@@ -86,7 +98,10 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
         while (j <= right) {
             // swap
             data.getArray()[k] = tempArray[j];
-            data.setIndexOfSwappedElement(k);
+            data.setSwappedElementInfo(generateSwappedElementInfo(
+                    List.of(k, j),
+                    List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
+            ));
             saveOnDb(data);
             j++;
             k++;

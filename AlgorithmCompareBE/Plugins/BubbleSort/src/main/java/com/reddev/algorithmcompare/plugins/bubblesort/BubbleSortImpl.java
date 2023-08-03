@@ -4,7 +4,10 @@ import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
+import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import org.pf4j.Extension;
+
+import java.util.List;
 
 @Extension(ordinal = 1)
 public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
@@ -32,11 +35,20 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
         for (int i = 0; i < n; i++) {
             for (int j = 1; j < (n - i); j++) {
                 if (data.getArray()[j - 1] > data.getArray()[j]) {
+                    //before swap
+                    data.setSwappedElementInfo(generateSwappedElementInfo(
+                            List.of(j - 1, j),
+                            List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
+                    ));
+                    saveOnDb(data);
                     //swap elements
                     temp = data.getArray()[j - 1];
                     data.getArray()[j - 1] = data.getArray()[j];
                     data.getArray()[j] = temp;
-                    data.setIndexOfSwappedElement(j);
+                    data.setSwappedElementInfo(generateSwappedElementInfo(
+                            List.of(j - 1, j),
+                            List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
+                    ));
                     saveOnDb(data);
                 }
             }

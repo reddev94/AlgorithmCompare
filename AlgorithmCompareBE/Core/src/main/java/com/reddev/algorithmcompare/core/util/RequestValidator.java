@@ -28,6 +28,7 @@ public class RequestValidator {
         }
 
         checkArrayLength(request.getArray().length);
+        checkIdRequester(request.getIdRequester());
 
     }
 

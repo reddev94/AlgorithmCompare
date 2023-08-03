@@ -4,8 +4,12 @@ import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
 import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
+import com.reddev.algorithmcompare.common.domain.entity.SwappedElementInfo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Log4j2
 public class BaseAlgorithm {
@@ -21,7 +25,7 @@ public class BaseAlgorithm {
         //calculate move execution time and save on db
         long actualTime = calculateTimestamp();
         long moveExecutionTime = (actualTime - data.getInitialTime()) + 1L; //add 1 millisecond to avoid 0 as moveExecutionTime
-        saveRecord(data.getIdRequester(), data.getArray(), data.getMoveOrder(), moveExecutionTime, data.getIndexOfSwappedElement());
+        saveRecord(data.getIdRequester(), data.getArray(), data.getMoveOrder(), moveExecutionTime, data.getSwappedElementInfo());
         //save MAX moveExecutionTime
         if (data.getMaxExecutionTime() < moveExecutionTime) {
             data.setMaxExecutionTime(moveExecutionTime);
@@ -30,14 +34,20 @@ public class BaseAlgorithm {
         data.setInitialTime(actualTime);
     }
 
-    private void saveRecord(long idRequester, int[] array, long moveOrder, long moveExecutionTime, int indexOfSwappedElement) {
+    private void saveRecord(long idRequester, int[] array, long moveOrder, long moveExecutionTime, List<SwappedElementInfo> swappedElementInfo) {
         algorithmRepository.save(AlgorithmDocument.builder()
                         .array(array)
-                        .idRequester(idRequester).
-                        moveExecutionTime(moveExecutionTime).
-                        moveOrder(moveOrder)
-                        .indexOfSwappedElement(indexOfSwappedElement)
+                        .idRequester(idRequester)
+                        .moveExecutionTime(moveExecutionTime)
+                        .moveOrder(moveOrder)
+                        .swappedElementInfo(swappedElementInfo)
                         .build()).publishOn(AlgorithmCompareUtil.SCHEDULER)
                 .subscribe();
+    }
+
+    protected List<SwappedElementInfo> generateSwappedElementInfo(List<Integer> indices, List<String> colors) {
+        return IntStream.range(0, indices.size())
+                .mapToObj(i -> new SwappedElementInfo(indices.get(i), colors.get(i)))
+                .toList();
     }
 }

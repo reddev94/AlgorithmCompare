@@ -19,5 +19,6 @@ public class ExecuteAlgorithmRequest implements Serializable {
 
     private String algorithm;
     private int[] array;
+    private long idRequester;
 
 }

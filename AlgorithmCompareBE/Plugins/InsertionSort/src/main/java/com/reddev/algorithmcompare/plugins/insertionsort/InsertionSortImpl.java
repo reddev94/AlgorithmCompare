@@ -4,7 +4,10 @@ import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
+import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import org.pf4j.Extension;
+
+import java.util.List;
 
 @Extension(ordinal = 1)
 public class InsertionSortImpl extends BaseAlgorithm implements Algorithm {
@@ -38,13 +41,19 @@ public class InsertionSortImpl extends BaseAlgorithm implements Algorithm {
             // Shift elements greater than the key to the right
             while (j >= 0 && data.getArray()[j] > key) {
                 data.getArray()[j + 1] = data.getArray()[j];
-                data.setIndexOfSwappedElement(j + 1);
+                data.setSwappedElementInfo(generateSwappedElementInfo(
+                        List.of(i, j + 1),
+                        List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
+                ));
                 saveOnDb(data);
                 j--;
             }
 
             data.getArray()[j + 1] = key; // Insert the key into the correct position
-            data.setIndexOfSwappedElement(j + 1);
+            data.setSwappedElementInfo(generateSwappedElementInfo(
+                    List.of(i, j + 1),
+                    List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
+            ));
             saveOnDb(data);
         }
 

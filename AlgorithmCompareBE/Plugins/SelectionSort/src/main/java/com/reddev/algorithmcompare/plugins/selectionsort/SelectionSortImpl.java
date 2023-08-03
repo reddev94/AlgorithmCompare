@@ -4,7 +4,10 @@ import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
+import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import org.pf4j.Extension;
+
+import java.util.List;
 
 @Extension(ordinal = 1)
 public class SelectionSortImpl extends BaseAlgorithm implements Algorithm {
@@ -47,7 +50,10 @@ public class SelectionSortImpl extends BaseAlgorithm implements Algorithm {
                 int temp = data.getArray()[i];
                 data.getArray()[i] = data.getArray()[minIndex];
                 data.getArray()[minIndex] = temp;
-                data.setIndexOfSwappedElement(minIndex);
+                data.setSwappedElementInfo(generateSwappedElementInfo(
+                        List.of(i, minIndex),
+                        List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
+                ));
                 saveOnDb(data);
             }
 

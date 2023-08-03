@@ -1,6 +1,8 @@
+import { SwappedElementInfo } from './algorithm-data';
+
 export class ExecutionData {
   array: number[];
-  swappedElement: number;
+  swappedElements: SwappedElementInfo[];
 
   constructor() {
   }

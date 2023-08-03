@@ -1,6 +1,7 @@
 package com.reddev.algorithmcompare.core;
 
 import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
+import com.reddev.algorithmcompare.common.domain.entity.SwappedElementInfo;
 import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
@@ -31,10 +32,10 @@ public class AlgorithmCompare implements CommandLineRunner {
         log.info("Insert document to initialize database");
         algorithmRepository.save(AlgorithmDocument.builder()
                 .array(null)
-                .idRequester(-1).
-                moveExecutionTime(0).
-                moveOrder(0)
-                .indexOfSwappedElement(0)
+                .idRequester(-1)
+                .moveExecutionTime(0)
+                .moveOrder(0)
+                .swappedElementInfo(List.of(new SwappedElementInfo(0, "")))
                 .build()).publishOn(AlgorithmCompareUtil.SCHEDULER)
                 .block();
         algorithmRepository.deleteByIdRequester(-1).publishOn(AlgorithmCompareUtil.SCHEDULER).subscribe();

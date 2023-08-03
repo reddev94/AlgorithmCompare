@@ -15,11 +15,11 @@ public class TestUtil {
     public static final String PARAM_ID_REQUESTER = "idRequester";
     public static final String PARAM_MAX_MOVE_EXECUTION_TIME = "maxMoveExecutionTime";
 
-    public static ExecuteAlgorithmRequest forgeExecuteAlgorithmRequest(AlgorithmEnum algorithmEnum, int[] array) {
-        return ExecuteAlgorithmRequest.builder().algorithm(algorithmEnum.getValue()).array(array).build();
+    public static ExecuteAlgorithmRequest forgeExecuteAlgorithmRequest(AlgorithmEnum algorithmEnum, int[] array, long idRequester) {
+        return ExecuteAlgorithmRequest.builder().algorithm(algorithmEnum.getValue()).array(array).idRequester(idRequester).build();
     }
 
-    public static ExecuteAlgorithmRequest forgeExecuteAlgorithmRequestInvalid(String algorithmEnum, int[] array) {
-        return ExecuteAlgorithmRequest.builder().algorithm(algorithmEnum).array(array).build();
+    public static ExecuteAlgorithmRequest forgeExecuteAlgorithmRequestInvalid(String algorithmEnum, int[] array, long idRequester) {
+        return ExecuteAlgorithmRequest.builder().algorithm(algorithmEnum).array(array).idRequester(idRequester).build();
     }
 }

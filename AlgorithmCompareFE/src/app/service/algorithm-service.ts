@@ -15,7 +15,7 @@ import { subscribeOn, delay } from 'rxjs/operators';
 })
 export class AlgorithmService {
   private PORT = window.location.port;
-  private BASE_URL = 'https://algorithm-compare.herokuapp.com:' + this.PORT;
+  private BASE_URL = 'http://localhost:8080' //+ this.PORT;
   private AVAILABLE_ALGORITHM_URL = this.BASE_URL + '/blocking/getAlgorithms';
   private GENERATE_ARRAY_URL = this.BASE_URL + '/blocking/generateArray';
   private EXECUTE_ALGORITHM_URL = this.BASE_URL + '/reactive/executeAlgorithm';
@@ -39,7 +39,8 @@ export class AlgorithmService {
 
   public executeAlgorithm(algorithmRequest: string, arrayRequest: number[]): Observable<ExecuteAlgorithm> {
     console.log('Call to execute algorithm rest api');
-    var body = {algorithm: algorithmRequest, array: arrayRequest};
+    var idRequester = Date.now();
+    var body = {algorithm: algorithmRequest, array: arrayRequest, idRequester: idRequester};
     return this.http.post<ExecuteAlgorithm>(this.EXECUTE_ALGORITHM_URL, body);
   }
 
@@ -61,13 +62,12 @@ export class AlgorithmService {
     			    var message = {
     			      array: json['array'],
     			      moveExecutionTime: json['moveExecutionTime'],
-    			      indexOfSwappedElement: json['indexOfSwappedElement'],
-    			      resultCode: json['resultCode'],
-    			      resultDescription: json['resultDescription'],
+    			      swappedElementInfo: json['swappedElementInfo'],
+    			      executionStatus: json['executionStatus'],
     			      arrayIdentifier: arrayId
     			    }
     			    observer.next(message);
-    			    if(message.resultCode==0) {
+    			    if(message.executionStatus==0) {
     			      observer.complete();
                 eventSource.close();
     			    }
@@ -77,7 +77,6 @@ export class AlgorithmService {
     			    eventSource.close();
     	      };
           })
-          //.pipe(subscribeOn(asyncScheduler));
   }
 
 }

@@ -2,14 +2,17 @@ package com.reddev.algorithmcompare.core.service;
 
 import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
+import com.reddev.algorithmcompare.common.domain.entity.SwappedElementInfo;
 import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.core.domain.rest.*;
+import com.reddev.algorithmcompare.core.util.CoreUtil;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
+import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,15 +32,15 @@ public class RestAlgorithmService {
 
     private final List<Algorithm> algorithms;
     private final AlgorithmRepository algorithmRepository;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    @Cacheable(value = "executeAlgorithm", key = "#algorithm.value.concat('_').concat(#inputArray)")
-    public ExecuteAlgorithmResponse executeAlgorithm(AlgorithmEnum algorithm, int[] inputArray) {
+    @Cacheable(value = "executeAlgorithm", key = "'!'.concat(#algorithm.value).concat('!_').concat(#inputArray).concat('_!').concat(#idRequester).concat('!')")
+    public ExecuteAlgorithmResponse executeAlgorithm(AlgorithmEnum algorithm, int[] inputArray, long idRequester) {
 
         return algorithms
                 .stream()
                 .filter(impl -> impl.getName().equals(algorithm.getValue()))
                 .map(element -> {
-                    long idRequester = AlgorithmCompareUtil.getTimestamp();
                     log.info("idRequester created = " + idRequester);
                     long maxMoveExecutionTime = element.execute(inputArray, idRequester);
                     log.info("Algorithm " + algorithm + " executed, maxMoveExecutionTime = " + maxMoveExecutionTime);
@@ -46,8 +49,9 @@ public class RestAlgorithmService {
 
     }
 
-    @CacheEvict(value = "executeAlgorithm", allEntries = true)
     public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(long idRequester) {
+
+        CoreUtil.deleteRedisCache(String.valueOf(idRequester), redisTemplate);
 
         DeleteExecuteAlgorithmDataResponse response = new DeleteExecuteAlgorithmDataResponse();
 
@@ -93,12 +97,12 @@ public class RestAlgorithmService {
                 .map(x -> {
                     log.debug("execution data moveOrder = " + x.getMoveOrder());
                     GetExecutionDataResponse response = buildGetExecutionDataResponse(
-                            x.getArray(), x.getMoveExecutionTime(), x.getIndexOfSwappedElement(), AlgorithmCompareUtil.RESULT_CODE_PROCESSING);
+                            x.getArray(), x.getMoveExecutionTime(), x.getSwappedElementInfo(), AlgorithmCompareUtil.RESULT_CODE_PROCESSING);
                     log.debug("requester: " + idRequester + " getExecutionData response = " + response);
                     return response;
                 })
                 .concatWithValues(buildGetExecutionDataResponse(
-                        new int[]{}, maxMoveExecutionTime, -1, AlgorithmCompareUtil.RESULT_CODE_OK))
+                        new int[]{}, maxMoveExecutionTime, List.of(new SwappedElementInfo(-1, StringToColor.RED.getValue())), AlgorithmCompareUtil.RESULT_CODE_OK))
                 .delayUntil(data -> {
                     long delay = (data.getMoveExecutionTime() * 1000) / maxMoveExecutionTime;
                     log.info("emitting data for requester " + idRequester + ", with delay of " + delay + ", getExecutionData response = " + data);
@@ -108,12 +112,12 @@ public class RestAlgorithmService {
 
     }
 
-    private GetExecutionDataResponse buildGetExecutionDataResponse(int[] array, long maxMoveExecutionTime, int indexOfSwappedElement, int resultCodeOk) {
+    private GetExecutionDataResponse buildGetExecutionDataResponse(int[] array, long maxMoveExecutionTime, List<SwappedElementInfo> swappedElementInfo, int resultCodeOk) {
 
         return GetExecutionDataResponse.builder()
                 .array(array)
                 .moveExecutionTime(maxMoveExecutionTime)
-                .indexOfSwappedElement(indexOfSwappedElement)
+                .swappedElementInfo(swappedElementInfo)
                 .executionStatus(resultCodeOk)
                 .build();
 

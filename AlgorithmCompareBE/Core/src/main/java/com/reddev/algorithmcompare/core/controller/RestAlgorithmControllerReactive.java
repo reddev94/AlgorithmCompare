@@ -27,7 +27,7 @@ public class RestAlgorithmControllerReactive {
 
         RequestValidator.checkExecuteAlgorithmRequest(request);
         return Mono.just(
-                restAlgorithmService.executeAlgorithm(AlgorithmEnum.get(request.getAlgorithm()), request.getArray()))
+                restAlgorithmService.executeAlgorithm(AlgorithmEnum.get(request.getAlgorithm()), request.getArray(), request.getIdRequester()))
                         .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
 
     }

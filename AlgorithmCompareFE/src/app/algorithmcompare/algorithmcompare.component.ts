@@ -7,6 +7,7 @@ import { Observable, forkJoin, merge } from 'rxjs';
 import { AlgorithmExecutionData } from '../model/algorithm-data';
 import { ArrayCanvasData } from '../model/array-canvas-data';
 import { ExecutionData } from '../model/execution-data';
+import { SwappedElementInfo } from '../model/algorithm-data';
 
 @Component({
   selector: 'app-algorithmcompare',
@@ -101,10 +102,10 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
           console.log(data);
           var arrayIdentifier = data.arrayIdentifier;
           console.log('response data array'+arrayIdentifier);
-          if(data.resultCode!=0) {
+          if(data.executionStatus!=0) {
             let executionData = new ExecutionData();
             executionData.array = data.array;
-            executionData.swappedElement = data.indexOfSwappedElement;
+            executionData.swappedElements = data.swappedElementInfo;
             if(arrayIdentifier == 1) {
               this.utilData.firstArrayExecutionData = executionData;
               this.drawArrayCanvas(1, false);
@@ -244,7 +245,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
 
   completeArrayCanvas(arrayIdentifier: number): void {
     let executionData = new ExecutionData();
-    executionData.swappedElement = -1;
+    executionData.swappedElements = [{index: -1, color: '#FF0000'}];
     if(arrayIdentifier == 1) {
       executionData.array = this.utilData.firstArrayExecutionData.array;
       this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, executionData);
@@ -269,7 +270,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
       if(firstDraw) {
         let executionData = new ExecutionData();
         executionData.array = this.utilData.array;
-        executionData.swappedElement = -2;
+        executionData.swappedElements = [{index: -2, color: '#FF0000'}];
         this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, executionData);
       } else {
         this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, this.utilData.firstArrayExecutionData);
@@ -281,7 +282,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
       if(firstDraw) {
         let executionData = new ExecutionData();
         executionData.array = this.utilData.array;
-        executionData.swappedElement = -2;
+        executionData.swappedElements = [{index: -2, color: '#FF0000'}];
         this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, executionData);
       } else {
         this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, this.utilData.secondArrayExecutionData);
@@ -302,16 +303,38 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     context.fillText(name, xpos, ypos);
   }
 
-  drawBarChart(context, executionData){
-    for(let element=0; element<executionData.array.length; element++) {
-      if(executionData.swappedElement == element || executionData.swappedElement == -1) {
-        context.fillStyle = "#FF0000";
-      } else {
-        context.fillStyle = "#36b5d8";
+  drawBarChart(context, executionData) {
+      for (let element = 0; element < executionData.array.length; element++) {
+          console.log('element='+element+', executionData.array[element]='+executionData.array[element]);
+          let isDefaultColor = false;
+          let isRedColor = false;
+          let swpElement = 0;
+          while (swpElement < executionData.swappedElements.length) {
+              console.log('swpElement='+swpElement+', executionData.swappedElements[swpElement]'+JSON.stringify(executionData.swappedElements[swpElement], null, 2));
+              if (executionData.swappedElements[swpElement].index !== element) {
+              console.log('ciao1');
+                  isDefaultColor = true;
+                  break;
+              } else if(executionData.swappedElements[swpElement].index === -1) {
+              console.log('ciao2');
+                  isRedColor = true;
+                  break;
+              }
+              swpElement++;
+          }
+          if (isDefaultColor) {
+              // default, shade of blue color
+              context.fillStyle = "#36b5d8";
+          } else if(isRedColor) {
+              // red color
+              context.fillStyle = "##FF0000";
+          } else {
+              // custom color
+              context.fillStyle = executionData.swappedElements[swpElement].color;
+          }
+          context.fillRect(5 + element * 40, this.arrayGraphHeight - executionData.array[element] * 2 - 20, 30, executionData.array[element] * 2);
+          this.addColumnName(context, executionData.array[element], 13 + element * 40, this.arrayGraphHeight - 5);
       }
-      context.fillRect(5 + element*40, this.arrayGraphHeight-executionData.array[element]*2-20, 30, executionData.array[element]*2);
-      this.addColumnName(context, executionData.array[element], 13 + element*40, this.arrayGraphHeight-5);
-    }
-  }
+}
 
 }
