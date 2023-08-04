@@ -9,7 +9,7 @@
           </option>
         </select>
         <button color="primary" (click)="generateArray()">Generate array</button>
-        <input id="arrayLength" type="text" formControlName="arrayLength" placeholder="insert size between 10 and 30">
+        <input id="arrayLength" type="text" formControlName="arrayLength" placeholder="insert size from 10 to 50">
         <ng-container *ngIf="this.utilData.array">
           ARRAY: {{this.utilData.array}}
         </ng-container>

@@ -58,7 +58,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
         next: data => {
           console.log(data);
           this.utilData.array = data.array;
-          this.arrayGraphWidth = 40*data.array.length;
+          this.arrayGraphWidth = 30*data.array.length;
         },
         error: data => {
           console.log('Error during comunication');
@@ -330,8 +330,8 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
               //default, silver
               context.fillStyle = "#C0C0C0";
           }
-          context.fillRect(5 + element * 40, this.arrayGraphHeight - executionData.array[element] * 2 - 20, 30, executionData.array[element] * 2);
-          this.addColumnName(context, executionData.array[element], 13 + element * 40, this.arrayGraphHeight - 5);
+          context.fillRect(5 + element * 30, this.arrayGraphHeight - executionData.array[element] * 2 - 20, 20, executionData.array[element] * 2);
+          this.addColumnName(context, executionData.array[element], 8 + element * 30, this.arrayGraphHeight - 5);
       }
   }
 
