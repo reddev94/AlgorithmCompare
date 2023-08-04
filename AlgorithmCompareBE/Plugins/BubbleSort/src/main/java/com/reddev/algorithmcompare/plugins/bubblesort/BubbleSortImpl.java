@@ -35,21 +35,14 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
         for (int i = 0; i < n; i++) {
             for (int j = 1; j < (n - i); j++) {
                 if (data.getArray()[j - 1] > data.getArray()[j]) {
-                    //before swap
-                    data.setSwappedElementInfo(generateSwappedElementInfo(
-                            List.of(j - 1, j),
-                            List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
-                    ));
-                    saveOnDb(data);
-                    //swap elements
+                    // save before swap
+                    saveInfo(data, List.of(j - 1, j), List.of(StringToColor.RED.getValue(), StringToColor.BLUE.getValue()));
+                    // swap elements
                     temp = data.getArray()[j - 1];
                     data.getArray()[j - 1] = data.getArray()[j];
                     data.getArray()[j] = temp;
-                    data.setSwappedElementInfo(generateSwappedElementInfo(
-                            List.of(j - 1, j),
-                            List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
-                    ));
-                    saveOnDb(data);
+                    // save after swap
+                    saveInfo(data, List.of(j - 1, j), List.of(StringToColor.BLUE.getValue(), StringToColor.RED.getValue()));
                 }
             }
         }

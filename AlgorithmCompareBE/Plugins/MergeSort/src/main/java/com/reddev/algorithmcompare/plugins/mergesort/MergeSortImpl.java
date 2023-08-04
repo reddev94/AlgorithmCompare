@@ -60,22 +60,20 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
 
         while (i <= mid && j <= right) {
             if (tempArray[i] <= tempArray[j]) {
+                // save before swap
+                saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
                 // swap
                 data.getArray()[k] = tempArray[i];
-                data.setSwappedElementInfo(generateSwappedElementInfo(
-                        List.of(k, i),
-                        List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
-                ));
-                saveOnDb(data);
+                // save after swap
+                saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
                 i++;
             } else {
+                // save before swap
+                saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
                 // swap
                 data.getArray()[k] = tempArray[j];
-                data.setSwappedElementInfo(generateSwappedElementInfo(
-                        List.of(k, j),
-                        List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
-                ));
-                saveOnDb(data);
+                // save after swap
+                saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
                 j++;
             }
             k++;
@@ -83,26 +81,24 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
 
         // Copy the remaining elements from the left half (if any)
         while (i <= mid) {
+            // save before swap
+            saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
             // swap
             data.getArray()[k] = tempArray[i];
-            data.setSwappedElementInfo(generateSwappedElementInfo(
-                    List.of(k, i),
-                    List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
-            ));
-            saveOnDb(data);
+            // save after swap
+            saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
             i++;
             k++;
         }
 
         // Copy the remaining elements from the right half (if any)
         while (j <= right) {
+            // save before swap
+            saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
             // swap
             data.getArray()[k] = tempArray[j];
-            data.setSwappedElementInfo(generateSwappedElementInfo(
-                    List.of(k, j),
-                    List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
-            ));
-            saveOnDb(data);
+            // save after swap
+            saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
             j++;
             k++;
         }

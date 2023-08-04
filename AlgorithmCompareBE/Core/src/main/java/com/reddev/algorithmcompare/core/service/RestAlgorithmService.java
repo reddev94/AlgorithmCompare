@@ -19,10 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.SecureRandom;
 import java.time.Duration;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -74,7 +71,10 @@ public class RestAlgorithmService {
             uniqueValues.add(number);
         }
 
-        return new GenerateArrayResponse(uniqueValues.stream().mapToInt(Integer::intValue).toArray());
+        List<Integer> tempList = new ArrayList<>(uniqueValues);
+        Collections.shuffle(tempList);
+
+        return new GenerateArrayResponse(tempList.stream().mapToInt(Integer::intValue).toArray());
 
     }
 
@@ -104,7 +104,7 @@ public class RestAlgorithmService {
                 .concatWithValues(buildGetExecutionDataResponse(
                         new int[]{}, maxMoveExecutionTime, List.of(new SwappedElementInfo(-1, StringToColor.RED.getValue())), AlgorithmCompareUtil.RESULT_CODE_OK))
                 .delayUntil(data -> {
-                    long delay = (data.getMoveExecutionTime() * 1000) / maxMoveExecutionTime;
+                    long delay = (data.getMoveExecutionTime() * CoreUtil.MOVE_EXECUTION_TIME_SCALAR) / maxMoveExecutionTime;
                     log.info("emitting data for requester " + idRequester + ", with delay of " + delay + ", getExecutionData response = " + data);
                     return Mono.delay(Duration.ofMillis(delay));
                 })

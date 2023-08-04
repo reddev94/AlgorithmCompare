@@ -9,15 +9,15 @@ import java.util.*;
 @Log4j2
 public class CoreUtil {
 
+
+    public static final int MOVE_EXECUTION_TIME_SCALAR = 500;
     public static final Map<String, String> PLUGIN_ID_TO_ALGORITHM_MAP;
 
     static {
         // create a map between various plugin id (defined in the plugin.properties file) and the respective algorithm in the enum
         PLUGIN_ID_TO_ALGORITHM_MAP = new HashMap<>();
         PLUGIN_ID_TO_ALGORITHM_MAP.put("bubble-sort-plugin", AlgorithmEnum.BUBBLE_SORT.getValue());
-        //TODO verificare l'esecuzione
         PLUGIN_ID_TO_ALGORITHM_MAP.put("insertion-sort-plugin", AlgorithmEnum.INSERTION_SORT.getValue());
-        //TODO verificare l'esecuzione
         PLUGIN_ID_TO_ALGORITHM_MAP.put("merge-sort-plugin", AlgorithmEnum.MERGE_SORT.getValue());
         PLUGIN_ID_TO_ALGORITHM_MAP.put("quick-sort-plugin", AlgorithmEnum.QUICK_SORT.getValue());
         PLUGIN_ID_TO_ALGORITHM_MAP.put("selection-sort-plugin", AlgorithmEnum.SELECTION_SORT.getValue());

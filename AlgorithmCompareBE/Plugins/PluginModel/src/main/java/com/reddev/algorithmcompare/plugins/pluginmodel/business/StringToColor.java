@@ -13,6 +13,7 @@ public enum StringToColor {
     RED("#FF0000"),
     YELLOW("#FFFF00"),
     GREEN("#008000"),
+    MAGENTA("#FF00FF"),
     BLUE("#36b5d8");
 
     private final String value;

@@ -49,40 +49,26 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
             if (data.getArray()[j] <= pi) {
                 i++;
                 if (i != j) {
-                    //before swap
-                    data.setSwappedElementInfo(generateSwappedElementInfo(
-                            List.of(j, i, high),
-                            List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
-                    ));
-                    saveOnDb(data);
-                    //swap intArray[i] and intArray[j]
+                    // save before swap
+                    saveInfo(data, List.of(j, i, high), List.of(StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
+                    // swap
                     int temp = data.getArray()[i];
                     data.getArray()[i] = data.getArray()[j];
                     data.getArray()[j] = temp;
-                    data.setSwappedElementInfo(generateSwappedElementInfo(
-                            List.of(i, j, high),
-                            List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
-                    ));
-                    saveOnDb(data);
+                    // save after swap
+                    saveInfo(data, List.of(i, j, high), List.of(StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
                 }
             }
         }
         if ((i + 1) != high) {
-            //before swap
-            data.setSwappedElementInfo(generateSwappedElementInfo(
-                    List.of(i + 1, high),
-                    List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
-            ));
-            saveOnDb(data);
-            //swap intArray[i+1] and intArray[high] (or pi)
+            // save before swap
+            saveInfo(data, List.of(i + 1, high), List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
+            // swap
             int temp = data.getArray()[i + 1];
             data.getArray()[i + 1] = data.getArray()[high];
             data.getArray()[high] = temp;
-            data.setSwappedElementInfo(generateSwappedElementInfo(
-                    List.of(i + 1, high),
-                    List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
-            ));
-            saveOnDb(data);
+            // save after swap
+            saveInfo(data, List.of(i + 1, high), List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
         }
         return i + 1;
     }

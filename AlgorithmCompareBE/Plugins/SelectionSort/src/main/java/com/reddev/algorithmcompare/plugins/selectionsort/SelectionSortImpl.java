@@ -46,15 +46,14 @@ public class SelectionSortImpl extends BaseAlgorithm implements Algorithm {
 
             // Swap the found minimum element with the first element of the unsorted part
             if (minIndex != i) {
+                // save before swap
+                saveInfo(data, List.of(i, minIndex), List.of(StringToColor.RED.getValue(), StringToColor.BLUE.getValue()));
                 // swap
                 int temp = data.getArray()[i];
                 data.getArray()[i] = data.getArray()[minIndex];
                 data.getArray()[minIndex] = temp;
-                data.setSwappedElementInfo(generateSwappedElementInfo(
-                        List.of(i, minIndex),
-                        List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue())
-                ));
-                saveOnDb(data);
+                // save after swap
+                saveInfo(data, List.of(i, minIndex), List.of(StringToColor.BLUE.getValue(), StringToColor.RED.getValue()));
             }
 
         }

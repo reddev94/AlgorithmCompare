@@ -40,21 +40,17 @@ public class InsertionSortImpl extends BaseAlgorithm implements Algorithm {
 
             // Shift elements greater than the key to the right
             while (j >= 0 && data.getArray()[j] > key) {
+                // shift
                 data.getArray()[j + 1] = data.getArray()[j];
-                data.setSwappedElementInfo(generateSwappedElementInfo(
-                        List.of(i, j + 1),
-                        List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
-                ));
-                saveOnDb(data);
+                // save after shift
+                saveInfo(data, List.of(j + 1, i), List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
                 j--;
             }
 
-            data.getArray()[j + 1] = key; // Insert the key into the correct position
-            data.setSwappedElementInfo(generateSwappedElementInfo(
-                    List.of(i, j + 1),
-                    List.of(StringToColor.RED.getValue(), StringToColor.RED.getValue())
-            ));
-            saveOnDb(data);
+            // Insert the key into the correct position
+            data.getArray()[j + 1] = key;
+            // save after key insertion
+            saveInfo(data, List.of(i, j + 1), List.of(StringToColor.YELLOW.getValue(), StringToColor.RED.getValue()));
         }
 
     }

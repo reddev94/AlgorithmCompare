@@ -21,7 +21,12 @@ public class BaseAlgorithm {
         return AlgorithmCompareUtil.getTimestamp();
     }
 
-    protected void saveOnDb(BaseAlgorithmExecutionData data) {
+    protected void saveInfo(BaseAlgorithmExecutionData data, List<Integer> indices, List<String> colors) {
+        data.setSwappedElementInfo(generateSwappedElementInfo(indices, colors));
+        saveOnDb(data);
+    }
+
+    private void saveOnDb(BaseAlgorithmExecutionData data) {
         //calculate move execution time and save on db
         long actualTime = calculateTimestamp();
         long moveExecutionTime = (actualTime - data.getInitialTime()) + 1L; //add 1 millisecond to avoid 0 as moveExecutionTime
@@ -45,9 +50,10 @@ public class BaseAlgorithm {
                 .subscribe();
     }
 
-    protected List<SwappedElementInfo> generateSwappedElementInfo(List<Integer> indices, List<String> colors) {
+    private List<SwappedElementInfo> generateSwappedElementInfo(List<Integer> indices, List<String> colors) {
         return IntStream.range(0, indices.size())
                 .mapToObj(i -> new SwappedElementInfo(indices.get(i), colors.get(i)))
                 .toList();
     }
+
 }

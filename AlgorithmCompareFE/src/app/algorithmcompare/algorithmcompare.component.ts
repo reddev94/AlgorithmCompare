@@ -305,36 +305,34 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
 
   drawBarChart(context, executionData) {
       for (let element = 0; element < executionData.array.length; element++) {
-          console.log('element='+element+', executionData.array[element]='+executionData.array[element]);
-          let isDefaultColor = false;
-          let isRedColor = false;
+          let customColor = false;
+          let completed = false;
           let swpElement = 0;
           while (swpElement < executionData.swappedElements.length) {
-              console.log('swpElement='+swpElement+', executionData.swappedElements[swpElement]'+JSON.stringify(executionData.swappedElements[swpElement], null, 2));
-              if (executionData.swappedElements[swpElement].index !== element) {
-              console.log('ciao1');
-                  isDefaultColor = true;
+              if (executionData.swappedElements[swpElement].index === element) {
+                  customColor = true;
                   break;
-              } else if(executionData.swappedElements[swpElement].index === -1) {
-              console.log('ciao2');
-                  isRedColor = true;
+              } else if (executionData.swappedElements[swpElement].index === -1) {
+                  completed = true;
                   break;
               }
               swpElement++;
-          }
-          if (isDefaultColor) {
-              // default, shade of blue color
-              context.fillStyle = "#36b5d8";
-          } else if(isRedColor) {
-              // red color
-              context.fillStyle = "##FF0000";
-          } else {
+           }
+          if (customColor) {
               // custom color
               context.fillStyle = executionData.swappedElements[swpElement].color;
+          } else if(completed) {
+              // shade of green color
+              context.fillStyle = "#00FF00";
+          } else {
+              // default, shade of blue color
+              //context.fillStyle = "#36b5d8";
+              //default, silver
+              context.fillStyle = "#C0C0C0";
           }
           context.fillRect(5 + element * 40, this.arrayGraphHeight - executionData.array[element] * 2 - 20, 30, executionData.array[element] * 2);
           this.addColumnName(context, executionData.array[element], 13 + element * 40, this.arrayGraphHeight - 5);
       }
-}
+  }
 
 }
