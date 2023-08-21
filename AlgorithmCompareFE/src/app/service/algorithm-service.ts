@@ -62,7 +62,6 @@ export class AlgorithmService {
     			    var message = {
     			      array: json['array'],
     			      moveExecutionTime: json['moveExecutionTime'],
-    			      swappedElementInfo: json['swappedElementInfo'],
     			      executionStatus: json['executionStatus'],
     			      arrayIdentifier: arrayId
     			    }

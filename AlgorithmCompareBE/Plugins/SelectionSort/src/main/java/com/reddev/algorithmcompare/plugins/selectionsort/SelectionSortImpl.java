@@ -7,8 +7,6 @@ import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import org.pf4j.Extension;
 
-import java.util.List;
-
 @Extension(ordinal = 1)
 public class SelectionSortImpl extends BaseAlgorithm implements Algorithm {
 
@@ -21,7 +19,7 @@ public class SelectionSortImpl extends BaseAlgorithm implements Algorithm {
     public long execute(int[] input, long idRequester) {
 
         BaseAlgorithmExecutionData data = BaseAlgorithmExecutionData.builder()
-                .array(input)
+                .array(convertToInfoArray(input))
                 .idRequester(idRequester)
                 .moveOrder(1L)
                 .build();
@@ -39,7 +37,7 @@ public class SelectionSortImpl extends BaseAlgorithm implements Algorithm {
 
             // Find the index of the minimum element in the unsorted part of the array
             for (int j = i + 1; j < data.getArray().length; j++) {
-                if (data.getArray()[j] < data.getArray()[minIndex]) {
+                if (data.getArray()[j].value < data.getArray()[minIndex].value) {
                     minIndex = j;
                 }
             }
@@ -47,13 +45,13 @@ public class SelectionSortImpl extends BaseAlgorithm implements Algorithm {
             // Swap the found minimum element with the first element of the unsorted part
             if (minIndex != i) {
                 // save before swap
-                saveInfo(data, List.of(i, minIndex), List.of(StringToColor.RED.getValue(), StringToColor.BLUE.getValue()));
+                saveInfo(data, new int[]{i, minIndex}, new String[]{StringToColor.RED.getValue(), StringToColor.BLUE.getValue()});
                 // swap
-                int temp = data.getArray()[i];
-                data.getArray()[i] = data.getArray()[minIndex];
-                data.getArray()[minIndex] = temp;
+                int temp = data.getArray()[i].value;
+                data.getArray()[i].value = data.getArray()[minIndex].value;
+                data.getArray()[minIndex].value = temp;
                 // save after swap
-                saveInfo(data, List.of(i, minIndex), List.of(StringToColor.BLUE.getValue(), StringToColor.RED.getValue()));
+                saveInfo(data, new int[]{i, minIndex}, new String[]{StringToColor.BLUE.getValue(), StringToColor.RED.getValue()});
             }
 
         }

@@ -1,6 +1,5 @@
 package com.reddev.algorithmcompare.plugins.pluginmodel.business;
 
-import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

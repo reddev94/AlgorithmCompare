@@ -7,8 +7,6 @@ import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import org.pf4j.Extension;
 
-import java.util.List;
-
 @Extension(ordinal = 1)
 public class InsertionSortImpl extends BaseAlgorithm implements Algorithm {
 
@@ -21,7 +19,7 @@ public class InsertionSortImpl extends BaseAlgorithm implements Algorithm {
     public long execute(int[] input, long idRequester) {
 
         BaseAlgorithmExecutionData data = BaseAlgorithmExecutionData.builder()
-                .array(input)
+                .array(convertToInfoArray(input))
                 .idRequester(idRequester)
                 .moveOrder(1L)
                 .build();
@@ -35,22 +33,22 @@ public class InsertionSortImpl extends BaseAlgorithm implements Algorithm {
         data.setInitialTime(calculateTimestamp());
 
         for (int i = 1; i < data.getArray().length; i++) {
-            int key = data.getArray()[i];
+            int key = data.getArray()[i].value;
             int j = i - 1;
 
             // Shift elements greater than the key to the right
-            while (j >= 0 && data.getArray()[j] > key) {
+            while (j >= 0 && data.getArray()[j].value > key) {
                 // shift
-                data.getArray()[j + 1] = data.getArray()[j];
+                data.getArray()[j + 1].value = data.getArray()[j].value;
                 // save after shift
-                saveInfo(data, List.of(j + 1, i), List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
+                saveInfo(data, new int[]{j + 1, i}, new String[]{StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()});
                 j--;
             }
 
             // Insert the key into the correct position
-            data.getArray()[j + 1] = key;
+            data.getArray()[j + 1].value = key;
             // save after key insertion
-            saveInfo(data, List.of(i, j + 1), List.of(StringToColor.YELLOW.getValue(), StringToColor.RED.getValue()));
+            saveInfo(data, new int[]{i, j + 1}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.RED.getValue()});
         }
 
     }

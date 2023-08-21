@@ -1,4 +1,5 @@
 import { ExecutionData } from '../model/execution-data';
+//import { ArrayInfo } from '../model/algorithm-data';
 
 export class UtilData {
   isFirstArrayCompleted: boolean;

@@ -1,12 +1,14 @@
 export interface AlgorithmExecutionData {
-  array: number[];
+  array: ArrayInfo[];
   moveExecutionTime: number;
-  swappedElementInfo: SwappedElementInfo[];
   executionStatus: number;
   arrayIdentifier: number;
 }
 
-export interface SwappedElementInfo {
-  index: number;
+export class ArrayInfo {
+  value: number;
   color: string;
+
+  constructor() {
+  }
 }

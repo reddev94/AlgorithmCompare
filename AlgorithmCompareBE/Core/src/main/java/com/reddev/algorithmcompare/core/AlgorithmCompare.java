@@ -1,7 +1,7 @@
 package com.reddev.algorithmcompare.core;
 
 import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
-import com.reddev.algorithmcompare.common.domain.entity.SwappedElementInfo;
+import com.reddev.algorithmcompare.common.domain.entity.ArrayInfo;
 import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
@@ -35,7 +35,6 @@ public class AlgorithmCompare implements CommandLineRunner {
                 .idRequester(-1)
                 .moveExecutionTime(0)
                 .moveOrder(0)
-                .swappedElementInfo(List.of(new SwappedElementInfo(0, "")))
                 .build()).publishOn(AlgorithmCompareUtil.SCHEDULER)
                 .block();
         algorithmRepository.deleteByIdRequester(-1).publishOn(AlgorithmCompareUtil.SCHEDULER).subscribe();

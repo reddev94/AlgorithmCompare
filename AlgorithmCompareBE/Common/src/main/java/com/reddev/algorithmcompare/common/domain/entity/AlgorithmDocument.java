@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 @Document
 @Data
@@ -24,8 +23,7 @@ public class AlgorithmDocument implements Serializable {
     @Id
     private String id;
     private long idRequester;
-    private int[] array;
+    private ArrayInfo[] array;
     private long moveOrder;
     private long moveExecutionTime;
-    private List<SwappedElementInfo> swappedElementInfo;
 }

@@ -7,8 +7,6 @@ import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import org.pf4j.Extension;
 
-import java.util.List;
-
 @Extension(ordinal = 1)
 public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
 
@@ -20,7 +18,7 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
     @Override
     public long execute(int[] input, long idRequester) {
         BaseAlgorithmExecutionData data = BaseAlgorithmExecutionData.builder()
-                .array(input)
+                .array(convertToInfoArray(input))
                 .idRequester(idRequester)
                 .moveOrder(1L)
                 .build();
@@ -42,33 +40,33 @@ public class QuickSortImpl extends BaseAlgorithm implements Algorithm {
     }
 
     private int partition(BaseAlgorithmExecutionData data, int low, int high) {
-        int pi = data.getArray()[high];
+        int pi = data.getArray()[high].value;
         int i = (low - 1); // smaller element index
         for (int j = low; j < high; j++) {
             //check if current element is less than or equal to pi
-            if (data.getArray()[j] <= pi) {
+            if (data.getArray()[j].value <= pi) {
                 i++;
                 if (i != j) {
                     // save before swap
-                    saveInfo(data, List.of(j, i, high), List.of(StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
+                    saveInfo(data, new int[]{j, i, high}, new String[]{StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()});
                     // swap
-                    int temp = data.getArray()[i];
-                    data.getArray()[i] = data.getArray()[j];
-                    data.getArray()[j] = temp;
+                    int temp = data.getArray()[i].value;
+                    data.getArray()[i].value = data.getArray()[j].value;
+                    data.getArray()[j].value = temp;
                     // save after swap
-                    saveInfo(data, List.of(i, j, high), List.of(StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
+                    saveInfo(data, new int[]{i, j, high}, new String[]{StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()});
                 }
             }
         }
         if ((i + 1) != high) {
             // save before swap
-            saveInfo(data, List.of(i + 1, high), List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
+            saveInfo(data, new int[]{i + 1, high}, new String[]{StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()});
             // swap
-            int temp = data.getArray()[i + 1];
-            data.getArray()[i + 1] = data.getArray()[high];
-            data.getArray()[high] = temp;
+            int temp = data.getArray()[i + 1].value;
+            data.getArray()[i + 1].value = data.getArray()[high].value;
+            data.getArray()[high].value = temp;
             // save after swap
-            saveInfo(data, List.of(i + 1, high), List.of(StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()));
+            saveInfo(data, new int[]{i + 1, high}, new String[]{StringToColor.RED.getValue(), StringToColor.YELLOW.getValue()});
         }
         return i + 1;
     }

@@ -1,15 +1,18 @@
 package com.reddev.algorithmcompare.plugins.mergesort;
 
 import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
+import com.reddev.algorithmcompare.common.domain.entity.ArrayInfo;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
+import lombok.extern.log4j.Log4j2;
 import org.pf4j.Extension;
 
-import java.util.List;
+import java.util.Arrays;
 
 @Extension(ordinal = 1)
+@Log4j2
 public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
 
     @Override
@@ -21,7 +24,7 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
     public long execute(int[] input, long idRequester) {
 
         BaseAlgorithmExecutionData data = BaseAlgorithmExecutionData.builder()
-                .array(input)
+                .array(convertToInfoArray(input))
                 .idRequester(idRequester)
                 .moveOrder(1L)
                 .build();
@@ -52,7 +55,7 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
     private void merge(BaseAlgorithmExecutionData data, int[] tempArray, int left, int mid, int right) {
 
         // Copy elements to the temporary array
-        if (right + 1 - left >= 0) System.arraycopy(data.getArray(), left, tempArray, left, right + 1 - left);
+        if (right + 1 - left >= 0) System.arraycopy(Arrays.stream(data.getArray()).mapToInt(el -> el.value).toArray(), left, tempArray, left, right - left + 1);
 
         int i = left; // Pointer for the left half
         int j = mid + 1; // Pointer for the right half
@@ -61,19 +64,19 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
         while (i <= mid && j <= right) {
             if (tempArray[i] <= tempArray[j]) {
                 // save before swap
-                saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
+                saveInfo(data, new int[]{left, right, mid, j, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
                 // swap
-                data.getArray()[k] = tempArray[i];
+                data.getArray()[k].value = tempArray[i];
                 // save after swap
-                saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
+                saveInfo(data, new int[]{left, right, mid, j, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
                 i++;
             } else {
                 // save before swap
-                saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
+                saveInfo(data, new int[]{left, right, mid, j, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
                 // swap
-                data.getArray()[k] = tempArray[j];
+                data.getArray()[k].value = tempArray[j];
                 // save after swap
-                saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
+                saveInfo(data, new int[]{left, right, mid, j, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
                 j++;
             }
             k++;
@@ -82,11 +85,11 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
         // Copy the remaining elements from the left half (if any)
         while (i <= mid) {
             // save before swap
-            saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
+            saveInfo(data, new int[]{left, right, mid, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
             // swap
-            data.getArray()[k] = tempArray[i];
+            data.getArray()[k].value = tempArray[i];
             // save after swap
-            saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
+            saveInfo(data, new int[]{left, right, mid, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
             i++;
             k++;
         }
@@ -94,15 +97,84 @@ public class MergeSortImpl extends BaseAlgorithm implements Algorithm {
         // Copy the remaining elements from the right half (if any)
         while (j <= right) {
             // save before swap
-            saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
+            saveInfo(data, new int[]{left, right, mid, j, k}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
             // swap
-            data.getArray()[k] = tempArray[j];
+            data.getArray()[k].value = tempArray[j];
             // save after swap
-            saveInfo(data, List.of(left, right, mid, j, k, i), List.of(StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()));
+            saveInfo(data, new int[]{left, right, mid, j, k}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
             j++;
             k++;
         }
 
     }
+
+
+
+
+
+
+
+//    public void mergeSort(BaseAlgorithmExecutionData data) {
+//
+//        int[] temp = new int[data.getArray().length];
+//        data.setInitialTime(calculateTimestamp());
+//        mergeSort(data, temp, 0, data.getArray().length - 1);
+//
+//    }
+//
+//    private void mergeSort(BaseAlgorithmExecutionData data, int[] temp, int left, int right) {
+//
+//        if (left >= right) {
+//            return;
+//        }
+//
+//        int mid = left + (right - left) / 2;
+//        mergeSort(data, temp, left, mid);
+//        mergeSort(data, temp, mid + 1, right);
+//        merge(data, temp, left, mid, right);
+//
+//    }
+//
+//    private void merge(BaseAlgorithmExecutionData data, int[] temp, int left, int mid, int right) {
+//
+//        System.arraycopy(Arrays.stream(data.getArray()).mapToInt(el -> el.value).toArray(), left, temp, left, right - left + 1);
+//
+//        int i = left;
+//        int j = mid + 1;
+//        int k = left;
+//
+//        while (i <= mid && j <= right) {
+//            if (temp[i] <= temp[j]) {
+//                // save before swap
+//                saveInfo(data, new int[]{left, right, mid, j, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
+//                // swap
+//                data.getArray()[k].value = temp[i];
+//                // save after swap
+//                saveInfo(data, new int[]{left, right, mid, j, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
+//                i++;
+//                k++;
+//            } else {
+//                // save before swap
+//                saveInfo(data, new int[]{left, right, mid, j, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
+//                // swap
+//                data.getArray()[k].value = temp[j];
+//                // save after swap
+//                saveInfo(data, new int[]{left, right, mid, j, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
+//                j++;
+//                k++;
+//            }
+//        }
+//
+//        while (i <= mid) {
+//            // save before swap
+//            saveInfo(data, new int[]{left, right, mid, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
+//            // swap
+//            data.getArray()[k].value = temp[i];
+//            // save after swap
+//            saveInfo(data, new int[]{left, right, mid, k, i}, new String[]{StringToColor.YELLOW.getValue(), StringToColor.YELLOW.getValue(), StringToColor.BLUE.getValue(), StringToColor.RED.getValue(), StringToColor.RED.getValue()});
+//            i++;
+//            k++;
+//        }
+//    }
 
 }

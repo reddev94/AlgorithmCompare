@@ -7,8 +7,6 @@ import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import org.pf4j.Extension;
 
-import java.util.List;
-
 @Extension(ordinal = 1)
 public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
 
@@ -20,7 +18,7 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
     @Override
     public long execute(int[] input, long idRequester) {
         BaseAlgorithmExecutionData data = BaseAlgorithmExecutionData.builder()
-                .array(input)
+                .array(convertToInfoArray(input))
                 .idRequester(idRequester)
                 .moveOrder(1L)
                 .build();
@@ -34,15 +32,15 @@ public class BubbleSortImpl extends BaseAlgorithm implements Algorithm {
         int temp;
         for (int i = 0; i < n; i++) {
             for (int j = 1; j < (n - i); j++) {
-                if (data.getArray()[j - 1] > data.getArray()[j]) {
+                if (data.getArray()[j - 1].value > data.getArray()[j].value) {
                     // save before swap
-                    saveInfo(data, List.of(j - 1, j), List.of(StringToColor.RED.getValue(), StringToColor.BLUE.getValue()));
+                    saveInfo(data, new int[]{j - 1, j}, new String[]{StringToColor.RED.getValue(), StringToColor.BLUE.getValue()});
                     // swap elements
-                    temp = data.getArray()[j - 1];
-                    data.getArray()[j - 1] = data.getArray()[j];
-                    data.getArray()[j] = temp;
+                    temp = data.getArray()[j - 1].value;
+                    data.getArray()[j - 1].value = data.getArray()[j].value;
+                    data.getArray()[j].value = temp;
                     // save after swap
-                    saveInfo(data, List.of(j - 1, j), List.of(StringToColor.BLUE.getValue(), StringToColor.RED.getValue()));
+                    saveInfo(data, new int[]{j - 1, j}, new String[]{StringToColor.BLUE.getValue(), StringToColor.RED.getValue()});
                 }
             }
         }

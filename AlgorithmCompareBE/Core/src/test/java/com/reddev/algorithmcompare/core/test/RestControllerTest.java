@@ -38,7 +38,7 @@ class RestControllerTest {
                 .uri(uriBuilder ->
                         uriBuilder
                                 .path(TestUtil.PATH_GENERATE_ARRAY)
-                                .queryParam(TestUtil.PARAM_LENGTH, 40)
+                                .queryParam(TestUtil.PARAM_LENGTH, 60)
                                 .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
@@ -180,7 +180,6 @@ class RestControllerTest {
                         .idRequester(x.getIdRequester())
                         .moveExecutionTime(1)
                         .moveOrder(x.getMoveOrder())
-                        .swappedElementInfo(x.getSwappedElementInfo())
                         .build()).block();
 
             });

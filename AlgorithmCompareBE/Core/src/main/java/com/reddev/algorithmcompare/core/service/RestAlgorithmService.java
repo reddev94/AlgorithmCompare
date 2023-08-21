@@ -2,7 +2,7 @@ package com.reddev.algorithmcompare.core.service;
 
 import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
 import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
-import com.reddev.algorithmcompare.common.domain.entity.SwappedElementInfo;
+import com.reddev.algorithmcompare.common.domain.entity.ArrayInfo;
 import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.core.domain.rest.*;
@@ -97,12 +97,12 @@ public class RestAlgorithmService {
                 .map(x -> {
                     log.debug("execution data moveOrder = " + x.getMoveOrder());
                     GetExecutionDataResponse response = buildGetExecutionDataResponse(
-                            x.getArray(), x.getMoveExecutionTime(), x.getSwappedElementInfo(), AlgorithmCompareUtil.RESULT_CODE_PROCESSING);
+                            x.getArray(), x.getMoveExecutionTime(), AlgorithmCompareUtil.RESULT_CODE_PROCESSING);
                     log.debug("requester: " + idRequester + " getExecutionData response = " + response);
                     return response;
                 })
                 .concatWithValues(buildGetExecutionDataResponse(
-                        new int[]{}, maxMoveExecutionTime, List.of(new SwappedElementInfo(-1, StringToColor.RED.getValue())), AlgorithmCompareUtil.RESULT_CODE_OK))
+                        new ArrayInfo[]{}, maxMoveExecutionTime, AlgorithmCompareUtil.RESULT_CODE_OK))
                 .delayUntil(data -> {
                     long delay = (data.getMoveExecutionTime() * CoreUtil.MOVE_EXECUTION_TIME_SCALAR) / maxMoveExecutionTime;
                     log.info("emitting data for requester " + idRequester + ", with delay of " + delay + ", getExecutionData response = " + data);
@@ -112,12 +112,11 @@ public class RestAlgorithmService {
 
     }
 
-    private GetExecutionDataResponse buildGetExecutionDataResponse(int[] array, long maxMoveExecutionTime, List<SwappedElementInfo> swappedElementInfo, int resultCodeOk) {
+    private GetExecutionDataResponse buildGetExecutionDataResponse(ArrayInfo[] array, long maxMoveExecutionTime, int resultCodeOk) {
 
         return GetExecutionDataResponse.builder()
                 .array(array)
                 .moveExecutionTime(maxMoveExecutionTime)
-                .swappedElementInfo(swappedElementInfo)
                 .executionStatus(resultCodeOk)
                 .build();
 

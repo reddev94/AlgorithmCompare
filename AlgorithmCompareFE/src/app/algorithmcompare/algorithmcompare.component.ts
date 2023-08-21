@@ -7,7 +7,7 @@ import { Observable, forkJoin, merge } from 'rxjs';
 import { AlgorithmExecutionData } from '../model/algorithm-data';
 import { ArrayCanvasData } from '../model/array-canvas-data';
 import { ExecutionData } from '../model/execution-data';
-import { SwappedElementInfo } from '../model/algorithm-data';
+import { ArrayInfo } from '../model/algorithm-data';
 
 @Component({
   selector: 'app-algorithmcompare',
@@ -105,7 +105,6 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
           if(data.executionStatus!=0) {
             let executionData = new ExecutionData();
             executionData.array = data.array;
-            executionData.swappedElements = data.swappedElementInfo;
             if(arrayIdentifier == 1) {
               this.utilData.firstArrayExecutionData = executionData;
               this.drawArrayCanvas(1, false);
@@ -245,14 +244,13 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
 
   completeArrayCanvas(arrayIdentifier: number): void {
     let executionData = new ExecutionData();
-    executionData.swappedElements = [{index: -1, color: '#FF0000'}];
     if(arrayIdentifier == 1) {
       executionData.array = this.utilData.firstArrayExecutionData.array;
-      this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, executionData);
+      this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, executionData, true);
       this.addCompletedTitle(this.arrayCanvasData.array1ContextCanvas, 'COMPLETED');
     } else if(arrayIdentifier == 2) {
       executionData.array = this.utilData.secondArrayExecutionData.array;
-      this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, executionData);
+      this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, executionData, true);
       this.addCompletedTitle(this.arrayCanvasData.array2ContextCanvas, 'COMPLETED');
     }
   }
@@ -269,11 +267,16 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
       this.arrayCanvasData.array1ContextCanvas.fillRect(0, 0, this.arrayGraphWidth, this.arrayGraphHeight);
       if(firstDraw) {
         let executionData = new ExecutionData();
-        executionData.array = this.utilData.array;
-        executionData.swappedElements = [{index: -2, color: '#FF0000'}];
-        this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, executionData);
+        executionData.array = new Array(this.utilData.array.length);
+        for (let index = 0; index < this.utilData.array.length; index++) {
+            let element = new ArrayInfo();
+            element.value = this.utilData.array[index];
+            element.color = '#36b5d8';
+            executionData.array[index] = element;
+        }
+        this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, executionData, false);
       } else {
-        this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, this.utilData.firstArrayExecutionData);
+        this.drawBarChart(this.arrayCanvasData.array1ContextCanvas, this.utilData.firstArrayExecutionData, false);
       }
       this.addTitleToChart(this.arrayCanvasData.array1ContextCanvas, 'Sorting with ' + this.algorithmForm.controls['algorithmType1'].value);
     } else if(arrayIdentifier == 2) {
@@ -281,11 +284,16 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
       this.arrayCanvasData.array2ContextCanvas.fillRect(0, 0, this.arrayGraphWidth, this.arrayGraphHeight);
       if(firstDraw) {
         let executionData = new ExecutionData();
-        executionData.array = this.utilData.array;
-        executionData.swappedElements = [{index: -2, color: '#FF0000'}];
-        this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, executionData);
+        executionData.array = new Array(this.utilData.array.length);
+        for (let index = 0; index < this.utilData.array.length; index++) {
+            let element = new ArrayInfo();
+            element.value = this.utilData.array[index];
+            element.color = '#36b5d8';
+            executionData.array[index] = element;
+        }
+        this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, executionData, false);
       } else {
-        this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, this.utilData.secondArrayExecutionData);
+        this.drawBarChart(this.arrayCanvasData.array2ContextCanvas, this.utilData.secondArrayExecutionData, false);
       }
       this.addTitleToChart(this.arrayCanvasData.array2ContextCanvas, 'Sorting with ' + this.algorithmForm.controls['algorithmType2'].value);
     }
@@ -303,35 +311,17 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     context.fillText(name, xpos, ypos);
   }
 
-  drawBarChart(context, executionData) {
+  drawBarChart(context, executionData, completed) {
       for (let element = 0; element < executionData.array.length; element++) {
-          let customColor = false;
-          let completed = false;
-          let swpElement = 0;
-          while (swpElement < executionData.swappedElements.length) {
-              if (executionData.swappedElements[swpElement].index === element) {
-                  customColor = true;
-                  break;
-              } else if (executionData.swappedElements[swpElement].index === -1) {
-                  completed = true;
-                  break;
-              }
-              swpElement++;
-           }
-          if (customColor) {
-              // custom color
-              context.fillStyle = executionData.swappedElements[swpElement].color;
-          } else if(completed) {
+          if(completed) {
               // shade of green color
               context.fillStyle = "#00FF00";
           } else {
-              // default, shade of blue color
-              //context.fillStyle = "#36b5d8";
-              //default, silver
-              context.fillStyle = "#C0C0C0";
+              // custom color
+              context.fillStyle = executionData.array[element].color;
           }
-          context.fillRect(5 + element * 30, this.arrayGraphHeight - executionData.array[element] * 2 - 20, 20, executionData.array[element] * 2);
-          this.addColumnName(context, executionData.array[element], 8 + element * 30, this.arrayGraphHeight - 5);
+          context.fillRect(5 + element * 30, this.arrayGraphHeight - executionData.array[element].value * 2 - 20, 20, executionData.array[element].value * 2);
+          this.addColumnName(context, executionData.array[element].value, 8 + element * 30, this.arrayGraphHeight - 5);
       }
   }
 
