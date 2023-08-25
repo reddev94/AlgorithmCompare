@@ -8,7 +8,6 @@ import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.core.domain.rest.*;
 import com.reddev.algorithmcompare.core.util.CoreUtil;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
-import com.reddev.algorithmcompare.plugins.pluginmodel.business.StringToColor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.Cacheable;

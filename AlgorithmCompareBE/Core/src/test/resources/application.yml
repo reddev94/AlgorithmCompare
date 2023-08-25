@@ -9,6 +9,9 @@ spring:
       org.quartz.scheduler.instanceId: AUTO
       org.quartz.threadPool.threadCount: 1
 
+server:
+  port: 8081
+
 de:
   flapdoodle:
     mongodb:

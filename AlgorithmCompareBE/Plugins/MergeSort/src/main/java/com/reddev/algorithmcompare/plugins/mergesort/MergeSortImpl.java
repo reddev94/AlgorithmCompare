@@ -1,7 +1,6 @@
 package com.reddev.algorithmcompare.plugins.mergesort;
 
 import com.reddev.algorithmcompare.common.domain.business.AlgorithmEnum;
-import com.reddev.algorithmcompare.common.domain.entity.ArrayInfo;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
 import com.reddev.algorithmcompare.plugins.pluginmodel.BaseAlgorithmExecutionData;
 import com.reddev.algorithmcompare.plugins.pluginmodel.business.BaseAlgorithm;

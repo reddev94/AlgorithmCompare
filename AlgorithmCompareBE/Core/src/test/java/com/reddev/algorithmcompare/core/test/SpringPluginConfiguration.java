@@ -1,6 +1,5 @@
 package com.reddev.algorithmcompare.core.test;
 
-import com.reddev.algorithmcompare.core.handler.PluginStateHandler;
 import org.pf4j.spring.SpringPluginManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

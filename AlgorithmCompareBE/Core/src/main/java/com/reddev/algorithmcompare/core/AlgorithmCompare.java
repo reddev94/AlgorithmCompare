@@ -1,7 +1,6 @@
 package com.reddev.algorithmcompare.core;
 
 import com.reddev.algorithmcompare.common.domain.entity.AlgorithmDocument;
-import com.reddev.algorithmcompare.common.domain.entity.ArrayInfo;
 import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.plugins.pluginmodel.Algorithm;
