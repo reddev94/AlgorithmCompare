@@ -1,0 +1,41 @@
+version: '3.8'
+
+networks:
+  default:
+    name: algorithm-compare
+
+services:
+  algorithm-compare-be:
+    container_name: algorithm-compare-be
+    build:
+      context: ../AlgorithmCompareBE
+      dockerfile: algorithm-compare-be.dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mongodb
+      - redis
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - SPRING_DATA_REDIS_HOST=redis
+      - PLUGIN_PATH=/algorithm-compare-be/plugins-zipped
+
+  algorithm-compare-fe:
+    container_name: algorithm-compare-fe
+    build:
+      context: ../AlgorithmCompareFE
+      dockerfile: algorithm-compare-fe.dockerfile
+    ports:
+      - '4200:4200'
+
+  mongodb:
+    container_name: algorithm-compare-mongodb
+    image: mongo:6.0.8
+    ports:
+      - "27017:27017"
+
+  redis:
+    container_name: algorithm-compare-redis
+    image: redis
+    ports:
+      - "6379:6379"

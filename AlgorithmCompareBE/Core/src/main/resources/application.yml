@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: prod
   cache:
     type: redis
   data:
@@ -10,7 +10,7 @@ spring:
       password: test
     mongodb:
       port: 27017
-      uri: mongodb://localhost:27017
+      host: localhost
       database: reactive-db
       min-connections-per-host: 10
       max-connections-per-host: 100
@@ -42,7 +42,6 @@ job:
     timeout: 21600000
 
 plugin:
-  #path: plugins-zipped
   path: /home/reddev/Projects/AlgorithmCompare/AlgorithmCompareBE/plugins-zipped
 
 cache:
@@ -51,35 +50,3 @@ cache:
       ttl: 240
     - name: availableAlgorithms
       ttl: 1440
-
-# spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
-# MONGODB (MongoProperties)
-# spring.data.mongodb.authentication-database= # Authentication database name.
-# spring.data.mongodb.database=test # Database name.
-# spring.data.mongodb.field-naming-strategy= # Fully qualified name of the FieldNamingStrategy to use.
-# spring.data.mongodb.grid-fs-database= # GridFS database name.
-# spring.data.mongodb.host=localhost # Mongo server host.
-# spring.data.mongodb.password= # Login password of the mongo server.
-# spring.data.mongodb.port=27017 # Mongo server port.
-# spring.data.mongodb.repositories.enabled=true # Enable Mongo repositories.
-# spring.data.mongodb.uri=mongodb://localhost/test # Mongo database URI. When set, host and port are ignored.
-# spring.data.mongodb.username= # Login user of the mongo server.
-# EMBEDDED MONGODB (EmbeddedMongoProperties)
-# spring.mongodb.embedded.features=SYNC_DELAY # Comma-separated list of features to enable.
-# spring.mongodb.embedded.storage.databaseDir= # Directory used for data storage.
-# spring.mongodb.embedded.storage.oplogSize= # Maximum size of the oplog in megabytes.
-# spring.mongodb.embedded.storage.replSetName= # Name of the replica set.
-# spring.mongodb.embedded.version=2.6.10 # Version of Mongo to use.
-# spring.data.mongodb.threads-allowed-to-block-for-connection-multiplier=5
-# spring.data.mongodb.max-connection-idle-time=0
-# spring.data.mongodb.max-connection-life-time=0
-# spring.data.mongodb.socket-timeout=0
-# spring.data.mongodb.socket-keep-alive=false
-# spring.data.mongodb.ssl-enabled=false
-# spring.data.mongodb.ssl-invalid-host-name-allowed=false
-# spring.data.mongodb.always-use-m-beans=false
-# spring.data.mongodb.heartbeat-socket-timeout=20000
-# spring.data.mongodb.heartbeat-connect-timeout=20000
-# spring.data.mongodb.min-heartbeat-frequency=500
-# spring.data.mongodb.heartbeat-frequency=10000
-# spring.data.mongodb.local-threshold=15
