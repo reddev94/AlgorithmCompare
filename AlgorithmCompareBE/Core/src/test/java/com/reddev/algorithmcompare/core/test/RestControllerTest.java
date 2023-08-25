@@ -6,12 +6,15 @@ import com.reddev.algorithmcompare.common.repository.AlgorithmRepository;
 import com.reddev.algorithmcompare.common.util.AlgorithmCompareUtil;
 import com.reddev.algorithmcompare.core.domain.rest.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -22,6 +25,7 @@ import java.util.Random;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Profile("test")
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
 @AutoConfigureDataMongo
@@ -207,6 +211,7 @@ class RestControllerTest {
                             uriBuilder
                                     .path(TestUtil.PATH_DELETE_ALGORITHM_DATA)
                                     .queryParam(TestUtil.PARAM_ID_REQUESTER, idRequester)
+                                    .queryParam(TestUtil.PARAM_DELETE_CACHE, false)
                                     .build())
                     .accept(MediaType.APPLICATION_JSON)
                     .exchange()

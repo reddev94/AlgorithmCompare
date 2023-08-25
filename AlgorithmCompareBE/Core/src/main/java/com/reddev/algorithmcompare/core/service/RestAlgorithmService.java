@@ -46,9 +46,11 @@ public class RestAlgorithmService {
 
     }
 
-    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(long idRequester) {
+    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(long idRequester, boolean deleteCache) {
 
-        CoreUtil.deleteRedisCache(String.valueOf(idRequester), redisTemplate);
+        if(deleteCache) {
+            CoreUtil.deleteRedisCache(String.valueOf(idRequester), redisTemplate);
+        }
 
         DeleteExecuteAlgorithmDataResponse response = new DeleteExecuteAlgorithmDataResponse();
 

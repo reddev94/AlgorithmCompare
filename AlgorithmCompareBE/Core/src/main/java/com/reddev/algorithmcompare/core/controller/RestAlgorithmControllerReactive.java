@@ -44,10 +44,10 @@ public class RestAlgorithmControllerReactive {
 
     @DeleteMapping(value = "/deleteExecuteAlgorithmData")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(@RequestParam long idRequester) {
+    public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(@RequestParam long idRequester, @RequestParam(required = false, defaultValue = "true") boolean deleteCache) {
 
         RequestValidator.checkIdRequester(idRequester);
-        return restAlgorithmService.deleteExecuteAlgorithmData(idRequester)
+        return restAlgorithmService.deleteExecuteAlgorithmData(idRequester, deleteCache)
                         .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
 
     }

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: dev
   cache:
     type: redis
   data:
@@ -10,6 +10,8 @@ spring:
       password: test
     mongodb:
       port: 27017
+      uri: mongodb://localhost:27017
+      database: reactive-db
       min-connections-per-host: 10
       max-connections-per-host: 100
       server-selection-timeout: 10000
@@ -21,19 +23,12 @@ spring:
       org.quartz.scheduler.instanceId: AUTO
       org.quartz.threadPool.threadCount: 1
 
-de:
-  flapdoodle:
-    mongodb:
-      embedded:
-        version: 6.0.6
-
 logging:
   level:
     root: INFO
     org.springframework: INFO
     com.reddev.algorithmcompare: DEBUG
-    org.mongodb: ERROR
-    org.springframework.boot.autoconfigure.mongo.embedded: ERROR
+    org.mongodb: INFO
 
 cors:
   allowed:
@@ -49,10 +44,6 @@ job:
 plugin:
   #path: plugins-zipped
   path: /home/reddev/Projects/AlgorithmCompare/AlgorithmCompareBE/plugins-zipped
-
-database:
-  url: mongodb://localhost:27017
-  name: reactive-db
 
 cache:
   services:
