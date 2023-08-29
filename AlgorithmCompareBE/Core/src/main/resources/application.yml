@@ -1,6 +1,22 @@
+server:
+  port: 8084
+
 spring:
   profiles:
     active: prod
+  boot:
+    admin:
+      client:
+        enabled: true
+        auto-registration: true
+        url: http://localhost:8082
+        username: admin
+        password: admin
+        instance:
+          metadata:
+            user:
+              name: admin
+              password: admin
   cache:
     type: redis
   data:
@@ -22,6 +38,15 @@ spring:
     properties:
       org.quartz.scheduler.instanceId: AUTO
       org.quartz.threadPool.threadCount: 1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
 
 logging:
   level:
