@@ -99,4 +99,3 @@ node_modules/
 **/plugins-zipped/*/
 # exception to the rule
 !plugins-zipped/.gitkeep
-!**/plugins-zipped/*.zip

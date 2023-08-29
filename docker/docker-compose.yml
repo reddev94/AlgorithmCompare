@@ -36,6 +36,6 @@ services:
 
   redis:
     container_name: algorithm-compare-redis
-    image: redis
+    image: redis:7.0.8
     ports:
       - "6379:6379"
