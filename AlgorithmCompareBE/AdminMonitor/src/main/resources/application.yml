@@ -2,16 +2,7 @@ server:
   port: 8082
 
 spring:
-  security:
-    user:
-      name: "admin"
-      password: "admin"
-  boot:
-    admin:
-      client:
-        username: "admin"
-        password: "admin"
-        instance:
-          metadata:
-            user.name: "admin"
-            user.password: "admin"
+  application:
+    name: admin-monitor
+  thymeleaf:
+    check-template-location: false

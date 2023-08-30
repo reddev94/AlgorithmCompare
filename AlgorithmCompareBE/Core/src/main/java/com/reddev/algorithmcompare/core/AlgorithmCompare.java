@@ -10,12 +10,14 @@ import org.pf4j.spring.SpringPluginManager;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 import java.util.List;
 
 @SpringBootApplication(scanBasePackages = {"com.reddev"})
 @RequiredArgsConstructor
 @Log4j2
+@EnableDiscoveryClient
 public class AlgorithmCompare implements CommandLineRunner {
 
     private final AlgorithmRepository algorithmRepository;

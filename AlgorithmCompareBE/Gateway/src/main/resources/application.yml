@@ -1,0 +1,60 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+  main:
+    web-application-type: reactive
+  boot:
+    admin:
+      client:
+        url: http://localhost:8082
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - authorization
+              - content-type
+              - x-requested-with
+              - cache-control
+              - x-xsrf-token
+              - accept
+              - origin
+              - x-file-name
+      routes:
+        - id: algorithm-compare-route
+          uri: lb://ALGORITHM-COMPARE
+          predicates:
+            - Path=/blocking/**,/reactive/**
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin, RETAIN_FIRST
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+    register-fetch-interval-seconds: 5
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
