@@ -25,6 +25,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   array2GraphIsVisible: boolean;
   arrayGraphWidth: number;
   arrayGraphHeight: number;
+  isGenerateArrayDisabled: boolean = true;
 
 
   constructor(private algorithmService: AlgorithmService, private fb: FormBuilder) {
@@ -58,7 +59,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
         next: data => {
           console.log(data);
           this.utilData.array = data.array;
-          this.arrayGraphWidth = 30*data.array.length;
+          this.arrayGraphWidth = 20*data.array.length;
         },
         error: data => {
           console.log('Error during comunication');
@@ -158,6 +159,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
       this.prepareVisualizationArray(1);
       this.array1GraphIsVisible = true;
       this.drawArrayCanvas(1, true);
+      this.isGenerateArrayDisabled = true;
     } else if(buttonType==="prepareArray2") {
       this.prepareVisualizationArray(2);
       this.array2GraphIsVisible = true;
@@ -199,7 +201,8 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     this.array1GraphIsVisible = false;
     this.array2GraphIsVisible = false;
     this.arrayGraphWidth = 1;
-    this.arrayGraphHeight = 270;
+    this.arrayGraphHeight = 250;
+    this.isGenerateArrayDisabled = false;
   }
 
   private closeAllConnection(): void {
@@ -218,6 +221,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
       if(this.subscriptions.visualizationsSub$) {
         this.subscriptions.visualizationsSub$.unsubscribe();
       }
+      this.algorithmService.closeExecutionData();
     }
   }
 
@@ -256,7 +260,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   }
 
   addCompletedTitle(context, title): void {
-    context.font = '18px sans-serif';
+    context.font = '14px sans-serif';
     context.fillStyle = 'yellow';
     context.fillText(title, this.arrayGraphWidth/2-70, this.arrayGraphHeight/2-100);
   }
@@ -300,13 +304,13 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   }
 
   addTitleToChart(context, title){
-    context.font = '16px sans-serif';
+    context.font = '14px sans-serif';
     context.fillStyle = 'white';
-    context.fillText(title, this.arrayGraphWidth/2-105, 15);
+    context.fillText(title, this.arrayGraphWidth/2-100, 12);
   }
 
   addColumnName(context, name, xpos, ypos){
-    context.font = '12px sans-serif';
+    context.font = '10px sans-serif';
     context.fillStyle = 'white';
     context.fillText(name, xpos, ypos);
   }
@@ -320,8 +324,8 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
               // custom color
               context.fillStyle = executionData.array[element].color;
           }
-          context.fillRect(5 + element * 30, this.arrayGraphHeight - executionData.array[element].value * 2 - 20, 20, executionData.array[element].value * 2);
-          this.addColumnName(context, executionData.array[element].value, 8 + element * 30, this.arrayGraphHeight - 5);
+          context.fillRect(5 + element * 20, this.arrayGraphHeight - executionData.array[element].value * 2 - 13, 10, executionData.array[element].value * 2);
+          this.addColumnName(context, executionData.array[element].value, 5 + element * 20, this.arrayGraphHeight - 2);
       }
   }
 

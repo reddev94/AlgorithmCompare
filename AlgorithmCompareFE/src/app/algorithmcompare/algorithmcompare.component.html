@@ -8,10 +8,11 @@
             {{element}}
           </option>
         </select>
-        <button color="primary" (click)="generateArray()">Generate array</button>
-        <input id="arrayLength" type="text" formControlName="arrayLength" placeholder="insert size from 10 to 50">
+        <button [disabled]="isGenerateArrayDisabled" color="primary" (click)="generateArray()">Generate array</button>
+        <input id="arrayLength" type="text" formControlName="arrayLength" placeholder="insert size from 10 to 80">
+        <br style="margin-bottom: 5px;">
         <ng-container *ngIf="this.utilData.array">
-          ARRAY: {{this.utilData.array}}
+          ARRAY: [{{this.utilData.array}}]
         </ng-container>
       </div>
       <div id="firstArrayExecutionDiv">

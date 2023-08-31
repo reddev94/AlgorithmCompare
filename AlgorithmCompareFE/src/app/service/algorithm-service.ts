@@ -23,6 +23,8 @@ export class AlgorithmService {
   private DELETE_DATA_URL = this.BASE_URL + '/reactive/deleteExecuteAlgorithmData';
   private GET_EXECUTION_DATA_URL = this.BASE_URL + '/reactive/getExecutionData';
 
+  private eventSource: EventSourcePolyfill;
+
   constructor(private http: HttpClient) {
   }
 
@@ -53,11 +55,11 @@ export class AlgorithmService {
   public getExecutionData(idRequester: string, arrayId: number, maxMoveExecutionTime: number): Observable<AlgorithmExecutionData> {
     console.log('Call to get execution data rest api for array ' + arrayId);
     return Observable.create((observer) => {
-            var eventSource = new EventSourcePolyfill(this.GET_EXECUTION_DATA_URL+"?idRequester="+idRequester+"&maxMoveExecutionTime="+maxMoveExecutionTime, {headers: { 'Content-Type': 'text/event-stream'}});
-    		    eventSource.onopen = (open) => {
+            this.eventSource = new EventSourcePolyfill(this.GET_EXECUTION_DATA_URL+"?idRequester="+idRequester+"&maxMoveExecutionTime="+maxMoveExecutionTime, {headers: { 'Content-Type': 'text/event-stream'}});
+    		    this.eventSource.onopen = (open) => {
     			    console.log('Opened connection');
     		    };
-    	 	    eventSource.onmessage = async (event) => {
+    	 	    this.eventSource.onmessage = async (event) => {
     			    let json = JSON.parse(event.data);
     			    var message = {
     			      array: json['array'],
@@ -68,14 +70,21 @@ export class AlgorithmService {
     			    observer.next(message);
     			    if(message.executionStatus==0) {
     			      observer.complete();
-                eventSource.close();
+                      this.eventSource.close();
     			    }
-    	      };
-            eventSource.onerror = (error) => {
-              console.log('Error, closing connection');
-    			    eventSource.close();
-    	      };
+    	        };
+                this.eventSource.onerror = (error) => {
+                  console.log('Error, closing connection');
+    			  this.eventSource.close();
+    	        };
           })
+  }
+
+  public closeExecutionData(): void {
+    if(this.eventSource) {
+      console.log('closing eventSource connection');
+      this.eventSource.close();
+    }
   }
 
 }
