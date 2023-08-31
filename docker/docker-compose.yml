@@ -12,11 +12,16 @@ services:
     ports:
       - '8084:8084'
     depends_on:
-      - mongodb
-      - redis
-      - admin-monitor
-      - eureka
-      - gateway
+      mongodb:
+        condition: service_started
+      redis:
+        condition: service_started
+      admin-monitor:
+        condition: service_started
+      eureka:
+        condition: service_healthy
+      gateway:
+        condition: service_healthy
     environment:
       - SPRING_DATA_MONGODB_HOST=mongodb
       - SPRING_DATA_REDIS_HOST=redis
@@ -25,6 +30,11 @@ services:
       - SPRING_BOOT_ADMIN_CLIENT_URL=http://admin-monitor:8082
     networks:
       - algorithm-compare-network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://algorithm-compare-be:8084/actuator/health || exit 1" ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
 
   admin-monitor:
     container_name: admin-monitor
@@ -44,13 +54,20 @@ services:
     ports:
       - '8080:8080'
     depends_on:
-      - admin-monitor
-      - eureka
+      admin-monitor:
+        condition: service_started
+      eureka:
+        condition: service_healthy
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8083/eureka/
       - SPRING_BOOT_ADMIN_CLIENT_URL=http://admin-monitor:8082
     networks:
       - algorithm-compare-network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://gateway:8080/actuator/health || exit 1" ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
 
   eureka:
     container_name: eureka
@@ -66,6 +83,11 @@ services:
       - SPRING_BOOT_ADMIN_CLIENT_URL=http://admin-monitor:8082
     networks:
       - algorithm-compare-network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://eureka:8083/actuator/health || exit 1" ]
+      interval: 3s
+      timeout: 3s
+      retries: 20
 
   algorithm-compare-fe:
     container_name: algorithm-compare-fe
@@ -75,7 +97,8 @@ services:
     ports:
       - '4200:4200'
     depends_on:
-      - algorithm-compare-be
+      algorithm-compare-be:
+        condition: service_healthy
     networks:
       - algorithm-compare-network
 
