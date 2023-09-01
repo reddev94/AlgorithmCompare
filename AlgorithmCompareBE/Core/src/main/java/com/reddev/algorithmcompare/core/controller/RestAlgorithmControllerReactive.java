@@ -37,8 +37,7 @@ public class RestAlgorithmControllerReactive {
     public Flux<GetExecutionDataResponse> getExecutionData(@RequestParam long idRequester, @RequestParam long maxMoveExecutionTime) {
 
         RequestValidator.checkIdRequester(idRequester);
-        return restAlgorithmService.getExecutionData(idRequester, maxMoveExecutionTime)
-                        .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
+        return restAlgorithmService.getExecutionData(idRequester, maxMoveExecutionTime);
 
     }
 
@@ -47,8 +46,7 @@ public class RestAlgorithmControllerReactive {
     public Mono<DeleteExecuteAlgorithmDataResponse> deleteExecuteAlgorithmData(@RequestParam long idRequester, @RequestParam(required = false, defaultValue = "true") boolean deleteCache) {
 
         RequestValidator.checkIdRequester(idRequester);
-        return restAlgorithmService.deleteExecuteAlgorithmData(idRequester, deleteCache)
-                        .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
+        return restAlgorithmService.deleteExecuteAlgorithmData(idRequester, deleteCache);
 
     }
 

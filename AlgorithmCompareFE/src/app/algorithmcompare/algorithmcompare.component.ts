@@ -221,7 +221,6 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
       if(this.subscriptions.visualizationsSub$) {
         this.subscriptions.visualizationsSub$.unsubscribe();
       }
-      this.algorithmService.closeExecutionData();
     }
   }
 

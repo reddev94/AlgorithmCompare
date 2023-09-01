@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: algorithm-compare
+    name: algorithm-compare-be
   profiles:
     active: prod
   boot:

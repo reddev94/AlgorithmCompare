@@ -41,7 +41,7 @@ class RestControllerTest {
                 .uri(uriBuilder ->
                         uriBuilder
                                 .path(TestUtil.PATH_GENERATE_ARRAY)
-                                .queryParam(TestUtil.PARAM_LENGTH, 60)
+                                .queryParam(TestUtil.PARAM_LENGTH, 90)
                                 .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()

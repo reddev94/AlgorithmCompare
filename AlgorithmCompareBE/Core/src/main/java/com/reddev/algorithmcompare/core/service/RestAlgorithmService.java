@@ -54,7 +54,6 @@ public class RestAlgorithmService {
         DeleteExecuteAlgorithmDataResponse response = new DeleteExecuteAlgorithmDataResponse();
 
         return algorithmRepository.deleteByIdRequester(idRequester)
-                .publishOn(AlgorithmCompareUtil.SCHEDULER)
                 .reduce(response, (o1, o2) -> {
                     response.setRecordEliminated(1 + o1.getRecordEliminated());
                     return response;
@@ -93,7 +92,6 @@ public class RestAlgorithmService {
     public Flux<GetExecutionDataResponse> getExecutionData(long idRequester, long maxMoveExecutionTime) {
 
         return algorithmRepository.findByIdRequester(idRequester)
-                .publishOn(AlgorithmCompareUtil.SCHEDULER)
                 .sort(Comparator.comparing(AlgorithmDocument::getMoveOrder))
                 .map(x -> {
                     log.debug("execution data moveOrder = " + x.getMoveOrder());

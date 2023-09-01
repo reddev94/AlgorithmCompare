@@ -7,7 +7,7 @@ services:
   algorithm-compare-be:
     container_name: algorithm-compare-be
     build:
-      context: ../AlgorithmCompareBE
+      context: AlgorithmCompareBE
       dockerfile: algorithm-compare-be.dockerfile
     ports:
       - '8084:8084'
@@ -28,6 +28,7 @@ services:
       - PLUGIN_PATH=/algorithm-compare-be/plugins-zipped
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8083/eureka/
       - SPRING_BOOT_ADMIN_CLIENT_URL=http://admin-monitor:8082
+      - LOGGING_LEVEL_COM_REDDEV_ALGORITHMCOMPARE=INFO
     networks:
       - algorithm-compare-network
     healthcheck:
@@ -39,7 +40,7 @@ services:
   admin-monitor:
     container_name: admin-monitor
     build:
-      context: ../AlgorithmCompareBE/AdminMonitor
+      context: AlgorithmCompareBE/AdminMonitor
       dockerfile: admin-monitor.dockerfile
     ports:
       - '8082:8082'
@@ -49,7 +50,7 @@ services:
   gateway:
     container_name: gateway
     build:
-      context: ../AlgorithmCompareBE/Gateway
+      context: AlgorithmCompareBE/Gateway
       dockerfile: gateway.dockerfile
     ports:
       - '8080:8080'
@@ -72,7 +73,7 @@ services:
   eureka:
     container_name: eureka
     build:
-      context: ../AlgorithmCompareBE/Eureka
+      context: AlgorithmCompareBE/Eureka
       dockerfile: eureka.dockerfile
     ports:
       - '8083:8083'
@@ -92,7 +93,7 @@ services:
   algorithm-compare-fe:
     container_name: algorithm-compare-fe
     build:
-      context: ../AlgorithmCompareFE
+      context: AlgorithmCompareFE
       dockerfile: algorithm-compare-fe.dockerfile
     ports:
       - '4200:4200'

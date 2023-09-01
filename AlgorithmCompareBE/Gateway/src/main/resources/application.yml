@@ -34,7 +34,7 @@ spring:
               - x-file-name
       routes:
         - id: algorithm-compare-route
-          uri: lb://ALGORITHM-COMPARE
+          uri: lb://ALGORITHM-COMPARE-BE
           predicates:
             - Path=/blocking/**,/reactive/**
       default-filters:
