@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { AlgorithmService } from '../service/algorithm-service';
-import { FormBuilder, Validators, FormGroup } from "@angular/forms";
+import { FormBuilder, Validators, FormGroup, FormControl } from "@angular/forms";
 import { UtilData } from '../model/util-data';
 import { Subscriptions } from '../model/subscriptions';
 import { Observable, forkJoin, merge } from 'rxjs';
@@ -27,8 +27,12 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   arrayGraphHeight: number;
   isGenerateArrayDisabled: boolean = true;
 
-
   constructor(private algorithmService: AlgorithmService, private fb: FormBuilder) {
+      this.algorithmForm = this.fb.group({
+        algorithmType1: new FormControl({ value: '', disabled: false }),
+        algorithmType2: new FormControl({ value: '', disabled: false }),
+        arrayLength: ''
+      });
       this.resetData();
   }
 
@@ -44,7 +48,6 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     this.subscriptions.availableAlgorithmSub$ = this.algorithmService.getAvailableAlgorithms()
       .subscribe({
         next: data => {
-             console.log(data);
              this.utilData.algorithms = data.availableAlgorithms;
         },
         error: data => {
@@ -57,7 +60,6 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     this.subscriptions.generateArraySub$ = this.algorithmService.generateArray(this.algorithmForm.controls['arrayLength'].value)
       .subscribe({
         next: data => {
-          console.log(data);
           this.utilData.array = data.array;
           this.arrayGraphWidth = 20*data.array.length;
         },
@@ -71,14 +73,11 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     this.subscriptions.executeAlgorithmSub$ = this.algorithmService.executeAlgorithm(this.algorithmForm.controls['algorithmType'+arrayIdentifier].value, this.utilData.array)
       .subscribe({
         next: data => {
-          console.log(data);
           if(arrayIdentifier == 1) {
-            console.log('saving idRequester and maxExecutionTime for array1');
             this.utilData.firstArrayIdRequester = data.idRequester;
             this.utilData.firstArrayMaxExecutionTime = data.maxExecutionTime;
             this.utilData.isFirstArrayCompleted = true;
           } else if(arrayIdentifier == 2) {
-            console.log('saving idRequester and maxExecutionTime for array2');
             this.utilData.secondArrayIdRequester = data.idRequester;
             this.utilData.secondArrayMaxExecutionTime = data.maxExecutionTime;
             this.utilData.isSecondArrayCompleted = true;
@@ -100,9 +99,7 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     this.subscriptions.visualizationsSub$ = obs
       .subscribe({
         next: data => {
-          console.log(data);
           var arrayIdentifier = data.arrayIdentifier;
-          console.log('response data array'+arrayIdentifier);
           if(data.executionStatus!=0) {
             let executionData = new ExecutionData();
             executionData.array = data.array;
@@ -129,7 +126,6 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     if(this.utilData && this.utilData.firstArrayIdRequester) {
       deleteSub1$ = this.algorithmService.deleteExecutionData(this.utilData.firstArrayIdRequester).subscribe({
         next: data => {
-          console.log(data);
           deleteSub1$.unsubscribe();
         },
         error: data => {
@@ -140,7 +136,6 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     if(this.utilData && this.utilData.secondArrayIdRequester) {
       deleteSub2$ = this.algorithmService.deleteExecutionData(this.utilData.secondArrayIdRequester).subscribe({
         next: data => {
-          console.log(data);
           deleteSub2$.unsubscribe();
         },
         error: data => {
@@ -160,10 +155,12 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
       this.array1GraphIsVisible = true;
       this.drawArrayCanvas(1, true);
       this.isGenerateArrayDisabled = true;
+      this.algorithmForm.controls['algorithmType1'].disable();
     } else if(buttonType==="prepareArray2") {
       this.prepareVisualizationArray(2);
       this.array2GraphIsVisible = true;
       this.drawArrayCanvas(2, true);
+      this.algorithmForm.controls['algorithmType2'].disable();
     } else if(buttonType==="run") {
       this.utilData.isRunning = true;
       if(this.utilData.isSecondArrayActive) {
@@ -181,6 +178,11 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
   resetAction(): void {
     this.resetData();
     this.clearCanvas();
+    this.algorithmForm.controls['algorithmType1'].enable();
+    this.algorithmForm.controls['algorithmType2'].enable();
+    this.algorithmForm.controls['algorithmType1'].setValue('');
+    this.algorithmForm.controls['algorithmType2'].setValue('');
+    this.algorithmForm.controls['arrayLength'].setValue('');
   }
 
   resetData(): void {
@@ -192,11 +194,6 @@ export class AlgorithmcompareComponent implements OnInit, OnDestroy {
     }
     this.utilData = new UtilData(false, false, false, false, new ExecutionData(), new ExecutionData());
     this.utilData.algorithms = algorithms;
-    this.algorithmForm = this.fb.group({
-      algorithmType1: '',
-      algorithmType2: '',
-      arrayLength: ''
-    });
     this.subscriptions = new Subscriptions();
     this.array1GraphIsVisible = false;
     this.array2GraphIsVisible = false;

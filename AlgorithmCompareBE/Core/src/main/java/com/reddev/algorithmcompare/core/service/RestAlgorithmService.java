@@ -104,9 +104,10 @@ public class RestAlgorithmService {
                         new ArrayInfo[]{}, maxMoveExecutionTime, AlgorithmCompareUtil.RESULT_CODE_OK))
                 .delayUntil(data -> {
                     long delay = (data.getMoveExecutionTime() * CoreUtil.MOVE_EXECUTION_TIME_SCALAR) / maxMoveExecutionTime;
-                    log.info("emitting data for requester " + idRequester + ", with delay of " + delay + ", getExecutionData response = " + data);
+                    log.debug("emitting data for requester " + idRequester + ", with delay of " + delay + ", with original moveExecutionTime of " + data.getMoveExecutionTime() + ", with executionStatus of " + data.getExecutionStatus());
                     return Mono.delay(Duration.ofMillis(delay));
                 })
+                .doOnComplete(() -> log.info("Finished emitting data for idRequester = " + idRequester))
                 .subscribeOn(AlgorithmCompareUtil.SCHEDULER);
 
     }

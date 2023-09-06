@@ -63,7 +63,7 @@ public class LoggingAspect {
 			log.error("Error during query execution: ", e);
 			throw new DatabaseException(AlgorithmCompareUtil.RESULT_CODE_DB_ERROR, AlgorithmCompareUtil.RESULT_DESCRIPTION_DB_ERROR);
 		}
-		log.info("Query " + className + "." + methodName + "() executed in " + stopWatch.getTotalTimeMillis() + " ms");
+		log.debug("Query " + className + "." + methodName + "() executed in " + stopWatch.getTotalTimeMillis() + " ms");
 		log.debug("with response: " + getResult(result));
 		return result;
 	}

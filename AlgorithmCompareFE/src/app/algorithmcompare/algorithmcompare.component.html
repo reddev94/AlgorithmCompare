@@ -33,8 +33,7 @@
       </button>
     </div>
     <div id="secondArrayDiv">
-      <select *ngIf="utilData.isSecondArrayActive && this.utilData.algorithms" id="algorithmType2"
-              formControlName="algorithmType2">
+      <select *ngIf="utilData.isSecondArrayActive && this.utilData.algorithms" id="algorithmType2" formControlName="algorithmType2">
         <option value="" disabled selected>Select algorithm</option>
         <option value="{{element}}" *ngFor="let element of this.utilData.algorithms">
           {{element}}

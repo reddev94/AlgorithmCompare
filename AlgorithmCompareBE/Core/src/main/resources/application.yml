@@ -55,7 +55,7 @@ logging:
   level:
     root: INFO
     org.springframework: INFO
-    com.reddev.algorithmcompare: DEBUG
+    com.reddev.algorithmcompare: INFO
     org.mongodb: INFO
 
 cors:
