@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - admin-monitor-deployment.yaml
+  - admin-monitor-service.yaml
+  - algorithm-compare-be-deployment.yaml
+  - algorithm-compare-be-service.yaml
+  - algorithm-compare-fe-deployment.yaml
+  - algorithm-compare-fe-service.yaml
+  - algorithm-compare-network-networkpolicy.yaml
+  - eureka-deployment.yaml
+  - eureka-service.yaml
+  - gateway-deployment.yaml
+  - gateway-service.yaml
+  - mongodb-deployment.yaml
+  - mongodb-service.yaml
+  - redis-commander-deployment.yaml
+  - redis-commander-service.yaml
+  - redis-deployment.yaml
+  - redis-service.yaml

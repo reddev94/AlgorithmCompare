@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: algorithm-compare-be
+  name: algorithm-compare-be
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: algorithm-compare-be
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/algorithm-compare-network: "true"
+        io.kompose.service: algorithm-compare-be
+    spec:
+      containers:
+        - env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka:8083/eureka/
+            - name: LOGGING_LEVEL_COM_REDDEV_ALGORITHMCOMPARE
+              value: INFO
+            - name: PLUGIN_PATH
+              value: /algorithm-compare-be/plugins-zipped
+            - name: SPRING_BOOT_ADMIN_CLIENT_URL
+              value: http://admin-monitor:8082
+            - name: SPRING_DATA_MONGODB_HOST
+              value: mongodb
+            - name: SPRING_DATA_REDIS_HOST
+              value: redis
+          image: minikube/algorithmcompare_algorithm-compare-be:latest
+          livenessProbe:
+            exec:
+              command:
+                - curl -f http://algorithm-compare-be:8084/actuator/health || exit 1
+            failureThreshold: 20
+            periodSeconds: 3
+            timeoutSeconds: 3
+          name: algorithm-compare-be
+          ports:
+            - containerPort: 8084
+          resources: {}
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+status: {}
