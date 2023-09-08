@@ -31,7 +31,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8083/eureka/
       - SPRING_BOOT_ADMIN_CLIENT_URL=http://admin-monitor:8082
       - LOGGING_LEVEL_COM_REDDEV_ALGORITHMCOMPARE=INFO
-      - CORS_ALLOWED_ORIGINS=http://localhost:8080
+      - CORS_ALLOWED_ORIGINS=*
     networks:
       - algorithm-compare-network
     healthcheck:

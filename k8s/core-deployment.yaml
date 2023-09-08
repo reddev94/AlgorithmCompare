@@ -40,7 +40,8 @@ spec:
               value: mongodb
             - name: SPRING_DATA_REDIS_HOST
               value: redis
-          image: core
+          image: algorithmcompare_core:latest
+          imagePullPolicy: Never
           livenessProbe:
             exec:
               command:

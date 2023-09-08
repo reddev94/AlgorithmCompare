@@ -30,7 +30,8 @@ spec:
               value: http://eureka:8083/eureka/
             - name: SPRING_BOOT_ADMIN_CLIENT_URL
               value: http://admin-monitor:8082
-          image: eureka
+          image: algorithmcompare_eureka:latest
+          imagePullPolicy: Never
           livenessProbe:
             exec:
               command:

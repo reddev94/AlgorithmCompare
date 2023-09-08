@@ -25,8 +25,9 @@ spec:
         io.kompose.service: admin-monitor
     spec:
       containers:
-        - image: admin-monitor
+        - image: algorithmcompare_admin-monitor:latest
           name: admin-monitor
+          imagePullPolicy: Never
           ports:
             - containerPort: 8082
           resources: {}
