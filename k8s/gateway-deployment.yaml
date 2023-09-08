@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: gateway
+  name: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: gateway
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/algorithm-compare-network: "true"
+        io.kompose.service: gateway
+    spec:
+      containers:
+        - env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka:8083/eureka/
+            - name: SPRING_BOOT_ADMIN_CLIENT_URL
+              value: http://admin-monitor:8082
+          image: gateway
+          livenessProbe:
+            exec:
+              command:
+                - curl -f http://gateway:8081/actuator/health || exit 1
+            failureThreshold: 20
+            periodSeconds: 3
+            timeoutSeconds: 3
+          name: gateway
+          ports:
+            - containerPort: 8081
+          resources: {}
+      restartPolicy: Always
+status: {}
