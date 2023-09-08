@@ -4,8 +4,8 @@ kind: Kustomization
 resources:
   - admin-monitor-deployment.yaml
   - admin-monitor-service.yaml
-  - algorithm-compare-be-deployment.yaml
-  - algorithm-compare-be-service.yaml
+  - core-deployment.yaml
+  - core-service.yaml
   - algorithm-compare-fe-deployment.yaml
   - algorithm-compare-fe-service.yaml
   - algorithm-compare-network-networkpolicy.yaml
