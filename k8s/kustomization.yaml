@@ -2,13 +2,13 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - admin-monitor-deployment.yaml
-  - admin-monitor-service.yaml
+  - namespace.yaml
+  - admin-deployment.yaml
+  - admin-service.yaml
   - core-deployment.yaml
   - core-service.yaml
-  - algorithm-compare-fe-deployment.yaml
-  - algorithm-compare-fe-service.yaml
-  - algorithm-compare-network-networkpolicy.yaml
+  - fe-deployment.yaml
+  - fe-service.yaml
   - eureka-deployment.yaml
   - eureka-service.yaml
   - gateway-deployment.yaml

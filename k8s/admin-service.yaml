@@ -1,16 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: core
+  name: admin
   namespace: algc
 spec:
   ports:
-    - name: 8084-tcp
-      port: 8084
+    - name: 8082-tcp
+      port: 8082
       protocol: TCP
-      targetPort: 8084
+      targetPort: 8082
   selector:
-    com.docker.project: core
-  type: NodePort
+    com.docker.project: admin
 status:
   loadBalancer: {}

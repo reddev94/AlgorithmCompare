@@ -1,17 +1,29 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: algorithm-compare-ingress
+  name: algc-ingress
+  namespace: algc
+  labels:
+    com.docker.project: algc-ingress
   annotations:
-    nginx.ingress.kubernetes.io/enable-cors: "true"
+    ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-    - http:
-        paths:
-          - path: /**
-            pathType: Prefix
-            backend:
-              service:
-                name: gateway
-                port:
-                  number: 8081
+      - host: localhost
+        http:
+          paths:
+            - path: /eureka
+              pathType: Prefix
+              backend:
+                service:
+                  name: eureka
+                  port:
+                    number: 8083
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: gateway
+                  port:
+                    number: 8081

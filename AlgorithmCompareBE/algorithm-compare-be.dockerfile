@@ -47,7 +47,7 @@ COPY Plugins/SelectionSort/src/main Plugins/SelectionSort/src/main
 RUN mvn -f pom.xml clean package -Dmaven.test.skip=true
 
 # admin-monitor image
-FROM eclipse-temurin:20-jre-jammy as admin-monitor-img
+FROM eclipse-temurin:20-jre-jammy as admin-img
 WORKDIR /admin-monitor
 EXPOSE 8082
 COPY --from=build AlgorithmCompareBE/AdminMonitor/target/*.jar *.jar

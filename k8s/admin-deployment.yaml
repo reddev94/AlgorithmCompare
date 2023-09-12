@@ -2,44 +2,39 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    com.docker.project: eureka
-  name: eureka
+    com.docker.project: admin
+  name: admin
   namespace: algc
 spec:
   replicas: 1
   selector:
     matchLabels:
-      com.docker.project: eureka
+      com.docker.project: admin
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        com.docker.project: eureka
+        com.docker.project: admin
     spec:
       containers:
-        - env:
-            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-              value: http://eureka.algc.svc.cluster.local:8083/eureka/
-            - name: SPRING_BOOT_ADMIN_CLIENT_URL
-              value: http://admin.algc.svc.cluster.local:8082
-          image: algorithmcompare_eureka:latest
+        - image: algorithmcompare_admin:latest
+          name: admin
           imagePullPolicy: Never
-          name: eureka
           ports:
-            - containerPort: 8083
+            - containerPort: 8082
               protocol: TCP
           resources: {}
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: 8083
+              port: 8082
             failureThreshold: 1
             periodSeconds: 10
           startupProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: 8083
+              port: 8082
             failureThreshold: 30
             periodSeconds: 10
       restartPolicy: Always

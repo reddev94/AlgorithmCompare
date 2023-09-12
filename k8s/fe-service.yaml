@@ -1,16 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: core
+  name: fe
   namespace: algc
 spec:
   ports:
-    - name: 8084-tcp
-      port: 8084
+    - name: 8080-tcp
+      port: 8080
       protocol: TCP
-      targetPort: 8084
+      targetPort: 80
   selector:
-    com.docker.project: core
-  type: NodePort
+    com.docker.project: fe
 status:
   loadBalancer: {}

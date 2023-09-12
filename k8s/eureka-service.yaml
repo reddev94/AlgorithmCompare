@@ -1,19 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kompose.cmd: kompose convert
-    kompose.version: 1.26.0 (40646f47)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: eureka
   name: eureka
+  namespace: algc
 spec:
   ports:
-    - name: "8083"
+    - name: 8083-tcp
       port: 8083
+      protocol: TCP
       targetPort: 8083
   selector:
-    io.kompose.service: eureka
+    com.docker.project: eureka
 status:
   loadBalancer: {}
