@@ -12,7 +12,7 @@ public class CoreUtil {
     private CoreUtil() {}
 
 
-    public static final int MOVE_EXECUTION_TIME_SCALAR = 750;
+    public static final int MOVE_EXECUTION_TIME_SCALAR = 500;
     public static final Map<String, String> PLUGIN_ID_TO_ALGORITHM_MAP;
 
     static {
