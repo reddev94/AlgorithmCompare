@@ -40,5 +40,5 @@ job:
     timeout: 21600000
 
 plugin:
-  basePath: /home/reddev/Projects/AlgorithmCompare/AlgorithmCompareBE #CHANGEME
+  basePath: /home/reddev/Projects/AlgorithmCompare/AlgorithmCompareBE
   path: ${plugin.basePath}/plugins-zipped
