@@ -182,7 +182,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Davide Vennari - [@instagram](https://www.instagram.com/reddev_94/) - davide.vennari@gmail.com
+Davide Vennari - [@linkedin](https://www.linkedin.com/in/davide-vennari-805301121) - [@instagram](https://www.instagram.com/reddev_94/) - davide.vennari@gmail.com
 
 Project Link: [https://github.com/reddev94/AlgorithmCompare](https://github.com/reddev94/AlgorithmCompare)
 
@@ -195,5 +195,5 @@ Project Link: [https://github.com/reddev94/AlgorithmCompare](https://github.com/
 [license-shield]: https://img.shields.io/github/license/reddev94/AlgorithmCompare.svg?style=for-the-badge
 [license-url]: https://github.com/reddev94/AlgorithmCompare/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: www.linkedin.com/in/davide-vennari-805301121
+[linkedin-url]: https://www.linkedin.com/in/davide-vennari-805301121
 [product-screenshot]: images/screenshot.png
