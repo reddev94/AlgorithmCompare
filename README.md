@@ -65,7 +65,9 @@
 ## About The Project
 ![product-screenshot]
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+This project aims to be first a demo for the most modern java/spring technologies and for microservice/container architecture, and second a nice idea to graphically visualize and compare the execution of different sorting algorithms. 
+
+Feel free to download it, try it out and take inspiration when you need to implement and use some of the technologies used here.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -76,7 +78,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 * Maven 3.9.4
 * Angular 11
 * Spring boot 3
-* Spring dependencies: data, aop, webflux, cloud, gateway, eureka, admin, quartz, openapi
+* Spring technologies: data, aop, webflux, cloud, gateway, eureka, admin, quartz, openapi
 * Pf4j
 * Mongodb
 * Redis
@@ -140,12 +142,15 @@ To access the app put this address in ypur browser
    http://localhost:8080/AlgorithmCompareHome
    ```
 To use the app you have to choose a sorting algorithm from the dropdown menu <img src="images/Dropdown.png" alt="Logo" width="100" height="25">, choose a size for the array, put in the textbox <img src="images/Textbox.png" alt="Logo" width="130" height="25"> and click <img src="images/Generate_array.png" alt="Logo" width="100" height="25">.<br>
-Now you have to click the new appeared button "Prepare execution".
+Now you have to click the new appeared button <img src="images/Prepare.png" alt="Logo" width="100" height="25">.
 At this point you have 2 option:
-  1. click "Run" button to launch the sorting algorithm chosen on the array and see the visual execution.
-  2. click "Add second algorithm" to add another visual execution to compare in real time:<br> choose another algorithm from the dropdown menu "Select algorithm", click "Prepare execution", click "Run".
-At the end of the executions, click "Reset" button.
+  1. click <img src="images/Run.png" alt="Logo" width="40" height="25"> button to launch the sorting algorithm chosen on the array and see the visual execution.
+  2. click <img src="images/Add2alg.png" alt="Logo" width="130" height="25"> to add another visual execution to compare in real time:<br> choose another algorithm from the dropdown menu <img src="images/Dropdown.png" alt="Logo" width="100" height="25">, click <img src="images/Prepare.png" alt="Logo" width="100" height="25">, click <img src="images/Run.png" alt="Logo" width="40" height="25">.
 
+At the end of the executions, click <img src="images/Reset.png" alt="Logo" width="40" height="25"> button.
+<br>
+<br>
+<br>
 Other useful things that you can do:
 
 - Access the spring admin server
