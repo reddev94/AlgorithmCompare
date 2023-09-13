@@ -100,6 +100,9 @@ You can download it, for Linux, Mac and Windows, from the official docker site
   ```
 And follow the installation guide.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 ### Installation
 
 1. Clone the repo
