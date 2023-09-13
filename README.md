@@ -26,7 +26,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/reddev94/AlgorithmCompare">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/Logo2.png" alt="Logo" width="340" height="80">
   </a>
 
 <h3 align="center">Algorithm Compare</h3>
@@ -63,8 +63,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![product-screenshot]
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 
@@ -140,7 +139,7 @@ To access the app put this address in ypur browser
    ```sh
    http://localhost:8080/AlgorithmCompareHome
    ```
-To use the app you have to choose a sorting algorithm from the dropdown menu "Select algorithm", choose a size for the array, put in the textbox "insert size from 10 to 80" and click "Generate array".
+To use the app you have to choose a sorting algorithm from the dropdown menu <img src="images/Dropdown.png" alt="Logo" width="100" height="25">, choose a size for the array, put in the textbox <img src="images/Textbox.png" alt="Logo" width="130" height="25"> and click <img src="images/Generate_array.png" alt="Logo" width="100" height="25">.<br>
 Now you have to click the new appeared button "Prepare execution".
 At this point you have 2 option:
   1. click "Run" button to launch the sorting algorithm chosen on the array and see the visual execution.
@@ -199,4 +198,7 @@ Project Link: [https://github.com/reddev94/AlgorithmCompare](https://github.com/
 [license-url]: https://github.com/reddev94/AlgorithmCompare/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/davide-vennari-805301121
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: images/App2alg.png
+[product-dropdown]: images/Dropdown.png
+[product-generate-array]: images/Generate_array.png
+[product-textbox]: images/Textbox.png
