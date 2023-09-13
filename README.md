@@ -35,16 +35,7 @@
 <h3 align="center">Algorithm Compare</h3>
 
   <p align="center">
-    project_description
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    Simple tool to compare different sorting algorithm execution
   </p>
 </div>
 
@@ -85,7 +76,16 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Built With
 
-* [![Angular][Angular.io]][Angular-url]
+* Java 20
+* Maven 3.9.4
+* Angular 11
+* Spring boot 3
+* Spring dependencies: data, aop, webflux, cloud, gateway, eureka, admin, quartz, openapi
+* Pf4j
+* Mongodb
+* Redis
+* Docker
+* Kubernetes
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -106,12 +106,11 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/reddev94/AlgorithmCompare.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
