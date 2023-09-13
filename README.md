@@ -17,10 +17,8 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
@@ -35,7 +33,7 @@
 <h3 align="center">Algorithm Compare</h3>
 
   <p align="center">
-    Simple tool to compare different sorting algorithm execution
+    Simple tool to compare different sorting algorithm visual execution
   </p>
 </div>
 
@@ -93,16 +91,15 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+The only thing you need is Docker Desktop, that include docker engine and provide you also a nice GUI.
+<br>
+You can download it, for Linux, Mac and Windows, from the official docker site
   ```sh
-  npm install npm@latest -g
+  https://www.docker.com/products/docker-desktop/
   ```
+And follow the installation guide.
 
 ### Installation
 
@@ -110,14 +107,26 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    git clone https://github.com/reddev94/AlgorithmCompare.git
    ```
-2. Install NPM packages
+2. Go to the root repo folder and run this command
    ```sh
-   npm install
+   docker-compose up --build
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+   This will start the docker image build and container inizialization and will download, inside docker vm, all the necessary things to build and run the app,
+   and at the end it will start automatically the containers with the running services.
+
+   N.B: this step can take several minutes, based on your internet speed and PC performance.
+   
+3. Now in Docker Desktop -> Containers you have a container group "algorithmcompare" with 8 container running inside
+   - fe -> angular front end app
+   - gateway -> spring cloud gateway proxy
+   - eureka -> spring eureka service discovery
+   - core -> Back end app business logic
+   - admin -> spring admin server
+   - mongodb -> database for the back end
+   - redis -> redis cluster for the backend
+   - redis-commander -> the redis commander interface to access redis cluster content
+  
+Installation completed.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -125,9 +134,40 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+To access the app put this address in ypur browser
+   ```sh
+   http://localhost:8080/AlgorithmCompareHome
+   ```
+To use the app you have to choose a sorting algorithm from the dropdown menu "Select algorithm", choose a size for the array, put in the textbox "insert size from 10 to 80" and click "Generate array".
+Now you have to click the new appeared button "Prepare execution".
+At this point you have 2 option:
+  1. click "Run" button to launch the sorting algorithm chosen on the array and see the visual execution.
+  2. click "Add second algorithm" to add another visual execution to compare in real time:<br> choose another algorithm from the dropdown menu "Select algorithm", click "Prepare execution", click "Run".
+At the end of the executions, click "Reset" button.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+Other useful things that you can do:
+
+- Access the spring admin server
+   ```sh
+   http://localhost:8082
+   ```
+- Access the eureka service discovery
+   ```sh
+   http://localhost:8083
+   ```
+- Access the redis commander interface
+   ```sh
+   http://localhost:8079
+   ```
+- Access the mongodb with this connection string
+   ```sh
+   mongodb://localhost:27017/
+   ```
+- Access the Back End Core swagger documentation
+  ```sh
+  http://localhost:8080/swagger-ui/index.html
+  ```
+- If you have a kubernetes cluster you can deploy the service using the yaml configuration file present in the /k8s folder
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -166,7 +206,3 @@ Project Link: [https://github.com/reddev94/AlgorithmCompare](https://github.com/
 [product-screenshot]: images/screenshot.png
 [Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
 [Angular-url]: https://angular.io/
-
-~~~~
-url openapi http://localhost:8080/v3/api-docs
-url swagger http://localhost:8080/swagger-ui/index.html
