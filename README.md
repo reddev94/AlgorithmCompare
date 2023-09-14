@@ -119,7 +119,7 @@ And follow the installation guide.
 
    N.B: this step can take several minutes, based on your internet speed and PC performance.
    
-3. Now in Docker Desktop -> Containers you have a container group "algorithmcompare" with 8 container running inside
+3. Now in Docker Desktop -> Containers you have a container group "algorithmcompare" with 8 container inside
    - fe -> angular front end app
    - gateway -> spring cloud gateway proxy
    - eureka -> spring eureka service discovery
@@ -128,8 +128,8 @@ And follow the installation guide.
    - mongodb -> database for the back end
    - redis -> redis cluster for the backend
    - redis-commander -> the redis commander interface to access redis cluster content
-  
-Installation completed.
+     
+Wait until you see 8/8 running container and installation is completed.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
