@@ -71,6 +71,6 @@ ENTRYPOINT ["java", "-jar", "*.jar" ]
 FROM eclipse-temurin:20-jre-jammy as core-img
 WORKDIR /core
 EXPOSE 8084
-COPY plugins-zipped/*.zip plugins-zipped/
+COPY --from=build AlgorithmCompareBE/plugins-zipped/*.zip plugins-zipped/
 COPY --from=build AlgorithmCompareBE/Core/target/*.jar *.jar
 ENTRYPOINT ["java", "-jar", "*.jar" ]
