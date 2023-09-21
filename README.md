@@ -79,6 +79,7 @@ Feel free to download it, try it out and take inspiration when you need to imple
 * Angular 11
 * Spring boot 3
 * Spring technologies: data, aop, webflux, cloud, gateway, eureka, admin, quartz, openapi
+* Reactive programming (spring webflux)
 * Pf4j
 * Mongodb
 * Redis
